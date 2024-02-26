@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/text_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/text_temp2"
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/text_type_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textSize="50sp"
+        android:text="empty" />
+
+    <TextView
+        android:id="@+id/text_material_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/text_type_title"
+        android:layout_marginTop="100dp"
+        android:text="Materials:" />
+
+<!--TODO: Add the buttons and edittexts to a linear layout, and have the edittexts in their own vertical linear layout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000203">
+
+
+    </LinearLayout> -->
+    <EditText
+        android:id="@+id/edittext_yellow"
+        android:layout_width="90dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/text_material_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:text="@string/empty_counter"
+        android:background="@color/genshin_yellow"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edittext_purple"
+        android:layout_width="90dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edittext_yellow"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@color/genshin_purple"
+        android:text="@string/empty_counter"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edittext_blue"
+        android:layout_width="90dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edittext_purple"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@color/genshin_blue"
+        android:text="@string/empty_counter"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edittext_green"
+        android:layout_width="90dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edittext_blue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@color/genshin_green"
+        android:text="@string/empty_counter"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/edittext_grey"
+        android:layout_width="90dp"
+        android:textAlignment="center"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/edittext_green"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"
+        android:background="@color/genshin_grey"
+        android:inputType="number"
+        android:text="@string/empty_counter" />
+
+
+<!-- Button section -->
+    <Button
+        android:id="@+id/button_subtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/text_material_title"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:text="-"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/text_material_title"
+        android:layout_marginTop="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:text="+"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/button_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_subtract"
+        android:layout_marginTop="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:text="clear"
+        android:textSize="30sp"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_editable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="49dp"
+        android:layout_marginBottom="143dp"
+        android:textSize="30sp"/>
+
+</RelativeLayout>

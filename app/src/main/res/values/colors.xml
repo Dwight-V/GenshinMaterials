@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="genshin_yellow">#e0a74e</color>
+    <color name="genshin_purple">#b485c7</color>
+    <color name="genshin_blue">#489bb0</color>
+    <color name="genshin_green">#5c916d</color>
+    <color name="genshin_grey">#828d99</color>
+</resources>
