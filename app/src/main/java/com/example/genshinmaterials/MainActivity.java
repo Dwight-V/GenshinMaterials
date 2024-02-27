@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Switch swtEditable;
 
-    // TODO: Rename to edittextSelected
-    private EditText raritySelected;
+    private EditText edittextSelected;
 
     // Is an array of all EditTexts, used in loops for updated generic functions.
     private EditText[] allEditTexts;
@@ -78,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (raritySelected != null) {
-                    raritySelected.setText(String.valueOf(Integer.parseInt(raritySelected.getText().toString()) + 1));
+                if (edittextSelected != null) {
+                    edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) + 1));
                     saveData();
                 }
             }
@@ -88,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
         btnSubtract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (raritySelected != null && Integer.parseInt(raritySelected.getText().toString()) - 1 >= 0) {
-                    raritySelected.setText(String.valueOf(Integer.parseInt(raritySelected.getText().toString()) - 1));
+                if (edittextSelected != null && Integer.parseInt(edittextSelected.getText().toString()) - 1 >= 0) {
+                    edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) - 1));
                     saveData();
                 }
             }
@@ -101,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
         edtYellow.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                raritySelected = edtYellow;
-                if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
-                    raritySelected.setText("0");
+                edittextSelected = edtYellow;
+                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
+                    edittextSelected.setText("0");
                 }
                 return false;
             }
@@ -112,9 +111,9 @@ public class MainActivity extends AppCompatActivity {
         edtPurple.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                raritySelected = edtPurple;
-                if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
-                    raritySelected.setText("0");
+                edittextSelected = edtPurple;
+                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
+                    edittextSelected.setText("0");
                 }
                 return false;
             }
@@ -123,9 +122,9 @@ public class MainActivity extends AppCompatActivity {
         edtBlue.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                raritySelected = edtBlue;
-                if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
-                    raritySelected.setText("0");
+                edittextSelected = edtBlue;
+                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
+                    edittextSelected.setText("0");
                 }
                 return false;
             }
@@ -134,9 +133,9 @@ public class MainActivity extends AppCompatActivity {
         edtGreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                raritySelected = edtGreen;
-                if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
-                    raritySelected.setText("0");
+                edittextSelected = edtGreen;
+                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
+                    edittextSelected.setText("0");
                 }
                 return false;
             }
@@ -145,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
         edtGrey.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                raritySelected = edtGrey;
-                if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
-                    raritySelected.setText("0");
+                edittextSelected = edtGrey;
+                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
+                    edittextSelected.setText("0");
                 }
                 return false;
             }
