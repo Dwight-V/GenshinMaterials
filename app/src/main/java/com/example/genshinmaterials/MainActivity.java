@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 edtGrey.setText("0");
                 edtPurple.setText("0");
                 edtYellow.setText("0");
+                saveData();
                 return false;
             }
         });
