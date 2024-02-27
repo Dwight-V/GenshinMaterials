@@ -137,15 +137,29 @@
         android:text="clear"
         android:textSize="30sp"/>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_editable"
+    <LinearLayout
+        android:id="@+id/linearlayout_editable_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="200dp"
-        android:layout_marginEnd="49dp"
-        android:layout_marginBottom="143dp"
-        android:textSize="30sp"/>
+        android:layout_below="@+id/text_material_title"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_lock_open_24"/>
+
+
+        <Switch
+            android:id="@+id/switch_editable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_lock_outline_24"/>
+    </LinearLayout>
 
 </RelativeLayout>

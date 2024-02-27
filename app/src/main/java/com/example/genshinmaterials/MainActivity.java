@@ -1,16 +1,19 @@
 package com.example.genshinmaterials;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +23,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtTemp, txtTemp2;
     private Button btnAdd, btnSubtract;
 
+    private Switch swtEditable;
+
+    // TODO: Rename to edittextSelected
     private EditText raritySelected;
 
-    // For saving the data on app close.
+    // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
     // Corresponds to each type of rarity. Once it's working, use an array instead.
@@ -32,8 +38,12 @@ public class MainActivity extends AppCompatActivity {
     public static final String VALUE_GREEN = "green";
     public static final String VALUE_GREY = "grey";
 
+    public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
+
     // When the app is opened, these are the variables it looks at to set as the values. Length is set in instanceation.
     public String[] rarityVars;
+    public boolean editableIsChecked;
+    // endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
         btnAdd = (Button) findViewById(R.id.button_add);
         btnSubtract = (Button) findViewById(R.id.button_subtract);
 
+        swtEditable = (Switch) findViewById(R.id.switch_editable);
+
+        // region btnAdd btnSub OnClickListeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,9 +85,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        // endregion
 
 
-        // region  TouchListeners
+        // region  edittextTouchListeners
         edtYellow.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -132,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         // endregion
 
-        // region ************************* TextChangeListeners
+        // region edittextTextChangeListeners
 
         edtYellow.addTextChangedListener(new TextWatcher() {
             @Override
@@ -235,6 +249,16 @@ public class MainActivity extends AppCompatActivity {
 
         // endregion
 
+        swtEditable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                disableEditText(edtYellow);
+//                Toast.makeText(MainActivity.this, "changed!", Toast.LENGTH_SHORT).show();
+                changeEditable();
+                saveData();
+            }
+        });
+
 //        edtYellow.dispatchConfigurationChanged(new Configuration(this, Window(KeyStore.TrustedCertificateEntry(true))));
 
         // Loads data and displays saved data on app launch.
@@ -252,6 +276,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString(VALUE_GREEN, edtGreen.getText().toString());
         editor.putString(VALUE_GREY, edtGrey.getText().toString());
 
+        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
+//        Toast.makeText(this, SWITCH_EDITABLE_IS_CHECKED + " " + swtEditable.isChecked(), Toast.LENGTH_SHORT).show();
+
         editor.apply();
 //        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
     }
@@ -264,6 +291,9 @@ public class MainActivity extends AppCompatActivity {
         rarityVars[2] = sharedPreferences.getString(VALUE_BLUE, "0");
         rarityVars[3] = sharedPreferences.getString(VALUE_GREEN, "0");
         rarityVars[4] = sharedPreferences.getString(VALUE_GREY, "0");
+
+        editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
+
     }
 
     public void updateViews() {
@@ -272,5 +302,35 @@ public class MainActivity extends AppCompatActivity {
         edtBlue.setText(rarityVars[2]);
         edtGreen.setText(rarityVars[3]);
         edtGrey.setText(rarityVars[4]);
+        swtEditable.setChecked(editableIsChecked);
+        changeEditable();
     }
+
+    // TODO: Make changeEditable() have an EditText as an input, i.e. make it generic, then pass an array of all the buttons through a for loop (if a single instance isn't needed). Do the same for all other functions.
+    // TODO: Also, after the initial switch commit, be sure to add the number limit stored in notepad.
+    public void changeEditable() {
+        if (swtEditable.isChecked()) {
+            edtYellow.setInputType(InputType.TYPE_NULL);
+//            edtYellow.setInputType(InputType.TYPE_NULL);
+            // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
+            if (this.getCurrentFocus() != null) {
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+            }
+
+            edtPurple.setInputType(InputType.TYPE_NULL);
+            edtBlue.setInputType(InputType.TYPE_NULL);
+            edtGreen.setInputType(InputType.TYPE_NULL);
+            edtGrey.setInputType(InputType.TYPE_NULL);
+        } else {
+            edtYellow.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+            edtPurple.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edtBlue.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edtGreen.setInputType(InputType.TYPE_CLASS_NUMBER);
+            edtGrey.setInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+    }
+
+
 }
