@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (edittextSelected != null) {
                     edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) + 1));
+                    checkOverflow(edittextSelected);
                     saveData();
                 }
             }
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (edittextSelected != null && Integer.parseInt(edittextSelected.getText().toString()) - 1 >= 0) {
                     edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) - 1));
+                    checkOverflow(edittextSelected);
                     saveData();
                 }
             }
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 edittextSelected = edtYellow;
                 if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
                     edittextSelected.setText("0");
+
+                } else {
+                    checkOverflow(edittextSelected);
                 }
                 return false;
             }
@@ -114,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
                 edittextSelected = edtPurple;
                 if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
                     edittextSelected.setText("0");
+                } else {
+                    checkOverflow(edittextSelected);
                 }
                 return false;
             }
@@ -125,6 +132,8 @@ public class MainActivity extends AppCompatActivity {
                 edittextSelected = edtBlue;
                 if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
                     edittextSelected.setText("0");
+                } else {
+                    checkOverflow(edittextSelected);
                 }
                 return false;
             }
@@ -136,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
                 edittextSelected = edtGreen;
                 if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
                     edittextSelected.setText("0");
+                } else {
+                    checkOverflow(edittextSelected);
                 }
                 return false;
             }
@@ -147,6 +158,8 @@ public class MainActivity extends AppCompatActivity {
                 edittextSelected = edtGrey;
                 if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
                     edittextSelected.setText("0");
+                } else {
+                    checkOverflow(edittextSelected);
                 }
                 return false;
             }
@@ -173,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
                 if (edtYellow.getText().toString().equals("")) {
                     edtYellow.setText("0");
                 }
+                checkOverflow(edtYellow);
                 saveData();
             }
         });
@@ -190,6 +204,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (edtYellow.getText().toString().equals("")) {
+                    edtYellow.setText("0");
+                }
+                checkOverflow(edtYellow);
                 saveData();
             }
         });
@@ -207,9 +225,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtPurple.getText().toString().equals("")) {
-                    edtPurple.setText("0");
+                if (edtYellow.getText().toString().equals("")) {
+                    edtYellow.setText("0");
                 }
+                checkOverflow(edtYellow);
                 saveData();
             }
         });
@@ -231,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 if (edtGreen.getText().toString().equals("")) {
                     edtGreen.setText("0");
                 }
+                checkOverflow(edtYellow);
                 saveData();
             }
         });
@@ -251,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 if (edtGrey.getText().toString().equals("")) {
                     edtGrey.setText("0");
                 }
+                checkOverflow(edtYellow);
                 saveData();
             }
         });
@@ -314,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // TODO: Also, after the initial switch commit, be sure to add the number limit stored in notepad.
+    //
     public void changeEditable() {
         if (swtEditable.isChecked()) {
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
@@ -329,6 +351,13 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < allEditTexts.length; i++) {
                 allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             }
+        }
+    }
+
+    // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
+    public void checkOverflow(EditText editText) {
+        if (Integer.parseInt(editText.getText().toString()) > 10000) {
+            editText.setText("10000");
         }
     }
 
