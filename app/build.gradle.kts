@@ -7,7 +7,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.AEIOU.genshinmaterials"
+        applicationId = "com.example.genshinmaterials"
         minSdk = 24
         targetSdk = 34
         versionCode = 3
