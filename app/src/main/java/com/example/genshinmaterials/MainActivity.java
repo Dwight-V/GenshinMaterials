@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         });
         // endregion
 
-        // TODO: Change the +/- button colors according to which edittext touched. DO AFTER MAKING ALL HELPER FUNCTIONS GENERIC (THEN CYCLING THROUGH UNIVERSAL FUNCTIONS)
         // region  edittextTouchListeners
         edtYellow.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -334,8 +333,7 @@ public class MainActivity extends AppCompatActivity {
         changeEditable();
     }
 
-    // TODO: Also, after the initial switch commit, be sure to add the number limit stored in notepad.
-    //
+    // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
     public void changeEditable() {
         if (swtEditable.isChecked()) {
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
