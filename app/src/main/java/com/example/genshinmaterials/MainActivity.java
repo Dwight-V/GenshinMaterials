@@ -3,16 +3,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,8 +91,16 @@ public class MainActivity extends AppCompatActivity {
 
         // region  edittextTouchListeners
         edtYellow.setOnTouchListener(new View.OnTouchListener() {
-            @Override
+
             public boolean onTouch(View v, MotionEvent event) {
+                RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_subtract.topMargin = 750;
+                button_subtract.leftMargin = 50;
+                RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_add.topMargin = 750;
+                button_add.leftMargin = 760;
+                btnAdd.setLayoutParams(button_add);
+                btnSubtract.setLayoutParams(button_subtract);
                 raritySelected = edtYellow;
                 if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
                     raritySelected.setText("0");
@@ -103,6 +112,14 @@ public class MainActivity extends AppCompatActivity {
         edtPurple.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_subtract.topMargin = 1000;
+                button_subtract.leftMargin = 50;
+                RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_add.topMargin = 1000;
+                button_add.leftMargin = 760;
+                btnAdd.setLayoutParams(button_add);
+                btnSubtract.setLayoutParams(button_subtract);
                 raritySelected = edtPurple;
                 if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
                     raritySelected.setText("0");
@@ -114,6 +131,14 @@ public class MainActivity extends AppCompatActivity {
         edtBlue.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_subtract.topMargin = 1260;
+                button_subtract.leftMargin = 50;
+                RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_add.topMargin = 1260;
+                button_add.leftMargin = 760;
+                btnAdd.setLayoutParams(button_add);
+                btnSubtract.setLayoutParams(button_subtract);
                 raritySelected = edtBlue;
                 if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
                     raritySelected.setText("0");
@@ -125,6 +150,14 @@ public class MainActivity extends AppCompatActivity {
         edtGreen.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_subtract.topMargin = 1520;
+                button_subtract.leftMargin = 50;
+                RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_add.topMargin = 1520;
+                button_add.leftMargin = 760;
+                btnAdd.setLayoutParams(button_add);
+                btnSubtract.setLayoutParams(button_subtract);
                 raritySelected = edtGreen;
                 if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
                     raritySelected.setText("0");
@@ -136,6 +169,14 @@ public class MainActivity extends AppCompatActivity {
         edtGrey.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_subtract.topMargin = 1780;
+                button_subtract.leftMargin = 50;
+                RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                button_add.topMargin = 18780;
+                button_add.leftMargin = 760;
+                btnAdd.setLayoutParams(button_add);
+                btnSubtract.setLayoutParams(button_subtract);
                 raritySelected = edtGrey;
                 if (Integer.parseInt(raritySelected.getText().toString()) < 0) {
                     raritySelected.setText("0");
@@ -332,5 +373,29 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void moveAddButton(){
+        if (edtYellow.hasFocus()){
+//           RelativeLayout.LayoutParams button_subtract = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//           button_subtract.topMargin = 750;
+//           button_subtract.leftMargin = 50;
+//           RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//           button_add.topMargin = 750;
+//           button_add.leftMargin = 760;
+//           btnAdd.setLayoutParams(button_add);
+//           btnSubtract.setLayoutParams(button_subtract);
+        }
+        if (edtGrey.hasFocus()){
+            Toast.makeText(this, "Grey Has Focus", Toast.LENGTH_SHORT).show();
+        }
+        if (edtGreen.hasFocus()){
+            Toast.makeText(this, "Green Has Focus", Toast.LENGTH_SHORT).show();
+        }
+        if (edtPurple.hasFocus()){
+            Toast.makeText(this, "Purple Has Focus", Toast.LENGTH_SHORT).show();
+        }
+        if (edtBlue.hasFocus()){
+            Toast.makeText(this, "Blue Has Focus", Toast.LENGTH_SHORT).show();
+        }
 
+    }
 }
