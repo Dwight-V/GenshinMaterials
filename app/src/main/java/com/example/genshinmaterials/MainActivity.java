@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp, txtTemp2;
-    private Button btnAdd, btnSubtract;
+    private Button btnAdd, btnSubtract,btnClear;
 
     private Switch swtEditable;
 
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnAdd = (Button) findViewById(R.id.button_add);
         btnSubtract = (Button) findViewById(R.id.button_subtract);
+        btnClear = (Button) findViewById(R.id.button_clear);
 
         swtEditable = (Switch) findViewById(R.id.switch_editable);
 
@@ -83,6 +84,18 @@ public class MainActivity extends AppCompatActivity {
                     raritySelected.setText(String.valueOf(Integer.parseInt(raritySelected.getText().toString()) - 1));
                     saveData();
                 }
+            }
+        });
+
+        btnClear.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtBlue.setText("0");
+                edtGreen.setText("0");
+                edtGrey.setText("0");
+                edtPurple.setText("0");
+                edtYellow.setText("0");
+                return false;
             }
         });
         // endregion
