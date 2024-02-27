@@ -28,15 +28,21 @@ public class MainActivity extends AppCompatActivity {
     // TODO: Rename to edittextSelected
     private EditText raritySelected;
 
+    // Is an array of all EditTexts, used in loops for updated generic functions.
+    private EditText[] allEditTexts;
+
     // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
     // Corresponds to each type of rarity. Once it's working, use an array instead.
     public static final String VALUE_YELLOW = "yellow";
     public static final String VALUE_PURPLE = "purple";
-    public static final String VALUE_BLUE = "blue";
+    public static final String VALUE_BLUE = "0";
     public static final String VALUE_GREEN = "green";
     public static final String VALUE_GREY = "grey";
+
+    // Used in conjunction with allEditTexts for a clean loop in functions.
+    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
 
     public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
 
@@ -65,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         swtEditable = (Switch) findViewById(R.id.switch_editable);
 
+
+        allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+
         // region btnAdd btnSub OnClickListeners
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         });
         // endregion
 
-
+        // TODO: Change the +/- button colors according to which edittext touched. DO AFTER MAKING ALL HELPER FUNCTIONS GENERIC (THEN CYCLING THROUGH UNIVERSAL FUNCTIONS)
         // region  edittextTouchListeners
         edtYellow.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -249,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
 
         // endregion
 
+        // TODO: If swtEditable is checked, app exit, app exit, swtEditable will no longer be checked.
         swtEditable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -270,14 +280,16 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString(VALUE_YELLOW, edtYellow.getText().toString());
-        editor.putString(VALUE_PURPLE, edtPurple.getText().toString());
-        editor.putString(VALUE_BLUE, edtBlue.getText().toString());
-        editor.putString(VALUE_GREEN, edtGreen.getText().toString());
-        editor.putString(VALUE_GREY, edtGrey.getText().toString());
+        for (int i = 0; i < rarityVars.length; i++) {
+            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
+        }
+//        editor.putString(VALUE_PURPLE, edtPurple.getText().toString());
+//        editor.putString(VALUE_BLUE, edtBlue.getText().toString());
+//        editor.putString(VALUE_GREEN, edtGreen.getText().toString());
+//        editor.putString(VALUE_GREY, edtGrey.getText().toString());
 
         editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
-//        Toast.makeText(this, SWITCH_EDITABLE_IS_CHECKED + " " + swtEditable.isChecked(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
 
         editor.apply();
 //        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
@@ -286,49 +298,38 @@ public class MainActivity extends AppCompatActivity {
     public void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         rarityVars = new String[5];
-        rarityVars[0] = sharedPreferences.getString(VALUE_YELLOW, "0");
-        rarityVars[1] = sharedPreferences.getString(VALUE_PURPLE, "0");
-        rarityVars[2] = sharedPreferences.getString(VALUE_BLUE, "0");
-        rarityVars[3] = sharedPreferences.getString(VALUE_GREEN, "0");
-        rarityVars[4] = sharedPreferences.getString(VALUE_GREY, "0");
 
+        for (int i = 0; i < rarityVars.length; i++) {
+            rarityVars[i] = sharedPreferences.getString(allValueConstants[i], "0");
+        }
         editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
-
     }
 
+    // Changes the values of the EditTexts and Switch to saved values.
     public void updateViews() {
-        edtYellow.setText(rarityVars[0]);
-        edtPurple.setText(rarityVars[1]);
-        edtBlue.setText(rarityVars[2]);
-        edtGreen.setText(rarityVars[3]);
-        edtGrey.setText(rarityVars[4]);
+        for (int i = 0; i < allEditTexts.length; i++) {
+            allEditTexts[i].setText(rarityVars[i]);
+        }
         swtEditable.setChecked(editableIsChecked);
         changeEditable();
     }
 
-    // TODO: Make changeEditable() have an EditText as an input, i.e. make it generic, then pass an array of all the buttons through a for loop (if a single instance isn't needed). Do the same for all other functions.
     // TODO: Also, after the initial switch commit, be sure to add the number limit stored in notepad.
     public void changeEditable() {
         if (swtEditable.isChecked()) {
-            edtYellow.setInputType(InputType.TYPE_NULL);
-//            edtYellow.setInputType(InputType.TYPE_NULL);
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
             if (this.getCurrentFocus() != null) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
             }
 
-            edtPurple.setInputType(InputType.TYPE_NULL);
-            edtBlue.setInputType(InputType.TYPE_NULL);
-            edtGreen.setInputType(InputType.TYPE_NULL);
-            edtGrey.setInputType(InputType.TYPE_NULL);
+            for (int i = 0; i < allEditTexts.length; i++) {
+                allEditTexts[i].setInputType(InputType.TYPE_NULL);
+            }
         } else {
-            edtYellow.setInputType(InputType.TYPE_CLASS_NUMBER);
-
-            edtPurple.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edtBlue.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edtGreen.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edtGrey.setInputType(InputType.TYPE_CLASS_NUMBER);
+            for (int i = 0; i < allEditTexts.length; i++) {
+                allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
         }
     }
 
