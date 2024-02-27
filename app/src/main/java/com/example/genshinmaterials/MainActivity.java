@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                 button_subtract.topMargin = 1780;
                 button_subtract.leftMargin = 50;
                 RelativeLayout.LayoutParams button_add = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                button_add.topMargin = 18780;
+                button_add.topMargin = 1780;
                 button_add.leftMargin = 760;
                 btnAdd.setLayoutParams(button_add);
                 btnSubtract.setLayoutParams(button_subtract);
