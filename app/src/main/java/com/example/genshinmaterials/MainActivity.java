@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // endregion
-
+        boolean raytracing = true;
         btnSubYellow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
