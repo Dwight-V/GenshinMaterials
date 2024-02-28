@@ -21,7 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp, txtTemp2;
+  
+    private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
+
 
     private Switch swtEditable;
 
@@ -64,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         edtBlue = (EditText) findViewById(R.id.edittext_blue);
         edtGreen = (EditText) findViewById(R.id.edittext_green);
         edtGrey = (EditText) findViewById(R.id.edittext_grey);
-
+      
+        btnClear = (Button) findViewById(R.id.button_clear);
         btnAddYellow = (Button) findViewById(R.id.button_add_yellow);
         btnSubYellow = (Button) findViewById(R.id.button_sub_yellow);
         btnAddPurple = (Button) findViewById(R.id.button_add_purple);
@@ -96,6 +100,20 @@ public class MainActivity extends AppCompatActivity {
                 sub(edtYellow);
             }
         });
+
+        btnClear.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtBlue.setText("0");
+                edtGreen.setText("0");
+                edtGrey.setText("0");
+                edtPurple.setText("0");
+                edtYellow.setText("0");
+                saveData();
+                return false;
+            }
+        });
+        // endregion
 
         btnSubYellow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
