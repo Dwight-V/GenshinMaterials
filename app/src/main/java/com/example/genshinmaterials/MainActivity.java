@@ -113,8 +113,9 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        // endregion
+
         boolean raytracing = true;
+
         btnSubYellow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -223,28 +224,29 @@ public class MainActivity extends AppCompatActivity {
         // region edittextTextChangeListeners
 
         edtYellow.addTextChangedListener(new TextWatcher() {
+            EditText thisEditText = edtYellow;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                Toast.makeText(MainActivity.this, "beforeTextChanged!!", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 saveData();
-//                Toast.makeText(MainActivity.this, "onTextChanged!!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtYellow.getText().toString().equals("")) {
-                    edtYellow.setText("0");
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
                 }
-                checkOverflow(edtYellow);
+                checkOverflow(thisEditText);
                 saveData();
             }
         });
 
         edtPurple.addTextChangedListener(new TextWatcher() {
+            EditText thisEditText = edtPurple;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //                edtPurple.setText(" ");
@@ -257,18 +259,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtYellow.getText().toString().equals("")) {
-                    edtYellow.setText("0");
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
                 }
-                checkOverflow(edtYellow);
+                checkOverflow(thisEditText);
                 saveData();
             }
         });
 
         edtBlue.addTextChangedListener(new TextWatcher() {
+            EditText thisEditText = edtBlue;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                edtPurple.setText(" ");
+
             }
 
             @Override
@@ -278,19 +281,20 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtYellow.getText().toString().equals("")) {
-                    edtYellow.setText("0");
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
                 }
-                checkOverflow(edtYellow);
+                checkOverflow(thisEditText);
                 saveData();
             }
         });
 
 
         edtGreen.addTextChangedListener(new TextWatcher() {
+            EditText thisEditText = edtGreen;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                edtPurple.setText(" ");
+
             }
 
             @Override
@@ -300,18 +304,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtGreen.getText().toString().equals("")) {
-                    edtGreen.setText("0");
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
                 }
-                checkOverflow(edtYellow);
+                checkOverflow(thisEditText);
                 saveData();
             }
         });
 
         edtGrey.addTextChangedListener(new TextWatcher() {
+            EditText thisEditText = edtGrey;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                edtPurple.setText(" ");
+
             }
 
             @Override
@@ -321,10 +326,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (edtGrey.getText().toString().equals("")) {
-                    edtGrey.setText("0");
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
                 }
-                checkOverflow(edtYellow);
+                checkOverflow(thisEditText);
                 saveData();
             }
         });
