@@ -97,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnSubYellow.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtYellow.setText("0");
+                saveData();
+                return false;
+            }
+        });
+
         btnAddPurple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +117,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sub(edtPurple);
+            }
+        });
+
+        btnSubPurple.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtPurple.setText("0");
+                saveData();
+                return false;
             }
         });
 
@@ -125,6 +143,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnSubBlue.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtBlue.setText("0");
+                saveData();
+                return false;
+            }
+        });
+
         btnAddGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +163,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sub(edtGreen);
+            }
+        });
+
+        btnSubGreen.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtGreen.setText("0");
+                saveData();
+                return false;
             }
         });
 
@@ -153,6 +189,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnSubGrey.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                edtGrey.setText("0");
+                saveData();
+                return false;
+            }
+        });
 
         // endregion
 
