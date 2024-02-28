@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp, txtTemp2;
-    private Button btnAdd, btnSubtract;
+    private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
     private Switch swtEditable;
 
@@ -65,107 +65,99 @@ public class MainActivity extends AppCompatActivity {
         edtGreen = (EditText) findViewById(R.id.edittext_green);
         edtGrey = (EditText) findViewById(R.id.edittext_grey);
 
-        btnAdd = (Button) findViewById(R.id.button_add);
-        btnSubtract = (Button) findViewById(R.id.button_subtract);
+        btnAddYellow = (Button) findViewById(R.id.button_add_yellow);
+        btnSubYellow = (Button) findViewById(R.id.button_sub_yellow);
+        btnAddPurple = (Button) findViewById(R.id.button_add_purple);
+        btnSubPurple = (Button) findViewById(R.id.button_sub_purple);
+        btnAddBlue = (Button) findViewById(R.id.button_add_blue);
+        btnSubBlue = (Button) findViewById(R.id.button_sub_blue);
+        btnAddGreen = (Button) findViewById(R.id.button_add_green);
+        btnSubGreen = (Button) findViewById(R.id.button_sub_green);
+        btnAddGrey = (Button) findViewById(R.id.button_add_grey);
+        btnSubGrey = (Button) findViewById(R.id.button_sub_grey);
 
         swtEditable = (Switch) findViewById(R.id.switch_editable);
 
 
         allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
 
-        // region btnAdd btnSub OnClickListeners
-        btnAdd.setOnClickListener(new View.OnClickListener() {
+        // region  add/sub buttonClickListeners
+
+        btnAddYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edittextSelected != null) {
-                    edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) + 1));
-                    checkOverflow(edittextSelected);
-                    saveData();
-                }
+                add(edtYellow);
             }
         });
 
-        btnSubtract.setOnClickListener(new View.OnClickListener() {
+        btnSubYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edittextSelected != null && Integer.parseInt(edittextSelected.getText().toString()) - 1 >= 0) {
-                    edittextSelected.setText(String.valueOf(Integer.parseInt(edittextSelected.getText().toString()) - 1));
-                    checkOverflow(edittextSelected);
-                    saveData();
-                }
+                sub(edtYellow);
             }
         });
-        // endregion
 
-        // region  edittextTouchListeners
-        edtYellow.setOnTouchListener(new View.OnTouchListener() {
+        btnAddPurple.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                edittextSelected = edtYellow;
-                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
-                    edittextSelected.setText("0");
-
-                } else {
-                    checkOverflow(edittextSelected);
-                }
-                return false;
+            public void onClick(View v) {
+                add(edtPurple);
             }
         });
 
-        edtPurple.setOnTouchListener(new View.OnTouchListener() {
+        btnSubPurple.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                edittextSelected = edtPurple;
-                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
-                    edittextSelected.setText("0");
-                } else {
-                    checkOverflow(edittextSelected);
-                }
-                return false;
+            public void onClick(View v) {
+                sub(edtPurple);
             }
         });
 
-        edtBlue.setOnTouchListener(new View.OnTouchListener() {
+        btnAddBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                edittextSelected = edtBlue;
-                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
-                    edittextSelected.setText("0");
-                } else {
-                    checkOverflow(edittextSelected);
-                }
-                return false;
+            public void onClick(View v) {
+                add(edtBlue);
             }
         });
 
-        edtGreen.setOnTouchListener(new View.OnTouchListener() {
+        btnSubBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                edittextSelected = edtGreen;
-                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
-                    edittextSelected.setText("0");
-                } else {
-                    checkOverflow(edittextSelected);
-                }
-                return false;
+            public void onClick(View v) {
+                sub(edtBlue);
             }
         });
 
-        edtGrey.setOnTouchListener(new View.OnTouchListener() {
+        btnAddGreen.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                edittextSelected = edtGrey;
-                if (Integer.parseInt(edittextSelected.getText().toString()) < 0) {
-                    edittextSelected.setText("0");
-                } else {
-                    checkOverflow(edittextSelected);
-                }
-                return false;
+            public void onClick(View v) {
+                add(edtGreen);
             }
         });
+
+        btnSubGreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sub(edtGreen);
+            }
+        });
+
+        btnAddGrey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                add(edtGrey);
+            }
+        });
+
+        btnSubGrey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sub(edtGrey);
+            }
+        });
+
 
         // endregion
 
+        // TODO: Having the program check != "" after every change is annoying; should have null checking only after add/subtract, or when it loses focus.
+        // TODO: Get rid of leading zero when typing.
         // region edittextTextChangeListeners
 
         edtYellow.addTextChangedListener(new TextWatcher() {
@@ -356,6 +348,20 @@ public class MainActivity extends AppCompatActivity {
     public void checkOverflow(EditText editText) {
         if (Integer.parseInt(editText.getText().toString()) > 10000) {
             editText.setText("10000");
+        }
+    }
+
+    public void add(EditText edtText) {
+        if (edtText.getText() != null) {
+            edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) + 1));
+            saveData();
+        }
+    }
+
+    public void sub(EditText edtText) {
+        if (edtText != null && Integer.parseInt(edtText.getText().toString()) - 1 >= 0) {
+            edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
+            saveData();
         }
     }
 
