@@ -36,15 +36,12 @@ public class MainActivity extends AppCompatActivity {
     // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
-    // Corresponds to each type of rarity. Once it's working, use an array instead.
-    public static final String VALUE_YELLOW = "yellow";
-    public static final String VALUE_PURPLE = "purple";
-    public static final String VALUE_BLUE = "0";
-    public static final String VALUE_GREEN = "green";
-    public static final String VALUE_GREY = "grey";
+
+    // Holds each EditText value on app closure.
+    public static final String[] EDITTEXT_VALUES = {"yellow", "purple", "blue", "green", "grey"};
 
     // Used in conjunction with allEditTexts for a clean loop in functions.
-    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
+//    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
 
     public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
 
@@ -358,13 +355,13 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        for (int i = 0; i < rarityVars.length; i++) {
-            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
+//        for (int i = 0; i < rarityVars.length; i++) {
+//            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
+//        }
+
+        for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
+            editor.putString(EDITTEXT_VALUES[i], allEditTexts[i].getText().toString());
         }
-//        editor.putString(VALUE_PURPLE, edtPurple.getText().toString());
-//        editor.putString(VALUE_BLUE, edtBlue.getText().toString());
-//        editor.putString(VALUE_GREEN, edtGreen.getText().toString());
-//        editor.putString(VALUE_GREY, edtGrey.getText().toString());
 
         editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
@@ -378,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
         rarityVars = new String[5];
 
         for (int i = 0; i < rarityVars.length; i++) {
-            rarityVars[i] = sharedPreferences.getString(allValueConstants[i], "0");
+            rarityVars[i] = sharedPreferences.getString(EDITTEXT_VALUES[i], "0");
         }
         editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
     }
