@@ -93,10 +93,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
 
+        //          All from series https://www.youtube.com/watch?v=fGcMLu1GJEc
         // Sets toolbar (a stronger ActionBar) to the one we made before. Uses a built in command for ease of use.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // Adds drawer to our toolbar, with two required string for handicap readings.
+        // The drawer is made up of two things: the NavigationView and the Toolbar. The NavigationView is what holds the menu and headers, and the Toolbar is what sits at the top of the screen.
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -460,7 +462,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 */
     }
 
-    @SuppressLint("NonConstantResourceId")
+    // Sets the correct fragment for each item selected from the drawer.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -478,6 +480,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    // Stops the app from closing when hitting the back button when the drawer is open.
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
