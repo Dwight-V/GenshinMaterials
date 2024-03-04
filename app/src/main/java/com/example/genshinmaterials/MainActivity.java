@@ -1,6 +1,13 @@
 package com.example.genshinmaterials;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,6 +15,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -17,8 +25,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.google.android.material.navigation.NavigationView;
 
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private DrawerLayout drawer;
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp, txtTemp2;
   
@@ -56,32 +67,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // DELETE ME WHEN FINISHED
-        txtTemp = (TextView) findViewById(R.id.text_temp);
-        txtTemp2 = (TextView) findViewById(R.id.text_temp2);
-
-        edtYellow = (EditText) findViewById(R.id.edittext_yellow);
-        edtPurple = (EditText) findViewById(R.id.edittext_purple);
-        edtBlue = (EditText) findViewById(R.id.edittext_blue);
-        edtGreen = (EditText) findViewById(R.id.edittext_green);
-        edtGrey = (EditText) findViewById(R.id.edittext_grey);
-      
-        btnClear = (Button) findViewById(R.id.button_clear);
-        btnAddYellow = (Button) findViewById(R.id.button_add_yellow);
-        btnSubYellow = (Button) findViewById(R.id.button_sub_yellow);
-        btnAddPurple = (Button) findViewById(R.id.button_add_purple);
-        btnSubPurple = (Button) findViewById(R.id.button_sub_purple);
-        btnAddBlue = (Button) findViewById(R.id.button_add_blue);
-        btnSubBlue = (Button) findViewById(R.id.button_sub_blue);
-        btnAddGreen = (Button) findViewById(R.id.button_add_green);
-        btnSubGreen = (Button) findViewById(R.id.button_sub_green);
-        btnAddGrey = (Button) findViewById(R.id.button_add_grey);
-        btnSubGrey = (Button) findViewById(R.id.button_sub_grey);
-
-        swtEditable = (Switch) findViewById(R.id.switch_editable);
+//        txtTemp = (TextView) findViewById(R.id.text_temp);
+//        txtTemp2 = (TextView) findViewById(R.id.text_temp2);
+//
+//        edtYellow = (EditText) findViewById(R.id.edittext_yellow);
+//        edtPurple = (EditText) findViewById(R.id.edittext_purple);
+//        edtBlue = (EditText) findViewById(R.id.edittext_blue);
+//        edtGreen = (EditText) findViewById(R.id.edittext_green);
+//        edtGrey = (EditText) findViewById(R.id.edittext_grey);
+//
+//        btnClear = (Button) findViewById(R.id.button_clear);
+//        btnAddYellow = (Button) findViewById(R.id.button_add_yellow);
+//        btnSubYellow = (Button) findViewById(R.id.button_sub_yellow);
+//        btnAddPurple = (Button) findViewById(R.id.button_add_purple);
+//        btnSubPurple = (Button) findViewById(R.id.button_sub_purple);
+//        btnAddBlue = (Button) findViewById(R.id.button_add_blue);
+//        btnSubBlue = (Button) findViewById(R.id.button_sub_blue);
+//        btnAddGreen = (Button) findViewById(R.id.button_add_green);
+//        btnSubGreen = (Button) findViewById(R.id.button_sub_green);
+//        btnAddGrey = (Button) findViewById(R.id.button_add_grey);
+//        btnSubGrey = (Button) findViewById(R.id.button_sub_grey);
+//
+//        swtEditable = (Switch) findViewById(R.id.switch_editable);
 
 
         allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
 
+        // Sets toolbar (a stronger ActionBar) to the one we made before. Uses a built in command for ease of use.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Adds drawer to our toolbar, with two required string for handicap readings.
+        drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // Sets the initial fragment to WeaponFragment. Needs if statement for any runtime update such as rotating the screen, which destroys the activity (and this method is run again).
+        if (savedInstanceState == null) {
+            navigationView.setCheckedItem(R.id.nav_weapon);
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new WeaponFragment()).commit();
+        }
+
+/*
         // region  add/sub buttonClickListeners
 
         btnAddYellow.setOnClickListener(new View.OnClickListener() {
@@ -427,7 +457,33 @@ public class MainActivity extends AppCompatActivity {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
             saveData();
         }
+*/
     }
 
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_weapon) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new WeaponFragment()).commit();
+        } else if (id == R.id.nav_character) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new CharacterFragment()).commit();
+        } else if (id == R.id.nav_talent) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new TalentFragment()).commit();
+        }
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
