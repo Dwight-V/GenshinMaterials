@@ -1,7 +1,5 @@
 package com.example.genshinmaterials;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -56,7 +54,7 @@ public class WeaponFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weapon, container, false);
+        View view = inflater.inflate(R.layout.fragment_counter, container, false);
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
 
