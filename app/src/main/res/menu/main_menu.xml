@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <!--  From https://www.youtube.com/watch?v=fGcMLu1GJEc -->
+    <!--  "checkableBehaveior... is to ensure only one can be checked at once.  -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_weapon"
+            android:title="Weapon"/>
+        <item
+            android:id="@+id/nav_character"
+            android:title="Character"/>
+        <item
+            android:id="@+id/nav_talent"
+            android:title="Talent"/>
+    </group>
+</menu>
