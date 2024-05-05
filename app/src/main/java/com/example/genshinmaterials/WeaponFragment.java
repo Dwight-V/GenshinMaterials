@@ -1,11 +1,17 @@
 package com.example.genshinmaterials;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -27,6 +33,25 @@ public class WeaponFragment extends Fragment {
     private Switch swtEditable;
 
     private EditText edittextSelected;
+
+    // region For saving the data on app close.
+    // Is where all of our data is saved.
+    public static final String SHARED_PREFS = "sharedPrefs";
+
+    // Holds each EditText value on app closure.
+    public static final String[] EDITTEXT_VALUES = {"yellow", "purple", "blue", "green", "grey"};
+
+    // Used in conjunction with allEditTexts for a clean loop in functions.
+//    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
+
+    public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
+
+    // When the app is opened, these are the variables it looks at to set as the values. Length is set in instanceation.
+    public String[] rarityVars;
+    public boolean editableIsChecked;
+
+    private EditText[] allEditTexts;
+    // endregion
 
     @Nullable
     @Override
@@ -55,6 +80,7 @@ public class WeaponFragment extends Fragment {
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
 
+        allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
 
 
         // region  add/sub buttonClickListeners
@@ -81,7 +107,7 @@ public class WeaponFragment extends Fragment {
                 edtGrey.setText("0");
                 edtPurple.setText("0");
                 edtYellow.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -92,7 +118,7 @@ public class WeaponFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 edtYellow.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -115,7 +141,7 @@ public class WeaponFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 edtPurple.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -138,7 +164,7 @@ public class WeaponFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 edtBlue.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -161,7 +187,7 @@ public class WeaponFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 edtGreen.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -184,7 +210,7 @@ public class WeaponFragment extends Fragment {
             @Override
             public boolean onLongClick(View v) {
                 edtGrey.setText("0");
-                // saveData();
+                saveData();
                 return false;
             }
         });
@@ -204,7 +230,7 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // saveData();
+                saveData();
             }
 
             @Override
@@ -213,7 +239,7 @@ public class WeaponFragment extends Fragment {
                     thisEditText.setText("0");
                 }
                 checkOverflow(thisEditText);
-                // saveData();
+                saveData();
             }
         });
 
@@ -226,7 +252,7 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // saveData();
+                saveData();
             }
 
             @Override
@@ -235,7 +261,7 @@ public class WeaponFragment extends Fragment {
                     thisEditText.setText("0");
                 }
                 checkOverflow(thisEditText);
-                // saveData();
+                saveData();
             }
         });
 
@@ -248,7 +274,7 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // saveData();
+                saveData();
             }
 
             @Override
@@ -257,7 +283,7 @@ public class WeaponFragment extends Fragment {
                     thisEditText.setText("0");
                 }
                 checkOverflow(thisEditText);
-                // saveData();
+                saveData();
             }
         });
 
@@ -271,7 +297,7 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // saveData();
+                saveData();
             }
 
             @Override
@@ -280,7 +306,7 @@ public class WeaponFragment extends Fragment {
                     thisEditText.setText("0");
                 }
                 checkOverflow(thisEditText);
-                // saveData();
+                saveData();
             }
         });
 
@@ -293,7 +319,7 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // saveData();
+                saveData();
             }
 
             @Override
@@ -302,7 +328,7 @@ public class WeaponFragment extends Fragment {
                     thisEditText.setText("0");
                 }
                 checkOverflow(thisEditText);
-                // saveData();
+                saveData();
             }
         });
 
@@ -314,75 +340,76 @@ public class WeaponFragment extends Fragment {
             public void onClick(View v) {
 //                disableEditText(edtYellow);
 //                Toast.makeText(MainActivity.this, "changed!", Toast.LENGTH_SHORT).show();
-                // changeEditable();
-                // saveData();
+                changeEditable();
+                saveData();
             }
         });
 
 //        edtYellow.dispatchConfigurationChanged(new Configuration(this, Window(KeyStore.TrustedCertificateEntry(true))));
 
         // Loads data and displays saved data on app launch.
-//        loadData();
-//        updateViews();
+        loadData();
+        updateViews();
         return view;
     }
 
-//    public void saveData() {
-//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-////        for (int i = 0; i < rarityVars.length; i++) {
-////            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
-////        }
-//
-//        for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
-//            editor.putString(EDITTEXT_VALUES[i], allEditTexts[i].getText().toString());
-//        }
-//
-//        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
-////        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
-//
-//        editor.apply();
-////        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
-//    }
-//
-//    public void loadData() {
-//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-//        rarityVars = new String[5];
-//
+    public void saveData() {
+
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
 //        for (int i = 0; i < rarityVars.length; i++) {
-//            rarityVars[i] = sharedPreferences.getString(EDITTEXT_VALUES[i], "0");
+//            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
 //        }
-//        editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
-//    }
-//
-//    // Changes the values of the EditTexts and Switch to saved values.
-//    public void updateViews() {
-//        for (int i = 0; i < allEditTexts.length; i++) {
-//            allEditTexts[i].setText(rarityVars[i]);
-//        }
-//        swtEditable.setChecked(editableIsChecked);
-//        // changeEditable();
-//    }
-//
-//    // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
-//    public void changeEditable() {
-//        if (swtEditable.isChecked()) {
-//            // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
-//            if (this.getCurrentFocus() != null) {
-//                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
-//            }
-//
-//            for (int i = 0; i < allEditTexts.length; i++) {
-//                allEditTexts[i].setInputType(InputType.TYPE_NULL);
-//            }
-//        } else {
-//            for (int i = 0; i < allEditTexts.length; i++) {
-//                allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
-//            }
-//        }
-//    }
+
+        for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
+            editor.putString(EDITTEXT_VALUES[i], allEditTexts[i].getText().toString());
+        }
+
+        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
+//        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
+
+        editor.apply();
+//        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+    }
+
+    public void loadData() {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
+        rarityVars = new String[5];
+
+        for (int i = 0; i < rarityVars.length; i++) {
+            rarityVars[i] = sharedPreferences.getString(EDITTEXT_VALUES[i], "0");
+        }
+        editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
+    }
+
+    // Changes the values of the EditTexts and Switch to saved values.
+    public void updateViews() {
+        for (int i = 0; i < allEditTexts.length; i++) {
+            allEditTexts[i].setText(rarityVars[i]);
+        }
+        swtEditable.setChecked(editableIsChecked);
+        changeEditable();
+    }
+
+    // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
+    public void changeEditable() {
+        if (swtEditable.isChecked()) {
+            // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
+            if (requireActivity().getCurrentFocus() != null) {
+                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(requireActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+
+            for (int i = 0; i < allEditTexts.length; i++) {
+                allEditTexts[i].setInputType(InputType.TYPE_NULL);
+            }
+        } else {
+            for (int i = 0; i < allEditTexts.length; i++) {
+                allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        }
+    }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
     public void checkOverflow(EditText editText) {
@@ -394,14 +421,14 @@ public class WeaponFragment extends Fragment {
     public void add(EditText edtText) {
         if (edtText.getText() != null) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) + 1));
-            // saveData();
+            saveData();
         }
     }
 
     public void sub(EditText edtText) {
         if (edtText != null && Integer.parseInt(edtText.getText().toString()) - 1 >= 0) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
-            // saveData();
+            saveData();
         }
     }
 }
