@@ -14,10 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class WeaponFragment extends Fragment {
 
@@ -27,27 +30,29 @@ public class WeaponFragment extends Fragment {
     private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
-
     private Switch swtEditable;
 
-    private EditText edittextSelected;
+    private TabLayout tabMaterials;
+
+
+
 
     // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
 
-    // Holds each EditText value on app closure.
+    // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
     public static final String[] EDITTEXT_VALUES = {"yellow", "purple", "blue", "green", "grey"};
-
-    // Used in conjunction with allEditTexts for a clean loop in functions.
-//    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
 
     public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
 
-    // When the app is opened, these are the variables it looks at to set as the values. Length is set in instanceation.
+    // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
+    // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
     public String[] rarityVars;
+    // A 'local' variable, which on app load, is set to the values of SWITCH_EDITABLE_IS_CHECKED, then used in updateViews to set the data.
     public boolean editableIsChecked;
 
+    // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
     private EditText[] allEditTexts;
     // endregion
 
@@ -78,7 +83,10 @@ public class WeaponFragment extends Fragment {
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
 
-        allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+        allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+
+        tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
+
 
 
         // region  add/sub buttonClickListeners
@@ -343,7 +351,33 @@ public class WeaponFragment extends Fragment {
             }
         });
 
-//        edtYellow.dispatchConfigurationChanged(new Configuration(this, Window(KeyStore.TrustedCertificateEntry(true))));
+        tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+                switch (position) {
+                    case 0:
+                        txtTemp.setText("left");
+                        break;
+                    case 1:
+                        txtTemp.setText("center");
+                        break;
+                    case 2:
+                        txtTemp.setText("right");
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         // Loads data and displays saved data on app launch.
         loadData();
@@ -356,10 +390,7 @@ public class WeaponFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-//        for (int i = 0; i < rarityVars.length; i++) {
-//            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
-//        }
-
+        // Saves all editText UI inputs into the final array EDITTEXT_VALUES
         for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
             editor.putString(EDITTEXT_VALUES[i], allEditTexts[i].getText().toString());
         }
@@ -368,7 +399,6 @@ public class WeaponFragment extends Fragment {
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
 
         editor.apply();
-//        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
     }
 
     public void loadData() {

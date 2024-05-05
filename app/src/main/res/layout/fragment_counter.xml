@@ -239,26 +239,26 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/TabLayoutMaterials"
+        android:id="@+id/tab_layout_materials"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:id="@+id/tab1"
+            android:id="@+id/tab_left"
             android:layout_height="wrap_content"
             android:text="thing1"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:id="@+id/tab2"
+            android:id="@+id/tab_center"
             android:layout_height="wrap_content"
             android:text="thing2"/>
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
-            android:id="@+id/tab3"
+            android:id="@+id/tab_right"
             android:layout_height="wrap_content"
             android:text="thing3"/>
     </com.google.android.material.tabs.TabLayout>
