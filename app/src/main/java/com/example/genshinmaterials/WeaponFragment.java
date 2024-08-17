@@ -42,7 +42,7 @@ public class WeaponFragment extends Fragment {
     // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
     // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
     // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
-    private boolean edittextsAreReady;
+    private boolean edittextsAreReady = true;
 
 
 
@@ -263,11 +263,13 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-//                saveData();
             }
         });
 
@@ -285,11 +287,13 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-//                saveData();
             }
         });
 
@@ -307,11 +311,13 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-//                saveData();
             }
         });
 
@@ -330,11 +336,13 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-//                saveData();
             }
         });
 
@@ -352,11 +360,13 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-//                saveData();
             }
         });
 
@@ -369,7 +379,7 @@ public class WeaponFragment extends Fragment {
 //                disableEditText(edtYellow);
 //                Toast.makeText(MainActivity.this, "changed!", Toast.LENGTH_SHORT).show();
                 changeEditable();
-//                saveData();
+                saveData();
             }
         });
 
@@ -401,7 +411,7 @@ public class WeaponFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        Toast.makeText(getActivity(), "saveData() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "saveData() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
         switch (tabMaterials.getSelectedTabPosition()) {
             // Saves all editText UI inputs into their respective array
             case 2:
@@ -435,8 +445,8 @@ public class WeaponFragment extends Fragment {
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
 
         editor.apply();
-        txtTemp.setText(sharedPreferences.getAll().toString());
-        txtTemp2.setText("0:" + Arrays.toString(tabValArray0) + "\n" + "1:" + Arrays.toString(tabValArray1) + "\n" + "2:" + Arrays.toString(tabValArray2));
+//        txtTemp.setText(sharedPreferences.getAll().toString());
+//        txtTemp2.setText("0:" + Arrays.toString(tabValArray0) + "\n" + "1:" + Arrays.toString(tabValArray1) + "\n" + "2:" + Arrays.toString(tabValArray2));
     }
 
     public void loadData() {
@@ -492,6 +502,8 @@ public class WeaponFragment extends Fragment {
 
     // Sets the correct values of the EditTexts (based on current subtab position).
     public void updateEdittextVals() {
+        // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
+        edittextsAreReady = false;
 
 //        Toast.makeText(getActivity(), "updateEdittextVals() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
         switch (tabMaterials.getSelectedTabPosition()) {
@@ -511,6 +523,8 @@ public class WeaponFragment extends Fragment {
                 }
                 break;
         }
+
+        edittextsAreReady = true;
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
