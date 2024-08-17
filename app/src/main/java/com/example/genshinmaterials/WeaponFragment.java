@@ -46,6 +46,7 @@ public class WeaponFragment extends Fragment {
 
 
 
+
     // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
@@ -137,7 +138,7 @@ public class WeaponFragment extends Fragment {
         btnSubGrey = (Button) view.findViewById(R.id.button_sub_grey);
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
-
+      
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
         linLayYellow = (LinearLayout) view.findViewById(R.id.linearlayout_yellow);
@@ -557,7 +558,7 @@ public class WeaponFragment extends Fragment {
         changeEditable();
         // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
         updateEdittextVals();
-
+      
         for (int i = 0; i < tabMaterials.getTabCount(); i++) {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
