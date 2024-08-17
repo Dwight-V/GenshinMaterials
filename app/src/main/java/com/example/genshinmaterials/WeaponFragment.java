@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +23,15 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 
 public class WeaponFragment extends Fragment {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    private TextView txtTemp, txtTemp2;
+    private TextView txtTemp, txtTemp2, txtTypeTitle;
+    private TextView drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey;
 
     private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
@@ -36,13 +40,9 @@ public class WeaponFragment extends Fragment {
 
     private TabLayout tabMaterials;
 
-    // Represents whether or not the EditTexts can be edited by the user.
-    // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
-    // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
-    // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
-    // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
-    // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
-    private boolean edittextsAreReady = true;
+    private LinearLayout linLayYellow, linLayPurple, linLayBlue, linLayGreen, linLayGrey;
+
+
 
 
 
@@ -60,6 +60,7 @@ public class WeaponFragment extends Fragment {
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static final String SUBTAB_POSITION = "subtab_pos_int";
+    public static final String WEAPON_RARITY = "weapon_rarity";
 
     // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
     // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
@@ -72,10 +73,36 @@ public class WeaponFragment extends Fragment {
     public boolean editableIsChecked;
     // A 'local' variable, which on app load, is set to the value of SUBTAB_POSITION, then used in updateViews to set the data.
     public int prevSubtabPos;
+    // Used to differentiate the varying amount of materials need for different rarity weapons.
+    private int weaponRarity = 3;
+    // Programmatically replaces the names of the subtabs.
+    private String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
 
+    // The hardcoded amount of materials need to fully level up the weapon.
+    // Each row is in descending rarity, mirroring allEditTexts.
+    // Each column represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
+    private int[][] reqMats5Star = {{6, 14, 14, 5, 0},
+                                    {0, 41, 45, 5, 0},
+                                    {0, 0, 27, 23, 15}};
+    private int[][] reqMats4Star = {{4, 9, 9, 3, 0},
+                                    {0, 27, 30, 3, 0},
+                                    {0, 0, 18, 15, 10}};
+    private int[][] reqMats3Star = {{3, 6, 6, 2, 0},
+                                    {0, 18, 12, 10, 0},
+                                    {0, 0, 12, 10, 6}};
+
+    // Represents whether or not the EditTexts can be edited by the user.
+    // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
+    // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
+    // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
+    // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
+    // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
+    private boolean edittextsAreReady = true;
 
     // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
     private EditText[] allEditTexts;
+    private TextView[] allDrwChecks;
+    private LinearLayout[] allLinLay;
     // endregion
 
     @Nullable
@@ -84,6 +111,13 @@ public class WeaponFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
+        txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
+
+        drwCheckYellow = (TextView) view.findViewById(R.id.drawable_check_yellow);
+        drwCheckPurple = (TextView) view.findViewById(R.id.drawable_check_purple);
+        drwCheckBlue = (TextView) view.findViewById(R.id.drawable_check_blue);
+        drwCheckGreen = (TextView) view.findViewById(R.id.drawable_check_green);
+        drwCheckGrey = (TextView) view.findViewById(R.id.drawable_check_grey);
 
         edtYellow = (EditText) view.findViewById(R.id.edittext_yellow);
         edtPurple = (EditText) view.findViewById(R.id.edittext_purple);
@@ -104,10 +138,19 @@ public class WeaponFragment extends Fragment {
         btnSubGrey = (Button) view.findViewById(R.id.button_sub_grey);
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
+      
+        tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
+
+        linLayYellow = (LinearLayout) view.findViewById(R.id.linearlayout_yellow);
+        linLayPurple = (LinearLayout) view.findViewById(R.id.linearlayout_purple);
+        linLayBlue = (LinearLayout) view.findViewById(R.id.linearlayout_blue);
+        linLayGreen = (LinearLayout) view.findViewById(R.id.linearlayout_green);
+        linLayGrey = (LinearLayout) view.findViewById(R.id.linearlayout_grey);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+        allDrwChecks = new TextView[] {drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey};
+        allLinLay = new LinearLayout[] {linLayYellow, linLayPurple, linLayBlue, linLayGreen, linLayGrey};
 
-        tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
 
 
@@ -269,6 +312,7 @@ public class WeaponFragment extends Fragment {
                     }
                     checkOverflow(thisEditText);
                     saveData();
+                    checkRequirements();
                 }
             }
         });
@@ -293,6 +337,7 @@ public class WeaponFragment extends Fragment {
                     }
                     checkOverflow(thisEditText);
                     saveData();
+                    checkRequirements();
                 }
             }
         });
@@ -317,6 +362,7 @@ public class WeaponFragment extends Fragment {
                     }
                     checkOverflow(thisEditText);
                     saveData();
+                    checkRequirements();
                 }
             }
         });
@@ -342,6 +388,7 @@ public class WeaponFragment extends Fragment {
                     }
                     checkOverflow(thisEditText);
                     saveData();
+                    checkRequirements();
                 }
             }
         });
@@ -366,6 +413,7 @@ public class WeaponFragment extends Fragment {
                     }
                     checkOverflow(thisEditText);
                     saveData();
+                    checkRequirements();
                 }
             }
         });
@@ -383,11 +431,36 @@ public class WeaponFragment extends Fragment {
             }
         });
 
+        txtTypeTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cycles which rarity of weapon to calc for.
+                switch (weaponRarity) {
+                    case 3:
+                        txtTypeTitle.setText("4-Star Weapon");
+                        weaponRarity = 4;
+                        break;
+                    case 4:
+                        txtTypeTitle.setText("5-Star Weapon");
+                        weaponRarity = 5;
+                        break;
+                    default:
+                        txtTypeTitle.setText("3-Star Weapon");
+                        weaponRarity = 3;
+                        break;
+                }
+                saveData();
+                checkRequirements();
+            }
+        });
+
         tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 //                int position = tab.getPosition();
                 updateEdittextVals();
+                checkRequirements();
+                disableLayouts();
             }
 
             @Override
@@ -404,6 +477,8 @@ public class WeaponFragment extends Fragment {
         // Loads data and displays saved data on app launch.
         loadData();
         updateViews();
+        checkRequirements();
+        disableLayouts();
         return view;
     }
 
@@ -443,6 +518,7 @@ public class WeaponFragment extends Fragment {
         editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
+        editor.putInt(WEAPON_RARITY, weaponRarity);
 
         editor.apply();
 //        txtTemp.setText(sharedPreferences.getAll().toString());
@@ -456,6 +532,7 @@ public class WeaponFragment extends Fragment {
         tabValArray2 = new String[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
+        weaponRarity = sharedPreferences.getInt(WEAPON_RARITY, 3);
         editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
 
         // Sets the new initialized local arrays to the saved instance of the arrays.
@@ -474,11 +551,17 @@ public class WeaponFragment extends Fragment {
     public void updateViews() {
         // Sets the last used subtab.
         tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos));
+        // Sets the title text to the save value.
+        txtTypeTitle.setText(weaponRarity + "-Star Weapon");
         // Sets the editable switch to last used position.
         swtEditable.setChecked(editableIsChecked);
         changeEditable();
         // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
         updateEdittextVals();
+      
+        for (int i = 0; i < tabMaterials.getTabCount(); i++) {
+            tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
+        }
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -525,12 +608,65 @@ public class WeaponFragment extends Fragment {
         }
 
         edittextsAreReady = true;
+        saveData();
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
     public void checkOverflow(EditText editText) {
         if (Integer.parseInt(editText.getText().toString()) > 10000) {
             editText.setText("10000");
+        }
+    }
+
+    // Houses the 'brain' of the code. Compares the current amounts to the pre-set amount, and displays a checkmark of met/exceeds.
+    // TODO: Maybe make it modular? As in, take an argument (the EditText which it's called from) and check if it's value meets the requirements.
+    public void checkRequirements() {
+        int[][] reqMats;
+        // Holds the total amount of mats the user input. If there are excess materials in a lower-rarity, will convert them to the next rarity higher.
+        // Is essentially a deep-copy of allEditTexts[].
+        int[] netTotalMats = new int[5];
+        // subtabIndex should never be < 0 since logic is handled by TabLayout itself. Otherwise should check.
+        int subtabIndex = tabMaterials.getSelectedTabPosition();
+        int extraMats = 0;
+
+        // Ensures the correct weapon rarity is being calculated.
+        if (weaponRarity == 5) {
+            reqMats = reqMats5Star;
+        } else if (weaponRarity == 4) {
+            reqMats = reqMats4Star;
+        } else {
+            reqMats = reqMats3Star;
+        }
+
+//        txtTemp.setText("reqMats[" + subtabIndex + "]: " + Arrays.toString(reqMats[subtabIndex]));
+        // Compares each EditText with it's specific amount. Displays the check if >=, otherwise removes it.
+        // Descends since we can add unused materials to the next slot.
+        for (int i = allEditTexts.length - 1; i >= 0; i--) {
+            int reqAmount = reqMats[subtabIndex][i];
+
+            netTotalMats[i] = Integer.parseInt(allEditTexts[i].getText().toString()) + extraMats;
+
+            if (netTotalMats[i] >= reqAmount) {
+                // Integer division rounds down.
+                // If not inside this if statement, extraMats can go negative.
+                extraMats = (netTotalMats[i] - reqAmount) / 3;
+                allDrwChecks[i].setVisibility(View.VISIBLE);
+            } else {
+                allDrwChecks[i].setVisibility(View.GONE);
+                extraMats = 0;
+            }
+        }
+    }
+
+    public void disableLayouts() {
+        int subtabIndex = tabMaterials.getSelectedTabPosition();
+
+        for (int i = 0; i < allEditTexts.length; i++) {
+            if (reqMats5Star[subtabIndex][i] <= 0) {
+                allLinLay[i].setVisibility(View.INVISIBLE);
+            } else {
+                allLinLay[i].setVisibility(View.VISIBLE);
+            }
         }
     }
 

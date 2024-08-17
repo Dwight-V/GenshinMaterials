@@ -97,6 +97,14 @@
             android:text="@string/empty_counter"
             android:textAlignment="center" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_check_circle_24"
+            android:layout_gravity="center"
+            android:id="@+id/drawable_check_yellow"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/button_add_yellow"
             android:layout_width="wrap_content"
@@ -131,6 +139,14 @@
             android:text="@string/empty_counter"
             android:textAlignment="center"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_check_circle_24"
+            android:layout_gravity="center"
+            android:id="@+id/drawable_check_purple"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/button_add_purple"
             android:layout_width="wrap_content"
@@ -163,6 +179,14 @@
             android:text="@string/empty_counter"
             android:layout_gravity="center"
             android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_check_circle_24"
+            android:layout_gravity="center"
+            android:id="@+id/drawable_check_blue"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/button_add_blue"
@@ -197,6 +221,14 @@
             android:layout_gravity="center"
             android:textAlignment="center" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_check_circle_24"
+            android:layout_gravity="center"
+            android:id="@+id/drawable_check_green"
+            android:visibility="gone"/>
+
         <Button
             android:id="@+id/button_add_green"
             android:layout_width="wrap_content"
@@ -229,6 +261,14 @@
             android:layout_gravity="center"
             android:text="@string/empty_counter"
             android:textAlignment="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/baseline_check_circle_24"
+            android:layout_gravity="center"
+            android:id="@+id/drawable_check_grey"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/button_add_grey"
