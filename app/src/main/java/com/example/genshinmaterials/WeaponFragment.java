@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class WeaponFragment extends Fragment {
     private Switch swtEditable;
 
     private TabLayout tabMaterials;
+
+    private LinearLayout linLayYellow, linLayPurple, linLayBlue, linLayGreen, linLayGrey;
 
 
 
@@ -87,6 +90,12 @@ public class WeaponFragment extends Fragment {
                                     {0, 18, 12, 10, 0},
                                     {0, 0, 12, 10, 6}};
 
+    // Represents a flag matrix for if a specific EditText can be changed AT ALL. If true, the value of that EditText will ALWAYS be 0.
+    // Like the above matrices, rows represent subtabs, columns represent EditTexts in descending rarity.
+    private boolean[][] isDisabledArr = {{false, false, false, false, true},
+                                         {true, false, false, false, true},
+                                         {true, true, false, false, false}};
+
     // Represents whether or not the EditTexts can be edited by the user.
     // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
     // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
@@ -98,6 +107,7 @@ public class WeaponFragment extends Fragment {
     // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
     private EditText[] allEditTexts;
     private TextView[] allDrwChecks;
+    private LinearLayout[] allLinLay;
     // endregion
 
     @Nullable
@@ -133,10 +143,18 @@ public class WeaponFragment extends Fragment {
         btnSubGrey = (Button) view.findViewById(R.id.button_sub_grey);
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
+
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
+
+        linLayYellow = (LinearLayout) view.findViewById(R.id.linearlayout_yellow);
+        linLayPurple = (LinearLayout) view.findViewById(R.id.linearlayout_purple);
+        linLayBlue = (LinearLayout) view.findViewById(R.id.linearlayout_blue);
+        linLayGreen = (LinearLayout) view.findViewById(R.id.linearlayout_green);
+        linLayGrey = (LinearLayout) view.findViewById(R.id.linearlayout_grey);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
         allDrwChecks = new TextView[] {drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey};
+        allLinLay = new LinearLayout[] {linLayYellow, linLayPurple, linLayBlue, linLayGreen, linLayGrey};
 
 
 
@@ -447,6 +465,7 @@ public class WeaponFragment extends Fragment {
 //                int position = tab.getPosition();
                 updateEdittextVals();
                 checkRequirements();
+                disableLayouts();
             }
 
             @Override
@@ -464,6 +483,7 @@ public class WeaponFragment extends Fragment {
         loadData();
         updateViews();
         checkRequirements();
+        disableLayouts();
         return view;
     }
 
@@ -638,6 +658,18 @@ public class WeaponFragment extends Fragment {
                 allDrwChecks[i].setVisibility(View.VISIBLE);
             } else {
                 allDrwChecks[i].setVisibility(View.GONE);
+            }
+        }
+    }
+
+    public void disableLayouts() {
+        int subtabIndex = tabMaterials.getSelectedTabPosition();
+
+        for (int i = 0; i < allEditTexts.length; i++) {
+            if (isDisabledArr[subtabIndex][i]) {
+                allLinLay[i].setVisibility(View.INVISIBLE);
+            } else {
+                allLinLay[i].setVisibility(View.VISIBLE);
             }
         }
     }
