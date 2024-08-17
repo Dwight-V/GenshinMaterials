@@ -22,12 +22,14 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
 
+import org.w3c.dom.Text;
+
 import java.util.Arrays;
 
 public class WeaponFragment extends Fragment {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    private TextView txtTemp, txtTemp2;
+    private TextView txtTemp, txtTemp2, txtTypeTitle;
 
     private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
@@ -36,13 +38,6 @@ public class WeaponFragment extends Fragment {
 
     private TabLayout tabMaterials;
 
-    // Represents whether or not the EditTexts can be edited by the user.
-    // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
-    // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
-    // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
-    // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
-    // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
-    private boolean edittextsAreReady = true;
 
 
 
@@ -60,6 +55,7 @@ public class WeaponFragment extends Fragment {
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static final String SUBTAB_POSITION = "subtab_pos_int";
+    public static final String WEAPON_RARITY = "weapon_rarity";
 
     // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
     // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
@@ -72,7 +68,18 @@ public class WeaponFragment extends Fragment {
     public boolean editableIsChecked;
     // A 'local' variable, which on app load, is set to the value of SUBTAB_POSITION, then used in updateViews to set the data.
     public int prevSubtabPos;
+    // Used to differentiate the varying amount of materials need for different rarity weapons.
+    private int weaponRarity = 3;
+    // Programmatically replaces the names of the subtabs.
+    private String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
 
+    // Represents whether or not the EditTexts can be edited by the user.
+    // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
+    // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
+    // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
+    // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
+    // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
+    private boolean edittextsAreReady = true;
 
     // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
     private EditText[] allEditTexts;
@@ -84,6 +91,7 @@ public class WeaponFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
+        txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
 
         edtYellow = (EditText) view.findViewById(R.id.edittext_yellow);
         edtPurple = (EditText) view.findViewById(R.id.edittext_purple);
@@ -383,6 +391,30 @@ public class WeaponFragment extends Fragment {
             }
         });
 
+        txtTypeTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cycles which rarity of weapon to calc for.
+                switch (weaponRarity) {
+                    case 3:
+                        txtTypeTitle.setText("4-Star Weapon");
+                        weaponRarity = 4;
+                        break;
+                    case 4:
+                        txtTypeTitle.setText("5-Star Weapon");
+                        weaponRarity = 5;
+                        break;
+                    default:
+                        txtTypeTitle.setText("3-Star Weapon");
+                        weaponRarity = 3;
+                        break;
+
+                }
+
+                saveData();
+            }
+        });
+
         tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -443,6 +475,7 @@ public class WeaponFragment extends Fragment {
         editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
+        editor.putInt(WEAPON_RARITY, weaponRarity);
 
         editor.apply();
 //        txtTemp.setText(sharedPreferences.getAll().toString());
@@ -456,6 +489,7 @@ public class WeaponFragment extends Fragment {
         tabValArray2 = new String[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
+        weaponRarity = sharedPreferences.getInt(WEAPON_RARITY, 3);
         editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
 
         // Sets the new initialized local arrays to the saved instance of the arrays.
@@ -474,11 +508,17 @@ public class WeaponFragment extends Fragment {
     public void updateViews() {
         // Sets the last used subtab.
         tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos));
+        // Sets the title text to the save value.
+        txtTypeTitle.setText(weaponRarity + "-Star Weapon");
         // Sets the editable switch to last used position.
         swtEditable.setChecked(editableIsChecked);
         changeEditable();
         // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
         updateEdittextVals();
+
+        for (int i = 0; i < tabMaterials.getTabCount(); i++) {
+            tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
+        }
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -525,6 +565,7 @@ public class WeaponFragment extends Fragment {
         }
 
         edittextsAreReady = true;
+        saveData();
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
