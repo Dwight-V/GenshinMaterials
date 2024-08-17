@@ -1,7 +1,5 @@
 package com.example.genshinmaterials;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,10 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.Arrays;
 
 public class WeaponFragment extends Fragment {
 
@@ -29,34 +32,56 @@ public class WeaponFragment extends Fragment {
     private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
-
     private Switch swtEditable;
 
-    private EditText edittextSelected;
+    private TabLayout tabMaterials;
+
+    // Represents whether or not the EditTexts can be edited by the user.
+    // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
+    // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
+    // Basically, tab 1 is selected, then when you click tab 2, the code starts changing the values of the EditTexts to match tab 2's, but then because I changed edtYellow's values,
+    // afterTextChanged() is called, saving tab 2's values to the rest of tab 1's values (since it didn't have time to change all of them).
+    // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
+    private boolean edittextsAreReady = true;
+
+
+
 
     // region For saving the data on app close.
     // Is where all of our data is saved.
     public static final String SHARED_PREFS = "sharedPrefs";
 
-    // Holds each EditText value on app closure.
-    public static final String[] EDITTEXT_VALUES = {"yellow", "purple", "blue", "green", "grey"};
+    // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
+    public static final String[] EDITTEXT_VALUES_0 = {"yellow_0", "purple_0", "blue_0", "green_0", "grey_0"};
+    public static final String[] EDITTEXT_VALUES_1 = {"yellow_1", "purple_1", "blue_1", "green_1", "grey_1"};
+    public static final String[] EDITTEXT_VALUES_2 = {"yellow_2", "purple_2", "blue_2", "green_2", "grey_2"};
 
-    // Used in conjunction with allEditTexts for a clean loop in functions.
-//    private final String[] allValueConstants = new String[]{VALUE_YELLOW, VALUE_PURPLE, VALUE_BLUE, VALUE_GREEN, VALUE_GREY};
+    public static final String SWITCH_EDITABLE_IS_CHECKED = "editable_bool";
 
-    public static final String SWITCH_EDITABLE_IS_CHECKED = ".";
+    // When the user exits the fragment, saves which subtab was last selected.
+    public static final String SUBTAB_POSITION = "subtab_pos_int";
 
-    // When the app is opened, these are the variables it looks at to set as the values. Length is set in instanceation.
-    public String[] rarityVars;
+    // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
+    // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
+    public String[] tabValArray0;
+    public String[] tabValArray1;
+    public String[] tabValArray2;
+    // Tracks which array to save the current data to. Is a pointer to one of the EDITTEXT_VALUES_*.
+//    public String[] currentTabKeyArray;
+    // A 'local' variable, which on app load, is set to the value of SWITCH_EDITABLE_IS_CHECKED, then used in updateViews to set the data.
     public boolean editableIsChecked;
+    // A 'local' variable, which on app load, is set to the value of SUBTAB_POSITION, then used in updateViews to set the data.
+    public int prevSubtabPos;
 
+
+    // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
     private EditText[] allEditTexts;
     // endregion
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weapon, container, false);
+        View view = inflater.inflate(R.layout.fragment_counter, container, false);
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
 
@@ -80,7 +105,10 @@ public class WeaponFragment extends Fragment {
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
 
-        allEditTexts = new EditText[]{edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+        allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
+
+        tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
+
 
 
         // region  add/sub buttonClickListeners
@@ -230,16 +258,18 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveData();
+//                saveData();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-                saveData();
             }
         });
 
@@ -252,16 +282,18 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveData();
+//                saveData();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-                saveData();
             }
         });
 
@@ -274,16 +306,18 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveData();
+//                saveData();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-                saveData();
             }
         });
 
@@ -297,16 +331,18 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveData();
+//                saveData();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-                saveData();
             }
         });
 
@@ -319,16 +355,18 @@ public class WeaponFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                saveData();
+//                saveData();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                if (edittextsAreReady) {
+                    if (thisEditText.getText().toString().equals("")) {
+                        thisEditText.setText("0");
+                    }
+                    checkOverflow(thisEditText);
+                    saveData();
                 }
-                checkOverflow(thisEditText);
-                saveData();
             }
         });
 
@@ -345,7 +383,23 @@ public class WeaponFragment extends Fragment {
             }
         });
 
-//        edtYellow.dispatchConfigurationChanged(new Configuration(this, Window(KeyStore.TrustedCertificateEntry(true))));
+        tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+//                int position = tab.getPosition();
+                updateEdittextVals();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         // Loads data and displays saved data on app launch.
         loadData();
@@ -354,42 +408,77 @@ public class WeaponFragment extends Fragment {
     }
 
     public void saveData() {
-
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-//        for (int i = 0; i < rarityVars.length; i++) {
-//            editor.putString(allValueConstants[i], allEditTexts[i].getText().toString());
-//        }
-
-        for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
-            editor.putString(EDITTEXT_VALUES[i], allEditTexts[i].getText().toString());
+//        Toast.makeText(getActivity(), "saveData() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
+        switch (tabMaterials.getSelectedTabPosition()) {
+            // Saves all editText UI inputs into their respective array
+            case 2:
+                for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
+                    // Saves the values for the long-term (on app restart)
+                    editor.putString(EDITTEXT_VALUES_2[i], allEditTexts[i].getText().toString());
+                    // Saves the values for the short-term (switching subtabs)
+                    tabValArray2[i] = allEditTexts[i].getText().toString();
+                }
+                break;
+            case 1:
+                for (int i = 0; i < EDITTEXT_VALUES_1.length; i++) {
+                    // Saves the values for the long-term (on app restart)
+                    editor.putString(EDITTEXT_VALUES_1[i], allEditTexts[i].getText().toString());
+                    // Saves the values for the short-term (switching subtabs)
+                    tabValArray1[i] = allEditTexts[i].getText().toString();
+                }
+                break;
+            default:
+                for (int i = 0; i < EDITTEXT_VALUES_0.length; i++) {
+                    // Saves the values for the long-term (on app restart)
+                    editor.putString(EDITTEXT_VALUES_0[i], allEditTexts[i].getText().toString());
+                    // Saves the values for the short-term (switching subtabs)
+                    tabValArray0[i] = allEditTexts[i].getText().toString();
+                }
+                break;
         }
 
         editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
+        editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
 
         editor.apply();
-//        Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+//        txtTemp.setText(sharedPreferences.getAll().toString());
+//        txtTemp2.setText("0:" + Arrays.toString(tabValArray0) + "\n" + "1:" + Arrays.toString(tabValArray1) + "\n" + "2:" + Arrays.toString(tabValArray2));
     }
 
     public void loadData() {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        rarityVars = new String[5];
+        tabValArray0 = new String[5];
+        tabValArray1 = new String[5];
+        tabValArray2 = new String[5];
 
-        for (int i = 0; i < rarityVars.length; i++) {
-            rarityVars[i] = sharedPreferences.getString(EDITTEXT_VALUES[i], "0");
-        }
+        prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
         editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
+
+        // Sets the new initialized local arrays to the saved instance of the arrays.
+        for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
+            tabValArray2[i] = sharedPreferences.getString(EDITTEXT_VALUES_2[i], "0");
+        }
+        for (int i = 0; i < EDITTEXT_VALUES_1.length; i++) {
+            tabValArray1[i] = sharedPreferences.getString(EDITTEXT_VALUES_1[i], "0");
+        }
+        for (int i = 0; i < EDITTEXT_VALUES_0.length; i++) {
+            tabValArray0[i] = sharedPreferences.getString(EDITTEXT_VALUES_0[i], "0");
+        }
     }
 
     // Changes the values of the EditTexts and Switch to saved values.
     public void updateViews() {
-        for (int i = 0; i < allEditTexts.length; i++) {
-            allEditTexts[i].setText(rarityVars[i]);
-        }
+        // Sets the last used subtab.
+        tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos));
+        // Sets the editable switch to last used position.
         swtEditable.setChecked(editableIsChecked);
         changeEditable();
+        // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
+        updateEdittextVals();
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -409,6 +498,33 @@ public class WeaponFragment extends Fragment {
                 allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             }
         }
+    }
+
+    // Sets the correct values of the EditTexts (based on current subtab position).
+    public void updateEdittextVals() {
+        // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
+        edittextsAreReady = false;
+
+//        Toast.makeText(getActivity(), "updateEdittextVals() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
+        switch (tabMaterials.getSelectedTabPosition()) {
+            case 2:
+                for (int i = 0; i < allEditTexts.length; i++) {
+                    allEditTexts[i].setText(tabValArray2[i]);
+                }
+                break;
+            case 1:
+                for (int i = 0; i < allEditTexts.length; i++) {
+                    allEditTexts[i].setText(tabValArray1[i]);
+                }
+                break;
+            default:
+                for (int i = 0; i < allEditTexts.length; i++) {
+                    allEditTexts[i].setText(tabValArray0[i]);
+                }
+                break;
+        }
+
+        edittextsAreReady = true;
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
