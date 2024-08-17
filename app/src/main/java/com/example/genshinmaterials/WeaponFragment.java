@@ -435,10 +435,9 @@ public class WeaponFragment extends Fragment {
                         txtTypeTitle.setText("3-Star Weapon");
                         weaponRarity = 3;
                         break;
-
                 }
-
                 saveData();
+                checkRequirements();
             }
         });
 
@@ -608,8 +607,12 @@ public class WeaponFragment extends Fragment {
     // TODO: Maybe make it modular? As in, take an argument (the EditText which it's called from) and check if it's value meets the requirements.
     public void checkRequirements() {
         int[][] reqMats;
+        // Holds the total amount of mats the user input. If there are excess materials in a lower-rarity, will convert them to the next rarity higher.
+        // Is essentially a deep-copy of allEditTexts[].
+        int[] netTotalMats = new int[5];
         // subtabIndex should never be < 0 since logic is handled by TabLayout itself. Otherwise should check.
         int subtabIndex = tabMaterials.getSelectedTabPosition();
+        int extraMats = 0;
 
         // Ensures the correct weapon rarity is being calculated.
         if (weaponRarity == 5) {
@@ -622,8 +625,15 @@ public class WeaponFragment extends Fragment {
 
 //        txtTemp.setText("reqMats[" + subtabIndex + "]: " + Arrays.toString(reqMats[subtabIndex]));
         // Compares each EditText with it's specific amount. Displays the check if >=, otherwise removes it.
-        for (int i = 0; i < allEditTexts.length; i++) {
-            if (Integer.parseInt(allEditTexts[i].getText().toString()) >= reqMats[subtabIndex][i]) {
+        // Descends since we can add unused materials to the next slot.
+        for (int i = allEditTexts.length - 1; i >= 0; i--) {
+            int reqAmount = reqMats[subtabIndex][i];
+
+            netTotalMats[i] = Integer.parseInt(allEditTexts[i].getText().toString()) + extraMats;
+            // Integer division rounds down.
+            extraMats = (netTotalMats[i] - reqAmount) / 3;
+
+            if (netTotalMats[i] >= reqAmount) {
                 allDrwChecks[i].setVisibility(View.VISIBLE);
             } else {
                 allDrwChecks[i].setVisibility(View.GONE);
