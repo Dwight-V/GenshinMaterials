@@ -30,6 +30,7 @@ public class WeaponFragment extends Fragment {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp, txtTemp2, txtTypeTitle;
+    private TextView drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey;
 
     private Button btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
@@ -92,6 +93,12 @@ public class WeaponFragment extends Fragment {
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
+
+        drwCheckYellow = (TextView) view.findViewById(R.id.drawable_check_yellow);
+        drwCheckPurple = (TextView) view.findViewById(R.id.drawable_check_purple);
+        drwCheckBlue = (TextView) view.findViewById(R.id.drawable_check_blue);
+        drwCheckGreen = (TextView) view.findViewById(R.id.drawable_check_green);
+        drwCheckGrey = (TextView) view.findViewById(R.id.drawable_check_grey);
 
         edtYellow = (EditText) view.findViewById(R.id.edittext_yellow);
         edtPurple = (EditText) view.findViewById(R.id.edittext_purple);
