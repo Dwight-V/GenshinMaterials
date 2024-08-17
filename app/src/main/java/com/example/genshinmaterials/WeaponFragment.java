@@ -90,12 +90,6 @@ public class WeaponFragment extends Fragment {
                                     {0, 18, 12, 10, 0},
                                     {0, 0, 12, 10, 6}};
 
-    // Represents a flag matrix for if a specific EditText can be changed AT ALL. If true, the value of that EditText will ALWAYS be 0.
-    // Like the above matrices, rows represent subtabs, columns represent EditTexts in descending rarity.
-    private boolean[][] isDisabledArr = {{false, false, false, false, true},
-                                         {true, false, false, false, true},
-                                         {true, true, false, false, false}};
-
     // Represents whether or not the EditTexts can be edited by the user.
     // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
     // (as changing the values progamatically like that calls the onTextChange event, which would then save the local array values to the switched-from tab's values).
@@ -658,6 +652,7 @@ public class WeaponFragment extends Fragment {
                 allDrwChecks[i].setVisibility(View.VISIBLE);
             } else {
                 allDrwChecks[i].setVisibility(View.GONE);
+                extraMats = 0;
             }
         }
     }
@@ -666,7 +661,7 @@ public class WeaponFragment extends Fragment {
         int subtabIndex = tabMaterials.getSelectedTabPosition();
 
         for (int i = 0; i < allEditTexts.length; i++) {
-            if (isDisabledArr[subtabIndex][i]) {
+            if (reqMats5Star[subtabIndex][i] <= 0) {
                 allLinLay[i].setVisibility(View.INVISIBLE);
             } else {
                 allLinLay[i].setVisibility(View.VISIBLE);
