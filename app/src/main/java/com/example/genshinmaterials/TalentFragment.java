@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.tabs.TabLayout;
@@ -97,6 +98,7 @@ public class TalentFragment extends Fragment {
     private EditText[] allEditTexts;
     private TextView[] allDrwChecks;
     private LinearLayout[] allLinLay;
+    private View[] allViews;
     // endregion
 
     @Nullable
@@ -107,43 +109,50 @@ public class TalentFragment extends Fragment {
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
 
-        drwCheckYellow = (TextView) view.findViewById(R.id.drawable_check_yellow);
-        drwCheckPurple = (TextView) view.findViewById(R.id.drawable_check_purple);
-        drwCheckBlue = (TextView) view.findViewById(R.id.drawable_check_blue);
-        drwCheckGreen = (TextView) view.findViewById(R.id.drawable_check_green);
-        drwCheckGrey = (TextView) view.findViewById(R.id.drawable_check_grey);
+        View counter_yellow = view.findViewById(R.id.counter_yellow);
+        View counter_purple = view.findViewById(R.id.counter_purple);
+        View counter_blue = view.findViewById(R.id.counter_blue);
+        View counter_green = view.findViewById(R.id.counter_green);
+        View counter_grey = view.findViewById(R.id.counter_grey);
 
-        edtYellow = (EditText) view.findViewById(R.id.edittext_yellow);
-        edtPurple = (EditText) view.findViewById(R.id.edittext_purple);
-        edtBlue = (EditText) view.findViewById(R.id.edittext_blue);
-        edtGreen = (EditText) view.findViewById(R.id.edittext_green);
-        edtGrey = (EditText) view.findViewById(R.id.edittext_grey);
+        drwCheckYellow = (TextView) counter_yellow.findViewById(R.id.drawable_check);
+        drwCheckPurple = (TextView) counter_purple.findViewById(R.id.drawable_check);
+        drwCheckBlue = (TextView) counter_blue.findViewById(R.id.drawable_check);
+        drwCheckGreen = (TextView) counter_green.findViewById(R.id.drawable_check);
+        drwCheckGrey = (TextView) counter_grey.findViewById(R.id.drawable_check);
+
+        edtYellow = (EditText) counter_yellow.findViewById(R.id.edittext_main);
+        edtPurple = (EditText) counter_purple.findViewById(R.id.edittext_main);
+        edtBlue = (EditText) counter_blue.findViewById(R.id.edittext_main);
+        edtGreen = (EditText) counter_green.findViewById(R.id.edittext_main);
+        edtGrey = (EditText) counter_grey.findViewById(R.id.edittext_main);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
-        btnAddYellow = (Button) view.findViewById(R.id.button_add_yellow);
-        btnSubYellow = (Button) view.findViewById(R.id.button_sub_yellow);
-        btnAddPurple = (Button) view.findViewById(R.id.button_add_purple);
-        btnSubPurple = (Button) view.findViewById(R.id.button_sub_purple);
-        btnAddBlue = (Button) view.findViewById(R.id.button_add_blue);
-        btnSubBlue = (Button) view.findViewById(R.id.button_sub_blue);
-        btnAddGreen = (Button) view.findViewById(R.id.button_add_green);
-        btnSubGreen = (Button) view.findViewById(R.id.button_sub_green);
-        btnAddGrey = (Button) view.findViewById(R.id.button_add_grey);
-        btnSubGrey = (Button) view.findViewById(R.id.button_sub_grey);
+        btnAddYellow = (Button) counter_yellow.findViewById(R.id.button_add);
+        btnSubYellow = (Button) counter_yellow.findViewById(R.id.button_sub);
+        btnAddPurple = (Button) counter_purple.findViewById(R.id.button_add);
+        btnSubPurple = (Button) counter_purple.findViewById(R.id.button_sub);
+        btnAddBlue = (Button) counter_blue.findViewById(R.id.button_add);
+        btnSubBlue = (Button) counter_blue.findViewById(R.id.button_sub);
+        btnAddGreen = (Button) counter_green.findViewById(R.id.button_add);
+        btnSubGreen = (Button) counter_green.findViewById(R.id.button_sub);
+        btnAddGrey = (Button) counter_grey.findViewById(R.id.button_add);
+        btnSubGrey = (Button) counter_grey.findViewById(R.id.button_sub);
 
         swtEditable = (Switch) view.findViewById(R.id.switch_editable);
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
-        linLayYellow = (LinearLayout) view.findViewById(R.id.linearlayout_yellow);
-        linLayPurple = (LinearLayout) view.findViewById(R.id.linearlayout_purple);
-        linLayBlue = (LinearLayout) view.findViewById(R.id.linearlayout_blue);
-        linLayGreen = (LinearLayout) view.findViewById(R.id.linearlayout_green);
-        linLayGrey = (LinearLayout) view.findViewById(R.id.linearlayout_grey);
+        linLayYellow = (LinearLayout) counter_yellow.findViewById(R.id.linearlayout_counter);
+        linLayPurple = (LinearLayout) counter_purple.findViewById(R.id.linearlayout_counter);
+        linLayBlue = (LinearLayout) counter_blue.findViewById(R.id.linearlayout_counter);
+        linLayGreen = (LinearLayout) counter_green.findViewById(R.id.linearlayout_counter);
+        linLayGrey = (LinearLayout) counter_grey.findViewById(R.id.linearlayout_counter);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
         allDrwChecks = new TextView[] {drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey};
         allLinLay = new LinearLayout[] {linLayYellow, linLayPurple, linLayBlue, linLayGreen, linLayGrey};
+        allViews = new View[] {counter_yellow, counter_purple, counter_blue, counter_green, counter_grey};
 
 
 
@@ -556,6 +565,12 @@ public class TalentFragment extends Fragment {
         for (int i = 0; i < tabMaterials.getTabCount(); i++) {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
+
+        edtYellow.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
+        edtPurple.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
+        edtBlue.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
+        edtGreen.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
+        edtGrey.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -647,9 +662,9 @@ public class TalentFragment extends Fragment {
 
         for (int i = 0; i < allEditTexts.length; i++) {
             if (reqMats[subtabIndex][i] <= 0) {
-                allLinLay[i].setVisibility(View.INVISIBLE);
+                allViews[i].setVisibility(View.INVISIBLE);
             } else {
-                allLinLay[i].setVisibility(View.VISIBLE);
+                allViews[i].setVisibility(View.VISIBLE);
             }
         }
     }

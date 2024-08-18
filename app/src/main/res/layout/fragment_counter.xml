@@ -88,6 +88,47 @@
         android:paddingBottom="5dp"
         android:text="Materials:"/>
 
+
+    <include
+        layout="@layout/counter"
+        android:id="@+id/counter_yellow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/linearLayout_utility"/>
+
+    <include
+        layout="@layout/counter"
+        android:id="@+id/counter_purple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/counter_yellow"/>
+
+    <include
+        layout="@layout/counter"
+        android:id="@+id/counter_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/counter_purple"/>
+
+    <include
+        layout="@layout/counter"
+        android:id="@+id/counter_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/counter_blue"/>
+
+    <include
+        layout="@layout/counter"
+        android:id="@+id/counter_grey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/counter_green"/>
+<!--
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -292,7 +333,7 @@
             android:text="+"
             android:textSize="30sp" />
     </LinearLayout>
-
+-->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_materials"
         android:layout_width="match_parent"
