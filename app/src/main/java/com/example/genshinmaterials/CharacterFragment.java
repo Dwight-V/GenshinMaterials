@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class CharacterFragment extends Fragment {
     private TextView txtTemp, txtTemp2, txtTypeTitle;
     private TextView drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey;
 
-    private Button btnClear;
+    private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
     private Switch swtEditable;
@@ -120,7 +121,7 @@ public class CharacterFragment extends Fragment {
         edtGreen = (EditText) view.findViewById(R.id.edittext_green);
         edtGrey = (EditText) view.findViewById(R.id.edittext_grey);
 
-        btnClear = (Button) view.findViewById(R.id.button_clear);
+        btnClear = (ImageButton) view.findViewById(R.id.button_clear);
         btnAddYellow = (Button) view.findViewById(R.id.button_add_yellow);
         btnSubYellow = (Button) view.findViewById(R.id.button_sub_yellow);
         btnAddPurple = (Button) view.findViewById(R.id.button_add_purple);

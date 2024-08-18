@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class WeaponFragment extends Fragment {
     private TextView txtTemp, txtTemp2, txtTypeTitle;
     private TextView drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey;
 
-    private Button btnClear;
+    private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
     private Switch swtEditable;
@@ -52,9 +53,9 @@ public class WeaponFragment extends Fragment {
     public static final String SHARED_PREFS = "sharedPrefs";
 
     // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
-    public static final String[] EDITTEXT_VALUES_0 = {"yellow_0", "purple_0", "blue_0", "green_0", "grey_0"};
-    public static final String[] EDITTEXT_VALUES_1 = {"yellow_1", "purple_1", "blue_1", "green_1", "grey_1"};
-    public static final String[] EDITTEXT_VALUES_2 = {"yellow_2", "purple_2", "blue_2", "green_2", "grey_2"};
+    public static final String[] EDITTEXT_VALUES_0 = {"yellow_0_weapon", "purple_0_weapon", "blue_0_weapon", "green_0_weapon", "grey_0_weapon"};
+    public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_weapon", "purple_1_weapon", "blue_1_weapon", "green_1_weapon", "grey_1_weapon"};
+    public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_weapon", "purple_2_weapon", "blue_2_weapon", "green_2_weapon", "grey_2_weapon"};
 
     public static final String SWITCH_EDITABLE_IS_CHECKED = "editable_bool";
 
@@ -125,7 +126,7 @@ public class WeaponFragment extends Fragment {
         edtGreen = (EditText) view.findViewById(R.id.edittext_green);
         edtGrey = (EditText) view.findViewById(R.id.edittext_grey);
 
-        btnClear = (Button) view.findViewById(R.id.button_clear);
+        btnClear = (ImageButton) view.findViewById(R.id.button_clear);
         btnAddYellow = (Button) view.findViewById(R.id.button_add_yellow);
         btnSubYellow = (Button) view.findViewById(R.id.button_sub_yellow);
         btnAddPurple = (Button) view.findViewById(R.id.button_add_purple);
