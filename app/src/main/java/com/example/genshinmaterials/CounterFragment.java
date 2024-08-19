@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.tabs.TabLayout;
 
 public class CounterFragment extends Fragment {
-
+    // region Views
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp;
     private TextView txtTemp2;
@@ -35,41 +35,41 @@ public class CounterFragment extends Fragment {
     private Switch swtEditable;
 
     protected TabLayout tabMaterials;
-
-
-
-
+    // endregion
 
 
     // region For saving the data on app close.
 
     // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
-//    public static final String[] EDITTEXT_VALUES_0 = new String[5];
-//    public static final String[] EDITTEXT_VALUES_1 = new String[5];
-//    public static final String[] EDITTEXT_VALUES_2 = new String[5];
     public static String[] EDITTEXT_VALUES_0;
     public static String[] EDITTEXT_VALUES_1;
     public static String[] EDITTEXT_VALUES_2;
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static final String SUBTAB_POSITION = "subtab_pos_int";
+    // endregion
 
-    // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
-    // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
+
+    // region Global variables that hold the above variable's saved data while the app is open.
+
     public String[] tabValArray0;
     public String[] tabValArray1;
     public String[] tabValArray2;
 
-    // A 'local' variable, which on app load, is set to the value of SUBTAB_POSITION, then used in updateViews to set the data.
     public int prevSubtabPos;
+    // endregion
+
+
+    // region Variables that are instantiated locally for each subclass.
 
     // Programmatically replaces the names of the subtabs.
     private static String[] tabNamesArr;
 
     // The hardcoded amount of materials need to fully level up the weapon.
     // Each row is in descending rarity, mirroring allEditTexts.
-    // Each column represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
+    // Each column represents the corresponding indexed subtab. Ex: reqMats[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
     protected int[][] reqMats;
+    // endregion
 
     // Represents whether or not the EditTexts can be edited by the user.
     // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
@@ -79,11 +79,10 @@ public class CounterFragment extends Fragment {
     // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
     private boolean edittextsAreReady = true;
 
-    // Holds shallow copies (pointers) to all EditTexts. Used in loops instead of calling all EditTexts.
+    // Holds shallow copies (pointers) to their respective data types. Used in loops for easy indexing.
     private EditText[] allEditTexts;
     private TextView[] allDrwChecks;
     private View[] allViews;
-    // endregion
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
