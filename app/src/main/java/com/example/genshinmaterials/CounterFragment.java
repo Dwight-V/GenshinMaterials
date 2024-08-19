@@ -35,6 +35,12 @@ public class CounterFragment extends Fragment {
     private Switch swtEditable;
 
     protected TabLayout tabMaterials;
+
+    View counterObjYellow;
+    View counterObjPurple;
+    View counterObjBlue;
+    View counterObjGreen;
+    View counterObjGrey;
     // endregion
 
 
@@ -100,29 +106,29 @@ public class CounterFragment extends Fragment {
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
 
-        View counter_yellow = view.findViewById(R.id.counter_yellow);
-        View counter_purple = view.findViewById(R.id.counter_purple);
-        View counter_blue = view.findViewById(R.id.counter_blue);
-        View counter_green = view.findViewById(R.id.counter_green);
-        View counter_grey = view.findViewById(R.id.counter_grey);
+        counterObjYellow = view.findViewById(R.id.counter_yellow);
+        counterObjPurple = view.findViewById(R.id.counter_purple);
+        counterObjBlue = view.findViewById(R.id.counter_blue);
+        counterObjGreen = view.findViewById(R.id.counter_green);
+        counterObjGrey = view.findViewById(R.id.counter_grey);
 
-        edtYellow = (EditText) counter_yellow.findViewById(R.id.edittext_main);
-        edtPurple = (EditText) counter_purple.findViewById(R.id.edittext_main);
-        edtBlue = (EditText) counter_blue.findViewById(R.id.edittext_main);
-        edtGreen = (EditText) counter_green.findViewById(R.id.edittext_main);
-        edtGrey = (EditText) counter_grey.findViewById(R.id.edittext_main);
+        edtYellow = (EditText) counterObjYellow.findViewById(R.id.edittext_main);
+        edtPurple = (EditText) counterObjPurple.findViewById(R.id.edittext_main);
+        edtBlue = (EditText) counterObjBlue.findViewById(R.id.edittext_main);
+        edtGreen = (EditText) counterObjGreen.findViewById(R.id.edittext_main);
+        edtGrey = (EditText) counterObjGrey.findViewById(R.id.edittext_main);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
-        btnAddYellow = (Button) counter_yellow.findViewById(R.id.button_add);
-        btnSubYellow = (Button) counter_yellow.findViewById(R.id.button_sub);
-        btnAddPurple = (Button) counter_purple.findViewById(R.id.button_add);
-        btnSubPurple = (Button) counter_purple.findViewById(R.id.button_sub);
-        btnAddBlue = (Button) counter_blue.findViewById(R.id.button_add);
-        btnSubBlue = (Button) counter_blue.findViewById(R.id.button_sub);
-        btnAddGreen = (Button) counter_green.findViewById(R.id.button_add);
-        btnSubGreen = (Button) counter_green.findViewById(R.id.button_sub);
-        btnAddGrey = (Button) counter_grey.findViewById(R.id.button_add);
-        btnSubGrey = (Button) counter_grey.findViewById(R.id.button_sub);
+        btnAddYellow = (Button) counterObjYellow.findViewById(R.id.button_add);
+        btnSubYellow = (Button) counterObjYellow.findViewById(R.id.button_sub);
+        btnAddPurple = (Button) counterObjPurple.findViewById(R.id.button_add);
+        btnSubPurple = (Button) counterObjPurple.findViewById(R.id.button_sub);
+        btnAddBlue = (Button) counterObjBlue.findViewById(R.id.button_add);
+        btnSubBlue = (Button) counterObjBlue.findViewById(R.id.button_sub);
+        btnAddGreen = (Button) counterObjGreen.findViewById(R.id.button_add);
+        btnSubGreen = (Button) counterObjGreen.findViewById(R.id.button_sub);
+        btnAddGrey = (Button) counterObjGrey.findViewById(R.id.button_add);
+        btnSubGrey = (Button) counterObjGrey.findViewById(R.id.button_sub);
 
         // https://stackoverflow.com/a/36139523
         swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
@@ -130,12 +136,12 @@ public class CounterFragment extends Fragment {
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
-        allDrwChecks = new TextView[] {counter_yellow.findViewById(R.id.drawable_check),
-                counter_purple.findViewById(R.id.drawable_check),
-                counter_blue.findViewById(R.id.drawable_check),
-                counter_green.findViewById(R.id.drawable_check),
-                counter_grey.findViewById(R.id.drawable_check)};
-        allViews = new View[] {counter_yellow, counter_purple, counter_blue, counter_green, counter_grey};
+        allDrwChecks = new TextView[] {counterObjYellow.findViewById(R.id.drawable_check),
+                counterObjPurple.findViewById(R.id.drawable_check),
+                counterObjBlue.findViewById(R.id.drawable_check),
+                counterObjGreen.findViewById(R.id.drawable_check),
+                counterObjGrey.findViewById(R.id.drawable_check)};
+        allViews = new View[] {counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey};
 
 
 
@@ -521,16 +527,11 @@ public class CounterFragment extends Fragment {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
 
-        edtYellow.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
-        edtPurple.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
-        edtBlue.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
-        edtGreen.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
-        edtGrey.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
-//        getView().findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
-//        edtPurple.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
-//        edtBlue.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
-//        edtGreen.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
-//        edtGrey.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
+        counterObjYellow.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
+        counterObjPurple.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
+        counterObjBlue.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
+        counterObjGreen.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
+        counterObjGrey.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
