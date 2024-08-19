@@ -48,7 +48,6 @@ public class TalentFragment extends CounterFragment {
             {6, 0, 0, 0, 0},
             {0, 0, 31, 22, 6}};
 
-    private TextView[] allDrwChecks;
 
     // Passes the final String array which names all EditTexts save data.
     TalentFragment() {

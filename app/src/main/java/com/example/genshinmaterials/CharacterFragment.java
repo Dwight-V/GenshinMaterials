@@ -48,7 +48,6 @@ public class CharacterFragment extends CounterFragment {
             {0, 0, 36, 30, 18},
             {0, 46, 420000, 0, 168}};
 
-    private TextView[] allDrwChecks;
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {

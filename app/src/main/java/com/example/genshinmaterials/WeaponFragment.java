@@ -57,7 +57,6 @@ public class WeaponFragment extends CounterFragment {
             {0, 18, 12, 10, 0},
             {0, 0, 12, 10, 6}};
 
-    private TextView[] allDrwChecks;
 
     // Passes the final String array which names all EditTexts save data.
     WeaponFragment() {
