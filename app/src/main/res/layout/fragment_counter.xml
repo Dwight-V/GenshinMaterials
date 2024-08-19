@@ -41,30 +41,30 @@
                 android:layout_height="wrap_content"
                 android:text="Typeable Inputs" />
 
-            <LinearLayout
-                android:id="@+id/linearlayout_editable_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/linearlayout_editable_switch"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center">-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/baseline_lock_open_24" />
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/baseline_lock_open_24" />-->
 
-                <Switch
-                    android:id="@+id/switch_editable"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp" />
+<!--                <Switch-->
+<!--                    android:id="@+id/switch_editable"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="3dp" />-->
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/baseline_lock_outline_24" />
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:src="@drawable/baseline_lock_outline_24" />-->
+<!--            </LinearLayout>-->
         </LinearLayout>
 
 

@@ -146,7 +146,7 @@ public class WeaponFragment extends Fragment {
         btnAddGrey = (Button) counter_grey.findViewById(R.id.button_add);
         btnSubGrey = (Button) counter_grey.findViewById(R.id.button_sub);
 
-        swtEditable = (Switch) view.findViewById(R.id.switch_editable);
+        swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
@@ -524,7 +524,7 @@ public class WeaponFragment extends Fragment {
                 break;
         }
 
-        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
+//        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
         editor.putInt(WEAPON_RARITY, weaponRarity);
@@ -563,7 +563,7 @@ public class WeaponFragment extends Fragment {
         // Sets the title text to the save value.
         txtTypeTitle.setText(weaponRarity + "-Star Weapon");
         // Sets the editable switch to last used position.
-        swtEditable.setChecked(editableIsChecked);
+//        swtEditable.setChecked(editableIsChecked);
         changeEditable();
         // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
         updateEdittextVals();
@@ -586,7 +586,12 @@ public class WeaponFragment extends Fragment {
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
     public void changeEditable() {
+//        Toast.makeText(getContext(), swtEditable.isChecked() + "", Toast.LENGTH_SHORT).show();
         if (swtEditable.isChecked()) {
+            for (int i = 0; i < allEditTexts.length; i++) {
+                allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
+            }
+        } else {
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
             if (requireActivity().getCurrentFocus() != null) {
                 InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -595,10 +600,6 @@ public class WeaponFragment extends Fragment {
 
             for (int i = 0; i < allEditTexts.length; i++) {
                 allEditTexts[i].setInputType(InputType.TYPE_NULL);
-            }
-        } else {
-            for (int i = 0; i < allEditTexts.length; i++) {
-                allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             }
         }
     }

@@ -19,7 +19,26 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:id="@+id/toolbar"
-            android:elevation="4dp"/>
+            app:title="Weapon"
+            android:elevation="4dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="10dp">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/switch_editable_full"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_create_24"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:layout_width="match_parent"

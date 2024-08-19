@@ -141,7 +141,7 @@ public class CharacterFragment extends Fragment {
         btnAddGrey = (Button) counter_grey.findViewById(R.id.button_add);
         btnSubGrey = (Button) counter_grey.findViewById(R.id.button_sub);
 
-        swtEditable = (Switch) view.findViewById(R.id.switch_editable);
+        swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
