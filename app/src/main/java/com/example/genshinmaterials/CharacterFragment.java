@@ -145,11 +145,11 @@ public class CharacterFragment extends Fragment {
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
-        linLayYellow = (LinearLayout) counter_yellow.findViewById(R.id.linearlayout_counter);
-        linLayPurple = (LinearLayout) counter_purple.findViewById(R.id.linearlayout_counter);
-        linLayBlue = (LinearLayout) counter_blue.findViewById(R.id.linearlayout_counter);
-        linLayGreen = (LinearLayout) counter_green.findViewById(R.id.linearlayout_counter);
-        linLayGrey = (LinearLayout) counter_grey.findViewById(R.id.linearlayout_counter);
+//        linLayYellow = (LinearLayout) counter_yellow.findViewById(R.id.linearlayout_counter);
+//        linLayPurple = (LinearLayout) counter_purple.findViewById(R.id.linearlayout_counter);
+//        linLayBlue = (LinearLayout) counter_blue.findViewById(R.id.linearlayout_counter);
+//        linLayGreen = (LinearLayout) counter_green.findViewById(R.id.linearlayout_counter);
+//        linLayGrey = (LinearLayout) counter_grey.findViewById(R.id.linearlayout_counter);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
         allDrwChecks = new TextView[] {drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey};

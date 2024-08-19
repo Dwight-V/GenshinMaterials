@@ -150,11 +150,11 @@ public class WeaponFragment extends Fragment {
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
-        linLayYellow = (LinearLayout) counter_yellow.findViewById(R.id.linearlayout_counter);
-        linLayPurple = (LinearLayout) counter_purple.findViewById(R.id.linearlayout_counter);
-        linLayBlue = (LinearLayout) counter_blue.findViewById(R.id.linearlayout_counter);
-        linLayGreen = (LinearLayout) counter_green.findViewById(R.id.linearlayout_counter);
-        linLayGrey = (LinearLayout) counter_grey.findViewById(R.id.linearlayout_counter);
+//        linLayYellow = (LinearLayout) counter_yellow.findViewById(R.id.linearlayout_counter);
+//        linLayPurple = (LinearLayout) counter_purple.findViewById(R.id.linearlayout_counter);
+//        linLayBlue = (LinearLayout) counter_blue.findViewById(R.id.linearlayout_counter);
+//        linLayGreen = (LinearLayout) counter_green.findViewById(R.id.linearlayout_counter);
+//        linLayGrey = (LinearLayout) counter_grey.findViewById(R.id.linearlayout_counter);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
         allDrwChecks = new TextView[] {drwCheckYellow, drwCheckPurple, drwCheckBlue, drwCheckGreen, drwCheckGrey};
@@ -577,6 +577,11 @@ public class WeaponFragment extends Fragment {
         edtBlue.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
         edtGreen.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
         edtGrey.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
+//        getView().findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
+//        edtPurple.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
+//        edtBlue.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
+//        edtGreen.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
+//        edtGrey.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -667,7 +672,7 @@ public class WeaponFragment extends Fragment {
                 extraMats = (netTotalMats[i] - reqAmount) / 3;
                 allDrwChecks[i].setVisibility(View.VISIBLE);
             } else {
-                allDrwChecks[i].setVisibility(View.GONE);
+                allDrwChecks[i].setVisibility(View.INVISIBLE);
                 extraMats = 0;
             }
         }
@@ -678,7 +683,7 @@ public class WeaponFragment extends Fragment {
 
         for (int i = 0; i < allEditTexts.length; i++) {
             if (reqMats5Star[subtabIndex][i] <= 0) {
-                allViews[i].setVisibility(View.INVISIBLE);
+                allViews[i].setVisibility(View.GONE);
             } else {
                 allViews[i].setVisibility(View.VISIBLE);
             }
