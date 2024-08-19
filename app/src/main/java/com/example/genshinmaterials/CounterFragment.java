@@ -26,13 +26,15 @@ import com.google.android.material.tabs.TabLayout;
 public class CounterFragment extends Fragment {
 
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    private TextView txtTemp, txtTemp2, txtTypeTitle;
+    private TextView txtTemp;
+    private TextView txtTemp2;
+    protected TextView txtTypeTitle;
     private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
     private Switch swtEditable;
 
-    private TabLayout tabMaterials;
+    protected TabLayout tabMaterials;
 
 
 
@@ -42,15 +44,15 @@ public class CounterFragment extends Fragment {
     // region For saving the data on app close.
 
     // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
-    public static final String[] EDITTEXT_VALUES_0 = {"yellow_0_weapon", "purple_0_weapon", "blue_0_weapon", "green_0_weapon", "grey_0_weapon"};
-    public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_weapon", "purple_1_weapon", "blue_1_weapon", "green_1_weapon", "grey_1_weapon"};
-    public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_weapon", "purple_2_weapon", "blue_2_weapon", "green_2_weapon", "grey_2_weapon"};
-
-    public static final String SWITCH_EDITABLE_IS_CHECKED = "editable_bool";
+//    public static final String[] EDITTEXT_VALUES_0 = new String[5];
+//    public static final String[] EDITTEXT_VALUES_1 = new String[5];
+//    public static final String[] EDITTEXT_VALUES_2 = new String[5];
+    public static String[] EDITTEXT_VALUES_0;
+    public static String[] EDITTEXT_VALUES_1;
+    public static String[] EDITTEXT_VALUES_2;
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static final String SUBTAB_POSITION = "subtab_pos_int";
-    public static final String WEAPON_RARITY = "weapon_rarity";
 
     // TODO: Understand why loadData() and updateViews() are two different functions, when you usually call them one after another. If we combine them, we  don't need either of these local variables.
     // A 'local' variable, which on app load, is set to the values of EDITTEXT_VALUES, then used in updateViews to set the data.
@@ -58,27 +60,16 @@ public class CounterFragment extends Fragment {
     public String[] tabValArray1;
     public String[] tabValArray2;
 
-    // A 'local' variable, which on app load, is set to the value of SWITCH_EDITABLE_IS_CHECKED, then used in updateViews to set the data.
-    public boolean editableIsChecked;
     // A 'local' variable, which on app load, is set to the value of SUBTAB_POSITION, then used in updateViews to set the data.
     public int prevSubtabPos;
-    // Used to differentiate the varying amount of materials need for different rarity weapons.
-    private int weaponRarity = 3;
+
     // Programmatically replaces the names of the subtabs.
-    private String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
+    private static String[] tabNamesArr;
 
     // The hardcoded amount of materials need to fully level up the weapon.
     // Each row is in descending rarity, mirroring allEditTexts.
     // Each column represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
-    private int[][] reqMats5Star = {{6, 14, 14, 5, 0},
-                                    {0, 41, 45, 5, 0},
-                                    {0, 0, 27, 23, 15}};
-    private int[][] reqMats4Star = {{4, 9, 9, 3, 0},
-                                    {0, 27, 30, 3, 0},
-                                    {0, 0, 18, 15, 10}};
-    private int[][] reqMats3Star = {{3, 6, 6, 2, 0},
-                                    {0, 18, 12, 10, 0},
-                                    {0, 0, 12, 10, 6}};
+    protected int[][] reqMats;
 
     // Represents whether or not the EditTexts can be edited by the user.
     // What I had previously was that I saved everytime any edit text was changed, but this interferes with using the subtabs to change the values of the edittexts
@@ -93,6 +84,14 @@ public class CounterFragment extends Fragment {
     private TextView[] allDrwChecks;
     private View[] allViews;
     // endregion
+
+    CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
+        EDITTEXT_VALUES_0 = edittextValuesArray0;
+        EDITTEXT_VALUES_1 = edittextValuesArray1;
+        EDITTEXT_VALUES_2 = edittextValuesArray2;
+        tabNamesArr = tabsName;
+        reqMats = req;
+    }
 
     @Nullable
     @Override
@@ -419,29 +418,6 @@ public class CounterFragment extends Fragment {
             }
         });
 
-        txtTypeTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Cycles which rarity of weapon to calc for.
-                switch (weaponRarity) {
-                    case 3:
-                        txtTypeTitle.setText("4-Star Weapon");
-                        weaponRarity = 4;
-                        break;
-                    case 4:
-                        txtTypeTitle.setText("5-Star Weapon");
-                        weaponRarity = 5;
-                        break;
-                    default:
-                        txtTypeTitle.setText("3-Star Weapon");
-                        weaponRarity = 3;
-                        break;
-                }
-                saveData();
-                checkRequirements();
-            }
-        });
-
         tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -506,7 +482,6 @@ public class CounterFragment extends Fragment {
 //        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
-        editor.putInt(WEAPON_RARITY, weaponRarity);
 
         editor.apply();
 //        txtTemp.setText(sharedPreferences.getAll().toString());
@@ -520,8 +495,6 @@ public class CounterFragment extends Fragment {
         tabValArray2 = new String[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
-        weaponRarity = sharedPreferences.getInt(WEAPON_RARITY, 3);
-        editableIsChecked = sharedPreferences.getBoolean(SWITCH_EDITABLE_IS_CHECKED, false);
 
         // Sets the new initialized local arrays to the saved instance of the arrays.
         for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
@@ -539,8 +512,6 @@ public class CounterFragment extends Fragment {
     public void updateViews() {
         // Sets the last used subtab.
         tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos));
-        // Sets the title text to the save value.
-        txtTypeTitle.setText(weaponRarity + "-Star Weapon");
         // Sets the editable switch to last used position.
 //        swtEditable.setChecked(editableIsChecked);
         changeEditable();
@@ -621,22 +592,12 @@ public class CounterFragment extends Fragment {
     // Houses the 'brain' of the code. Compares the current amounts to the pre-set amount, and displays a checkmark of met/exceeds.
     // TODO: Maybe make it modular? As in, take an argument (the EditText which it's called from) and check if it's value meets the requirements.
     public void checkRequirements() {
-        int[][] reqMats;
         // Holds the total amount of mats the user input. If there are excess materials in a lower-rarity, will convert them to the next rarity higher.
         // Is essentially a deep-copy of allEditTexts[].
         int[] netTotalMats = new int[5];
         // subtabIndex should never be < 0 since logic is handled by TabLayout itself. Otherwise should check.
         int subtabIndex = tabMaterials.getSelectedTabPosition();
         int extraMats = 0;
-
-        // Ensures the correct weapon rarity is being calculated.
-        if (weaponRarity == 5) {
-            reqMats = reqMats5Star;
-        } else if (weaponRarity == 4) {
-            reqMats = reqMats4Star;
-        } else {
-            reqMats = reqMats3Star;
-        }
 
 //        txtTemp.setText("reqMats[" + subtabIndex + "]: " + Arrays.toString(reqMats[subtabIndex]));
         // Compares each EditText with it's specific amount. Displays the check if >=, otherwise removes it.
@@ -662,7 +623,7 @@ public class CounterFragment extends Fragment {
         int subtabIndex = tabMaterials.getSelectedTabPosition();
 
         for (int i = 0; i < allEditTexts.length; i++) {
-            if (reqMats5Star[subtabIndex][i] <= 0) {
+            if (reqMats[subtabIndex][i] <= 0) {
                 allViews[i].setVisibility(View.GONE);
             } else {
                 allViews[i].setVisibility(View.VISIBLE);
