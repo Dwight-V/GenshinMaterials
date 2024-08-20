@@ -72,79 +72,89 @@
         android:layout_above="@+id/tab_layout_materials"
         android:src="@drawable/baseline_delete_24" />
 
-    <TextView
-        android:id="@+id/text_material_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/linearlayout_name"
-        android:paddingBottom="5dp"
-        android:text="Materials:"/>
-
+    <!--  Holds both the static and variable amounts of materials.  -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/text_material_title"
-        android:layout_above="@+id/linearlayout_static"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true">
-
-        <include
-            layout="@layout/counter"
-            android:id="@+id/counter_yellow"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <include
-            layout="@layout/counter"
-            android:id="@+id/counter_purple"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"/>
-
-        <include
-            layout="@layout/counter"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/counter_blue"
-            android:layout_weight="1"/>
-
-        <include
-            layout="@layout/counter"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/counter_green"
-            android:layout_weight="1"/>
-
-        <include
-            layout="@layout/counter"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/counter_grey"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearlayout_static"
-        android:orientation="vertical"
-        android:layout_above="@+id/button_clear">
-
-
+        android:layout_above="@+id/button_clear"
+        android:layout_below="@+id/linearlayout_name"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/text_static_title"
+            android:id="@+id/text_material_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/linearlayout_name"
             android:paddingBottom="5dp"
-            android:text="Static materials:"/>
+            android:text="Materials:"/>
 
-        <TextView
+        <!-- Holds the user counted materials.-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"/>
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:layout_weight="70">
 
+            <include
+                layout="@layout/counter"
+                android:id="@+id/counter_yellow"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <include
+                layout="@layout/counter"
+                android:id="@+id/counter_purple"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+
+            <include
+                layout="@layout/counter"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/counter_blue"
+                android:layout_weight="1"/>
+
+            <include
+                layout="@layout/counter"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/counter_green"
+                android:layout_weight="1"/>
+
+            <include
+                layout="@layout/counter"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/counter_grey"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <!-- Holds the static materials.-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/linearlayout_static"
+            android:orientation="vertical"
+            android:layout_weight="40">
+
+
+
+            <TextView
+                android:id="@+id/text_static_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:text="Static materials:"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/text_static"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
