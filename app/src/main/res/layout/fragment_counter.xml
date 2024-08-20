@@ -7,8 +7,7 @@
     <TextView
         android:id="@+id/text_temp"
         android:layout_width="wrap_content"
-        android:layout_below="@id/counter_grey"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:layout_alignParentTop="true"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/text_temp2"
@@ -43,252 +42,50 @@
         android:paddingBottom="5dp"
         android:text="Materials:"/>
 
-
-    <include
-        layout="@layout/counter"
-        android:id="@+id/counter_yellow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/text_material_title"/>
-
-    <include
-        layout="@layout/counter"
-        android:id="@+id/counter_purple"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/counter_yellow"/>
-
-    <include
-        layout="@layout/counter"
-        android:id="@+id/counter_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/counter_purple"/>
-
-    <include
-        layout="@layout/counter"
-        android:id="@+id/counter_green"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/counter_blue"/>
-
-    <include
-        layout="@layout/counter"
-        android:id="@+id/counter_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/counter_green"/>
-<!--
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/text_material_title"
-        android:id="@+id/linearlayout_yellow"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/text_material_title"
+        android:layout_above="@+id/button_clear"
+        android:orientation="vertical"
         android:layout_centerHorizontal="true">
 
-        <Button
-            android:id="@+id/button_sub_yellow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="30sp" />
+        <include
+            layout="@layout/counter"
+            android:id="@+id/counter_yellow"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/edittext_yellow"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:background="@color/genshin_yellow"
-            android:inputType="number"
-            android:layout_gravity="center"
-            android:text="@string/empty_counter"
-            android:textAlignment="center" />
+        <include
+            layout="@layout/counter"
+            android:id="@+id/counter_purple"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/baseline_check_circle_24"
-            android:layout_gravity="center"
-            android:id="@+id/drawable_check_yellow"
-            android:visibility="gone"/>
+        <include
+            layout="@layout/counter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/counter_blue"
+            android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/button_add_yellow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="30sp" />
+        <include
+            layout="@layout/counter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/counter_green"
+            android:layout_weight="1"/>
+
+        <include
+            layout="@layout/counter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/counter_grey"
+            android:layout_weight="1"/>
     </LinearLayout>
 
-
-    <LinearLayout
-        android:id="@+id/linearlayout_purple"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearlayout_yellow"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp">
-
-        <Button
-            android:id="@+id/button_sub_purple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/edittext_purple"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:background="@color/genshin_purple"
-            android:inputType="number"
-            android:layout_gravity="center"
-            android:text="@string/empty_counter"
-            android:textAlignment="center"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/baseline_check_circle_24"
-            android:layout_gravity="center"
-            android:id="@+id/drawable_check_purple"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/button_add_purple"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="30sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearlayout_blue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearlayout_purple"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp">
-
-        <Button
-            android:id="@+id/button_sub_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/edittext_blue"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:background="@color/genshin_blue"
-            android:inputType="number"
-            android:text="@string/empty_counter"
-            android:layout_gravity="center"
-            android:textAlignment="center" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/baseline_check_circle_24"
-            android:layout_gravity="center"
-            android:id="@+id/drawable_check_blue"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/button_add_blue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="30sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearlayout_green"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearlayout_blue"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp">
-
-        <Button
-            android:id="@+id/button_sub_green"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="30sp"/>
-
-        <EditText
-            android:id="@+id/edittext_green"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:background="@color/genshin_green"
-            android:inputType="number"
-            android:text="@string/empty_counter"
-            android:layout_gravity="center"
-            android:textAlignment="center" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/baseline_check_circle_24"
-            android:layout_gravity="center"
-            android:id="@+id/drawable_check_green"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/button_add_green"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="30sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearlayout_grey"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/linearlayout_green"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp">
-
-        <Button
-            android:id="@+id/button_sub_grey"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:textSize="30sp" />
-
-        <EditText
-            android:id="@+id/edittext_grey"
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:background="@color/genshin_grey"
-            android:inputType="number"
-            android:layout_gravity="center"
-            android:text="@string/empty_counter"
-            android:textAlignment="center" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/baseline_check_circle_24"
-            android:layout_gravity="center"
-            android:id="@+id/drawable_check_grey"
-            android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/button_add_grey"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:textSize="30sp" />
-    </LinearLayout>
--->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_materials"
         android:layout_width="match_parent"

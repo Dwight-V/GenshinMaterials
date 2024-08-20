@@ -9,21 +9,24 @@
     <Button
         android:id="@+id/button_sub"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:text="-"
         android:textSize="30sp"
+        android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/linearlayout_icons"/>
 
     <LinearLayout
         android:id="@+id/linearlayout_icons"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="2.5dp"
         android:background="@color/genshin_grey"
         android:orientation="horizontal"
-        android:layout_margin="5dp">
+        android:paddingHorizontal="5dp">
 
         <ImageView
             android:layout_width="40dp"
@@ -47,11 +50,12 @@
                 android:textAlignment="center" />
 
             <TextView
+                android:id="@+id/txtDenominator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:id="@+id/txtDenominator"
-                android:textAlignment="center" />
+                android:textAlignment="center"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -67,9 +71,10 @@
     <Button
         android:id="@+id/button_add"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:text="+"
         android:textSize="30sp"
+        android:layout_alignParentEnd="true"
         android:layout_toEndOf="@+id/linearlayout_icons"/>
 </RelativeLayout>
