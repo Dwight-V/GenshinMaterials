@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:layout_height="match_parent">
 
     <TextView
@@ -15,14 +14,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/text_type_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Title"
+        android:id="@+id/linearlayout_name"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textSize="40sp" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_type_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="40sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearlayout_stars">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview_star_1"
+                android:src="@drawable/round_star_border_24"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview_star_2"
+                android:src="@drawable/round_star_border_24"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview_star_3"
+                android:src="@drawable/round_star_border_24"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview_star_4"
+                android:src="@drawable/round_star_border_24"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageview_star_5"
+                android:src="@drawable/round_star_border_24"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/button_clear"
@@ -37,8 +76,8 @@
         android:id="@+id/text_material_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/text_type_title"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/linearlayout_name"
         android:paddingBottom="5dp"
         android:text="Materials:"/>
 
@@ -46,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/text_material_title"
-        android:layout_above="@+id/button_clear"
+        android:layout_above="@+id/linearlayout_static"
         android:orientation="vertical"
         android:layout_centerHorizontal="true">
 
@@ -84,6 +123,28 @@
             android:layout_height="0dp"
             android:id="@+id/counter_grey"
             android:layout_weight="1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearlayout_static"
+        android:orientation="vertical"
+        android:layout_above="@+id/button_clear">
+
+
+
+        <TextView
+            android:id="@+id/text_static_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:text="Static materials:"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"/>
+
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
