@@ -99,6 +99,8 @@ public class CounterFragment extends Fragment {
     private ImageView[] allDrwChecks;
     private View[] allCounterObjs;
 
+    private ImageView[] allStars;
+
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
         EDITTEXT_VALUES_1 = edittextValuesArray1;
@@ -154,6 +156,12 @@ public class CounterFragment extends Fragment {
                 counterObjGreen.findViewById(R.id.drawable_check),
                 counterObjGrey.findViewById(R.id.drawable_check)};
         allCounterObjs = new View[] {counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey};
+        allStars = new ImageView[] {
+                linLayStars.findViewById(R.id.imageview_star_0),
+                linLayStars.findViewById(R.id.imageview_star_1),
+                linLayStars.findViewById(R.id.imageview_star_2),
+                linLayStars.findViewById(R.id.imageview_star_3),
+                linLayStars.findViewById(R.id.imageview_star_4)};
 
 
 
@@ -462,20 +470,21 @@ public class CounterFragment extends Fragment {
                 // Cycles which rarity of weapon to calc for.
                 switch (itemRarity) {
                     case 3:
-                        txtTypeTitle.setText("4-Star Weapon");
+//                        txtTypeTitle.setText("4-Star Weapon");
                         itemRarity = 4;
                         break;
                     case 4:
-                        txtTypeTitle.setText("5-Star Weapon");
+//                        txtTypeTitle.setText("5-Star Weapon");
                         itemRarity = 5;
                         break;
                     default:
-                        txtTypeTitle.setText("3-Star Weapon");
+//                        txtTypeTitle.setText("3-Star Weapon");
                         itemRarity = 3;
                         break;
                 }
                 saveData();
                 updateEdittextVals();
+                updateStarRarity();
                 checkRequirements();
             }
         });
@@ -483,6 +492,7 @@ public class CounterFragment extends Fragment {
         // Loads data and displays saved data on app launch.
         loadData();
         updateViews();
+        updateStarRarity();
         checkRequirements();
         disableLayouts();
         return view;
@@ -625,6 +635,21 @@ public class CounterFragment extends Fragment {
 
         edittextsAreReady = true;
         saveData();
+    }
+
+    public void updateStarRarity() {
+        // Resets the number of stars initially
+        for (int i = 0; i < allStars.length; i++) {
+            allStars[i].setImageResource(R.drawable.round_star_border_24);
+        }
+
+        // Then adds the correct number back.
+        for (int i = 0; i < itemRarity; i++) {
+            // Just in case itemRarity is out of bounds.
+            if (i < allStars.length) {
+                allStars[i].setImageResource(R.drawable.round_star_24);
+            }
+        }
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
