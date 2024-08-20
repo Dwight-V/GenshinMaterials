@@ -38,9 +38,6 @@ public class WeaponFragment extends CounterFragment {
     public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_weapon", "purple_1_weapon", "blue_1_weapon", "green_1_weapon", "grey_1_weapon"};
     public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_weapon", "purple_2_weapon", "blue_2_weapon", "green_2_weapon", "grey_2_weapon"};
 
-    public static final String WEAPON_RARITY = "weapon_rarity";
-
-    private int weaponRarity = 3;
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
 
@@ -73,24 +70,6 @@ public class WeaponFragment extends CounterFragment {
         txtTypeTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Cycles which rarity of weapon to calc for.
-                switch (weaponRarity) {
-                    case 3:
-                        txtTypeTitle.setText("4-Star Weapon");
-                        weaponRarity = 4;
-                        break;
-                    case 4:
-                        txtTypeTitle.setText("5-Star Weapon");
-                        weaponRarity = 5;
-                        break;
-                    default:
-                        txtTypeTitle.setText("3-Star Weapon");
-                        weaponRarity = 3;
-                        break;
-                }
-                saveData();
-                updateEdittextVals();
-                checkRequirements();
             }
         });
 
@@ -98,39 +77,11 @@ public class WeaponFragment extends CounterFragment {
     }
 
     @Override
-    public void saveData() {
-        super.saveData();
-
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(WEAPON_RARITY, weaponRarity);
-        editor.apply();
-    }
-
-    @Override
-    public void loadData() {
-        super.loadData();
-
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        weaponRarity = sharedPreferences.getInt(WEAPON_RARITY, 3);
-        editor.apply();
-    }
-
-    @Override
-    public void updateViews() {
-        super.updateViews();
-
-        // Sets the title text to the save value.
-        txtTypeTitle.setText(weaponRarity + "-Star Weapon");
-    }
-
-    @Override
     public void updateEdittextVals() {
         // Ensures the correct weapon rarity is being calculated.
-        if (weaponRarity == 5) {
+        if (itemRarity == 5) {
             reqMats = reqMats5Star;
-        } else if (weaponRarity == 4) {
+        } else if (itemRarity == 4) {
             reqMats = reqMats4Star;
         } else {
             reqMats = reqMats3Star;
@@ -142,9 +93,9 @@ public class WeaponFragment extends CounterFragment {
     @Override
     public void checkRequirements() {
         // Ensures the correct weapon rarity is being calculated.
-        if (weaponRarity == 5) {
+        if (itemRarity == 5) {
             reqMats = reqMats5Star;
-        } else if (weaponRarity == 4) {
+        } else if (itemRarity == 4) {
             reqMats = reqMats4Star;
         } else {
             reqMats = reqMats3Star;

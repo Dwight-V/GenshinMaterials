@@ -14,8 +14,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,6 +39,8 @@ public class CounterFragment extends Fragment {
 
     protected TabLayout tabMaterials;
 
+    private LinearLayout linLayStars;
+
     View counterObjYellow;
     View counterObjPurple;
     View counterObjBlue;
@@ -54,6 +58,8 @@ public class CounterFragment extends Fragment {
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static final String SUBTAB_POSITION = "subtab_pos_int";
+
+    public static final String ITEM_RARITY = "item_rarity";
     // endregion
 
 
@@ -64,6 +70,8 @@ public class CounterFragment extends Fragment {
     public String[] tabValArray2;
 
     public int prevSubtabPos;
+
+    protected int itemRarity = 3;
     // endregion
 
 
@@ -136,6 +144,8 @@ public class CounterFragment extends Fragment {
         swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
+
+        linLayStars = (LinearLayout) view.findViewById(R.id.linearlayout_stars);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
         allDrwChecks = new ImageView[] {counterObjYellow.findViewById(R.id.drawable_check),
@@ -445,6 +455,31 @@ public class CounterFragment extends Fragment {
             }
         });
 
+        linLayStars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(getContext(), "Stars clicked!", Toast.LENGTH_SHORT).show();
+                // Cycles which rarity of weapon to calc for.
+                switch (itemRarity) {
+                    case 3:
+                        txtTypeTitle.setText("4-Star Weapon");
+                        itemRarity = 4;
+                        break;
+                    case 4:
+                        txtTypeTitle.setText("5-Star Weapon");
+                        itemRarity = 5;
+                        break;
+                    default:
+                        txtTypeTitle.setText("3-Star Weapon");
+                        itemRarity = 3;
+                        break;
+                }
+                saveData();
+                updateEdittextVals();
+                checkRequirements();
+            }
+        });
+
         // Loads data and displays saved data on app launch.
         loadData();
         updateViews();
@@ -488,6 +523,7 @@ public class CounterFragment extends Fragment {
 
 //        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
+        editor.putInt(ITEM_RARITY, itemRarity);
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
 
         editor.apply();
@@ -502,6 +538,7 @@ public class CounterFragment extends Fragment {
         tabValArray2 = new String[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
+        itemRarity = sharedPreferences.getInt(ITEM_RARITY, 3);
 
         // Sets the new initialized local arrays to the saved instance of the arrays.
         for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
