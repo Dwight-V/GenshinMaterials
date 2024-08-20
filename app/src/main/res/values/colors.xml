@@ -10,4 +10,7 @@
 
     <color name="mid_grey">#B8B8B8</color>
     <color name="my_dark_primary">#CCCCCC</color>
+
+    <color name="check_green">#0DE000</color>
+    <color name="check_grey">#B8B8B8</color>
 </resources>

@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -87,7 +88,7 @@ public class CounterFragment extends Fragment {
 
     // Holds shallow copies (pointers) to their respective data types. Used in loops for easy indexing.
     private EditText[] allEditTexts;
-    private TextView[] allDrwChecks;
+    private ImageView[] allDrwChecks;
     private View[] allCounterObjs;
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
@@ -137,7 +138,7 @@ public class CounterFragment extends Fragment {
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
         allEditTexts = new EditText[] {edtYellow, edtPurple, edtBlue, edtGreen, edtGrey};
-        allDrwChecks = new TextView[] {counterObjYellow.findViewById(R.id.drawable_check),
+        allDrwChecks = new ImageView[] {counterObjYellow.findViewById(R.id.drawable_check),
                 counterObjPurple.findViewById(R.id.drawable_check),
                 counterObjBlue.findViewById(R.id.drawable_check),
                 counterObjGreen.findViewById(R.id.drawable_check),
@@ -618,9 +619,12 @@ public class CounterFragment extends Fragment {
                 // Integer division rounds down.
                 // If not inside this if statement, extraMats can go negative.
                 extraMats = (netTotalMats[i] - reqAmount) / 3;
-                allDrwChecks[i].setVisibility(View.VISIBLE);
+//                allDrwChecks[i].setVisibility(View.VISIBLE);
+                // https://stackoverflow.com/a/20121975
+                allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_green));
             } else {
-                allDrwChecks[i].setVisibility(View.INVISIBLE);
+//                allDrwChecks[i].setVisibility(View.INVISIBLE);
+                allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_grey));
                 extraMats = 0;
             }
         }
