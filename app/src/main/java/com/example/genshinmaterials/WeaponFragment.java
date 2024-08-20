@@ -89,6 +89,7 @@ public class WeaponFragment extends CounterFragment {
                         break;
                 }
                 saveData();
+                updateEdittextVals();
                 checkRequirements();
             }
         });
@@ -125,9 +126,21 @@ public class WeaponFragment extends CounterFragment {
     }
 
     @Override
-    public void checkRequirements() {
-//        int[][] reqMats;
+    public void updateEdittextVals() {
+        // Ensures the correct weapon rarity is being calculated.
+        if (weaponRarity == 5) {
+            reqMats = reqMats5Star;
+        } else if (weaponRarity == 4) {
+            reqMats = reqMats4Star;
+        } else {
+            reqMats = reqMats3Star;
+        }
 
+        super.updateEdittextVals();
+    }
+
+    @Override
+    public void checkRequirements() {
         // Ensures the correct weapon rarity is being calculated.
         if (weaponRarity == 5) {
             reqMats = reqMats5Star;

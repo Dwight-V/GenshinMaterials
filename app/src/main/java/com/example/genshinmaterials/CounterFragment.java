@@ -88,7 +88,7 @@ public class CounterFragment extends Fragment {
     // Holds shallow copies (pointers) to their respective data types. Used in loops for easy indexing.
     private EditText[] allEditTexts;
     private TextView[] allDrwChecks;
-    private View[] allViews;
+    private View[] allCounterObjs;
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
@@ -106,6 +106,8 @@ public class CounterFragment extends Fragment {
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
 
+        btnClear = (ImageButton) view.findViewById(R.id.button_clear);
+
         counterObjYellow = view.findViewById(R.id.counter_yellow);
         counterObjPurple = view.findViewById(R.id.counter_purple);
         counterObjBlue = view.findViewById(R.id.counter_blue);
@@ -118,7 +120,6 @@ public class CounterFragment extends Fragment {
         edtGreen = (EditText) counterObjGreen.findViewById(R.id.edittext_main);
         edtGrey = (EditText) counterObjGrey.findViewById(R.id.edittext_main);
 
-        btnClear = (ImageButton) view.findViewById(R.id.button_clear);
         btnAddYellow = (Button) counterObjYellow.findViewById(R.id.button_add);
         btnSubYellow = (Button) counterObjYellow.findViewById(R.id.button_sub);
         btnAddPurple = (Button) counterObjPurple.findViewById(R.id.button_add);
@@ -141,7 +142,7 @@ public class CounterFragment extends Fragment {
                 counterObjBlue.findViewById(R.id.drawable_check),
                 counterObjGreen.findViewById(R.id.drawable_check),
                 counterObjGrey.findViewById(R.id.drawable_check)};
-        allViews = new View[] {counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey};
+        allCounterObjs = new View[] {counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey};
 
 
 
@@ -556,11 +557,12 @@ public class CounterFragment extends Fragment {
 
     // Sets the correct values of the EditTexts (based on current subtab position).
     public void updateEdittextVals() {
+        int tabPos = tabMaterials.getSelectedTabPosition();
         // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
         edittextsAreReady = false;
 
 //        Toast.makeText(getActivity(), "updateEdittextVals() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
-        switch (tabMaterials.getSelectedTabPosition()) {
+        switch (tabPos) {
             case 2:
                 for (int i = 0; i < allEditTexts.length; i++) {
                     allEditTexts[i].setText(tabValArray2[i]);
@@ -576,6 +578,11 @@ public class CounterFragment extends Fragment {
                     allEditTexts[i].setText(tabValArray0[i]);
                 }
                 break;
+        }
+
+        for (int i = 0; i < allEditTexts.length; i++) {
+            TextView temp = allCounterObjs[i].findViewById(R.id.txtDenominator);
+            temp.setText(String.valueOf(reqMats[tabPos][i]));
         }
 
         edittextsAreReady = true;
@@ -624,9 +631,9 @@ public class CounterFragment extends Fragment {
 
         for (int i = 0; i < allEditTexts.length; i++) {
             if (reqMats[subtabIndex][i] <= 0) {
-                allViews[i].setVisibility(View.GONE);
+                allCounterObjs[i].setVisibility(View.GONE);
             } else {
-                allViews[i].setVisibility(View.VISIBLE);
+                allCounterObjs[i].setVisibility(View.VISIBLE);
             }
         }
     }
