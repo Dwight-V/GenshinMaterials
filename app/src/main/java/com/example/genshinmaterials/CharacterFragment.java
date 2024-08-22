@@ -38,6 +38,10 @@ public class CharacterFragment extends CounterFragment {
     public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_char", "purple_1_char", "blue_1_char", "green_1_char", "grey_1_char"};
     public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_char", "purple_2_char", "blue_2_char", "green_2_char", "grey_2_char"};
 
+    public static String SUBTAB_POSITION = "subtab_position_char";
+
+    public static String ITEM_RARITY = "rarity_weapon_char";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Gem", "Enemy", "Msc."};
 
@@ -51,7 +55,7 @@ public class CharacterFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY);
     }
     // endregion
 

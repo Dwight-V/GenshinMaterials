@@ -38,6 +38,10 @@ public class WeaponFragment extends CounterFragment {
     public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_weapon", "purple_1_weapon", "blue_1_weapon", "green_1_weapon", "grey_1_weapon"};
     public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_weapon", "purple_2_weapon", "blue_2_weapon", "green_2_weapon", "grey_2_weapon"};
 
+    public static String SUBTAB_POSITION = "subtab_position_weapon";
+
+    public static String ITEM_RARITY = "rarity_weapon";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
 
@@ -57,7 +61,7 @@ public class WeaponFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     WeaponFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star, SUBTAB_POSITION, ITEM_RARITY);
     }
     // endregion
 

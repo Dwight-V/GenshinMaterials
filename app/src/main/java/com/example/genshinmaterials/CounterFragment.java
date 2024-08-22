@@ -57,9 +57,10 @@ public class CounterFragment extends Fragment {
     public static String[] EDITTEXT_VALUES_2;
 
     // When the user exits the fragment, saves which subtab was last selected.
-    public static final String SUBTAB_POSITION = "subtab_pos_int";
+    public static String SUBTAB_POSITION;
 
-    public static final String ITEM_RARITY = "item_rarity";
+    public static String ITEM_RARITY;
+
     // endregion
 
 
@@ -101,12 +102,15 @@ public class CounterFragment extends Fragment {
 
     private ImageView[] allStars;
 
-    CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName, int[][] req) {
+    CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
+                     int[][] req, String subtabPos, String itemRare) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
         EDITTEXT_VALUES_1 = edittextValuesArray1;
         EDITTEXT_VALUES_2 = edittextValuesArray2;
         tabNamesArr = tabsName;
         reqMats = req;
+        SUBTAB_POSITION = subtabPos;
+        ITEM_RARITY = itemRare;
     }
 
     @Nullable

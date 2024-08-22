@@ -38,6 +38,10 @@ public class TalentFragment extends CounterFragment {
     public static final String[] EDITTEXT_VALUES_1 = {"yellow_1_talent", "purple_1_talent", "blue_1_talent", "green_1_talent", "grey_1_talent"};
     public static final String[] EDITTEXT_VALUES_2 = {"yellow_2_talent", "purple_2_talent", "blue_2_talent", "green_2_talent", "grey_2_talent"};
 
+    public static String SUBTAB_POSITION = "subtab_position_talent";
+
+    public static String ITEM_RARITY = "rarity_talent";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Books", "Boss", "Enemy"};
 
@@ -51,7 +55,7 @@ public class TalentFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     TalentFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY);
     }
     // endregion
 
