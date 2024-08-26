@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,19 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.Arrays;
@@ -52,6 +64,13 @@ public class CharacterFragment extends CounterFragment {
             {0, 0, 36, 30, 18},
             {0, 46, 420000, 0, 168}};
 
+    private String requestUrl2 = "https://genshin.jmp.blue/materials/character-ascension";
+
+    private String requestUrl1 = "https://genshin.jmp.blue/materials/character-ascension";
+
+    // Is all the character gem images
+    private String requestUrl0 = "https://genshin.jmp.blue/materials/character-ascension";
+
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
@@ -66,5 +85,57 @@ public class CharacterFragment extends CounterFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
+    }
+
+    @Override
+    public void updateCounterUi() {
+        super.updateCounterUi();
+
+        switch (tabMaterials.getSelectedTabPosition()) {
+            case 2:
+                setIcons(requestUrl2);
+                break;
+            case 1:
+                setIcons(requestUrl1);
+                break;
+            default:
+                setIcons(requestUrl0);
+                break;
+        }
+    }
+
+    @Override
+    public void updateCounterIconsTab2(JSONArray response) {
+//        super.updateCounterIconsTab2(response);
+    }
+
+    @Override
+    public void updateCounterIconsTab1(JSONArray response) {
+//        super.updateCounterIconsTab0(response);
+    }
+
+    @Override
+    public void updateCounterIconsTab0(JSONArray response) {
+//        super.updateCounterIconsTab2(response);
+//        txtStatic.setText(response.length() + "\n" + response.toString());
+
+        // Generates a random index of the response.
+        int randIndex = (int) (Math.random() * response.length());
+        // Ensures that we start from an index that's divisible by 4.
+        // This is wanted since the array as of making is listed by type (dendro, pyro, cyro, etc) then by rarity (yellow, purple, ...).
+        // So if iterating exactly 4 indexes, we'll get the decending rarity of a random gem type.
+        int range = randIndex - (randIndex % 4);
+
+        for (int i = 0; i < 4; i++) {
+            if (i < response.length()) {
+                try {
+                    updateCounterIcon(allImgViewIcons[i], requestUrl0 + "/" + response.get(range).toString());
+                } catch (JSONException e) {
+                    Log.i("API", e.toString());
+                }
+            }
+            range++;
+        }
+
     }
 }
