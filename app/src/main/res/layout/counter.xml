@@ -32,6 +32,7 @@
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:id="@+id/imageview_counter_icon"
             android:src="@mipmap/ic_launcher_custom" />
 
         <LinearLayout

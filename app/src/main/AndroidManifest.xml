@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Internet permission needed for api calling. Endpoint I'm using is https://genshin.jmp.blue/, GitHub: https://github.com/genshindev/api,
+    Guide I'm following: https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/# -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"

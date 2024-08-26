@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,13 +25,23 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CounterFragment extends Fragment {
     // region Views
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    private TextView txtTemp;
-    private TextView txtTemp2;
+    private TextView txtTemp, txtTemp2, txtStatic;
     protected TextView txtTypeTitle;
     private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
@@ -41,11 +52,9 @@ public class CounterFragment extends Fragment {
 
     private LinearLayout linLayStars;
 
-    View counterObjYellow;
-    View counterObjPurple;
-    View counterObjBlue;
-    View counterObjGreen;
-    View counterObjGrey;
+    protected View counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey;
+
+    protected ImageView imgViewIconYellow, imgViewIconPurple, imgViewIconBlue, imgViewIconGreen, imgViewIconGrey;
     // endregion
 
 
@@ -95,12 +104,16 @@ public class CounterFragment extends Fragment {
     // So edtYellow always works (because it's the only call that triggers before the saveData()), But all others don't.
     private boolean edittextsAreReady = true;
 
+    protected String baseApiUrl = "https://genshin.jmp.blue";
+
     // Holds shallow copies (pointers) to their respective data types. Used in loops for easy indexing.
     private EditText[] allEditTexts;
     private ImageView[] allDrwChecks;
     private View[] allCounterObjs;
+    private ImageView[] allImgViewIcons;
 
     private ImageView[] allStars;
+
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
                      int[][] req, String subtabPos, String itemRare) {
@@ -119,6 +132,7 @@ public class CounterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
+        txtStatic = (TextView) view.findViewById(R.id.text_static);
         txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
@@ -146,6 +160,12 @@ public class CounterFragment extends Fragment {
         btnAddGrey = (Button) counterObjGrey.findViewById(R.id.button_add);
         btnSubGrey = (Button) counterObjGrey.findViewById(R.id.button_sub);
 
+        imgViewIconYellow = counterObjYellow.findViewById(R.id.imageview_counter_icon);
+        imgViewIconPurple = counterObjPurple.findViewById(R.id.imageview_counter_icon);
+        imgViewIconBlue = counterObjBlue.findViewById(R.id.imageview_counter_icon);
+        imgViewIconGreen = counterObjGreen.findViewById(R.id.imageview_counter_icon);
+        imgViewIconGrey = counterObjGrey.findViewById(R.id.imageview_counter_icon);
+
         // https://stackoverflow.com/a/36139523
         swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
 
@@ -166,6 +186,8 @@ public class CounterFragment extends Fragment {
                 linLayStars.findViewById(R.id.imageview_star_2),
                 linLayStars.findViewById(R.id.imageview_star_3),
                 linLayStars.findViewById(R.id.imageview_star_4)};
+
+        allImgViewIcons = new ImageView[] {imgViewIconYellow, imgViewIconPurple, imgViewIconBlue, imgViewIconGreen, imgViewIconGrey};
 
 
 
@@ -580,11 +602,17 @@ public class CounterFragment extends Fragment {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
 
-        counterObjYellow.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_yellow));
-        counterObjPurple.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_purple));
-        counterObjBlue.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_blue));
-        counterObjGreen.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_green));
-        counterObjGrey.findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.genshin_grey));
+        updateCounterUi();
+    }
+
+    public void updateCounterUi() {
+        int[] colors = {R.color.genshin_yellow, R.color.genshin_purple,  R.color.genshin_blue, R.color.genshin_green, R.color.genshin_grey};
+
+        for (int i = 0; i < allCounterObjs.length; i++) {
+            allCounterObjs[i].findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), colors[i]));
+            updateCounterIcon(allImgViewIcons[i],baseApiUrl + "/materials/character-ascension/prithiva-topaz-gemstone");
+
+        }
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
@@ -720,5 +748,42 @@ public class CounterFragment extends Fragment {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
             saveData();
         }
+    }
+
+    // Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
+    // Returns the JSON response from the requested API endpoint at reqeuestUrl.
+    // Returns null if endpoint fails/DNE.
+//    public void getJsonResponse(String requestUrl) {
+//
+//        // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.
+//        RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
+//
+//        // String Request initialized
+//        JsonObjectRequest mJsonRequest = new JsonObjectRequest(requestUrl, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getContext(), "API request for image failed.", Toast.LENGTH_SHORT).show();
+//                Log.i("API", "Error :" + error.toString());
+//            }
+//        });
+//
+//        mRequestQueue.add(mJsonRequest);
+//    }
+
+    public void updateCounterIcon(ImageView imgView, String imageUrl) {
+//            txtStatic.setText(imageUrl);
+
+        // Use Glide to replace image (https://github.com/bumptech/glide?tab=readme-ov-file#how-do-i-use-glide)
+        Glide
+                .with(getContext())
+                .load(imageUrl)
+                .centerCrop()
+                .placeholder(R.mipmap.ic_launcher_custom)
+                .into(imgView);
     }
 }
