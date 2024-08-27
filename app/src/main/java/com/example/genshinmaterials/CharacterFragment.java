@@ -39,7 +39,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.sql.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class CharacterFragment extends CounterFragment {
 
@@ -119,22 +121,46 @@ public class CharacterFragment extends CounterFragment {
 //        super.updateCounterIconsTab2(response);
 //        txtStatic.setText(response.length() + "\n" + response.toString());
 
-        // Generates a random index of the response.
-        int randIndex = (int) (Math.random() * response.length());
-        // Ensures that we start from an index that's divisible by 4.
-        // This is wanted since the array as of making is listed by type (dendro, pyro, cyro, etc) then by rarity (yellow, purple, ...).
-        // So if iterating exactly 4 indexes, we'll get the decending rarity of a random gem type.
-        int range = randIndex - (randIndex % 4);
+        String[] typeSortedArr = new String[response.length()];
+
+        // region Sorting typeSortedArr
+        // https://stackoverflow.com/questions/15871309/convert-jsonarray-to-string-array
+        for (int i = 0; i < typeSortedArr.length; i++) {
+            try {
+                typeSortedArr[i] = response.get(i).toString();
+            } catch (JSONException e) {
+                Log.i("API", e.toString());
+            }
+        }
+
+        // https://www.techiedelight.com/sort-array-of-strings-java/
+        Arrays.sort(typeSortedArr, new Comparator<String>() {
+            @Override
+            public int compare(String str1, String str2) {
+                String[] str2Arr = str2.split("-");
+                String[] str1Arr = str1.split("-");
+                return str1Arr[str1Arr.length - 1].compareTo(str2Arr[str2Arr.length - 1]);
+            }
+        });
+        // endregion
+
+
+
+        // Was originally 4 when using response unsorted, but now is 8 due to there being 8 types of gems you can get in the game.
+        int separation = 8;
+
+        // Since typeSortedArr is still alphabetical, the sorted array looks like
+        // {*-chunk, *-fragment, *-gemstone, *-sliver}.
+        // The indexes below push the starting point in allImgViewIcons[] to their matching spot in typeSortedArr[].
+        int[] range = {separation * 2, 0, separation, separation * 3};
+
+//        txtStatic.setText(Arrays.toString(typeSortedArr));
 
         for (int i = 0; i < 4; i++) {
             if (i < response.length()) {
-                try {
-                    updateCounterIcon(allImgViewIcons[i], requestUrl0 + "/" + response.get(range).toString());
-                } catch (JSONException e) {
-                    Log.i("API", e.toString());
-                }
+                // uses superclass' method to display the gems. range[i] sets the correct starting point, and the random number does the rest.
+                updateCounterIcon(allImgViewIcons[i], requestUrl0 + "/" + typeSortedArr[range[i] + ((int) (Math.random() * separation))]);
             }
-            range++;
         }
 
     }
