@@ -776,10 +776,6 @@ public class CounterFragment extends Fragment {
                         updateCounterIconsTab0(response);
                         break;
                 }
-
-                for (int i = 0; i < response.length(); i++) {
-
-                }
             }
         }, new Response.ErrorListener() {
             @Override
