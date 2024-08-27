@@ -41,6 +41,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.sql.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -112,7 +113,71 @@ public class CharacterFragment extends CounterFragment {
     }
 
     public void updateCounterIconsTab1() {
-//        super.updateCounterIconsTab0(response);
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
+        JsonObjectRequest mJsonRequest = new JsonObjectRequest(requestUrl1, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                ArrayList<String>[] possibleIcons = new ArrayList[3];
+                JSONArray categoriesArr;
+
+                for (int k = 0; k < possibleIcons.length; k++) {
+                    possibleIcons[k] = new ArrayList<String>();
+                }
+
+//                txtStatic.setText(response.names().toString());
+                try {
+                    categoriesArr = response.toJSONArray(response.names());
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                for (int i = 0; i < categoriesArr.length(); i++) {
+                    try {
+                        JSONObject curCategory = categoriesArr.getJSONObject(i);
+
+                        if (curCategory.getString("characters") != null) {
+                            JSONArray itemArr = curCategory.getJSONArray("items");
+                            for (int j = 0; j < itemArr.length(); j++) {
+                                JSONObject curItem = itemArr.getJSONObject(j);
+                                switch (curItem.getInt("rarity")) {
+                                    case 3:
+                                        possibleIcons[0].add(curItem.getString("id"));
+                                        break;
+                                    case 2:
+                                        possibleIcons[1].add(curItem.getString("id"));
+                                        break;
+                                    case 1:
+                                        possibleIcons[2].add(curItem.getString("id"));
+                                        break;
+                                }
+                            }
+
+                        }
+                    } catch (Exception e) {
+                        Log.i("API", "categoriesArr loop failed: " + e.toString());
+                    }
+                }
+
+//                txtStatic.setText(possibleIcons[0].toString() + "\n" + possibleIcons[1].toString() + "\n" + possibleIcons[2].toString());
+
+                // Skips imgViewYellow & Purple.
+                for (int i = 0; (i + 2) < allImgViewIcons.length; i++) {
+                    if ((i + 2) < allImgViewIcons.length) {
+                        // uses superclass' method to display the gems. range[i] sets the correct starting point, and the random number does the rest.
+                        updateCounterIcon(allImgViewIcons[i + 2], requestUrl1 + "/" + possibleIcons[i].get((int) (Math.random() * possibleIcons[i].size())));
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "API request for image failed.", Toast.LENGTH_SHORT).show();
+                Log.i("API", "Error :" + error.toString());
+            }
+        });
+
+        mRequestQueue.add(mJsonRequest);
+        // endregion
     }
 
     public void updateCounterIconsTab0() {

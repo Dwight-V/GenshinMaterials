@@ -478,6 +478,7 @@ public class CounterFragment extends Fragment {
                 updateEdittextVals();
                 checkRequirements();
                 disableLayouts();
+                updateCounterUi();
             }
 
             @Override
@@ -758,6 +759,7 @@ public class CounterFragment extends Fragment {
                 .with(getContext())
                 .load(imageUrl)
                 .centerCrop()
+                .optionalFitCenter()
                 .placeholder(R.mipmap.ic_launcher_custom)
                 .into(imgView);
     }

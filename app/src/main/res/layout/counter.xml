@@ -29,7 +29,7 @@
         android:paddingHorizontal="5dp">
 
         <ImageView
-            android:layout_width="40dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:id="@+id/imageview_counter_icon"
