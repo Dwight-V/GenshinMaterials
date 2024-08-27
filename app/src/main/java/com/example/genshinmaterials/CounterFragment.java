@@ -750,56 +750,6 @@ public class CounterFragment extends Fragment {
         }
     }
 
-    // Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
-    // Returns the JSON response from the requested API endpoint at reqeuestUrl.
-    // All the below functions are used individually in each fragment, with setIcons() being added to each's updateCounterUi() differently.
-    // The reason I couldn't do my standard "declare global variable in CounterFragment, then pass it as a constructor variable in each Fragment"
-    // is because the endpoints may change locally, such as for different characters. If I were to declare them here, I'd have to do it as final variables.
-    public void setIcons(String requestUrl) {
-        // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.
-        RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
-
-        // String Request initialized
-        JsonArrayRequest mJsonRequest = new JsonArrayRequest(requestUrl + "/list", new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-//                txtStatic.setText(response.length() + "\n" + response.toString());
-
-                switch (tabMaterials.getSelectedTabPosition()) {
-                    case 2:
-                        updateCounterIconsTab2(response);
-                        break;
-                    case 1:
-                        updateCounterIconsTab1(response);
-                        break;
-                    default:
-                        updateCounterIconsTab0(response);
-                        break;
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getContext(), "API request for image failed.", Toast.LENGTH_SHORT).show();
-                Log.i("API", "Error :" + error.toString());
-            }
-        });
-
-        mRequestQueue.add(mJsonRequest);
-    }
-
-    public void updateCounterIconsTab2(JSONArray response) {
-
-    }
-
-    public void updateCounterIconsTab1(JSONArray response) {
-
-    }
-
-    public void updateCounterIconsTab0(JSONArray response) {
-
-    }
-
     public void updateCounterIcon(ImageView imgView, String imageUrl) {
 //            txtStatic.setText(imageUrl);
 

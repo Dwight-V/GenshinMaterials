@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,7 @@ public class CharacterFragment extends CounterFragment {
 
     private String requestUrl2 = "https://genshin.jmp.blue/materials/character-ascension";
 
-    private String requestUrl1 = "https://genshin.jmp.blue/materials/character-ascension";
+    private String requestUrl1 = "https://genshin.jmp.blue/materials/common-ascension";
 
     // Is all the character gem images
     private String requestUrl0 = "https://genshin.jmp.blue/materials/character-ascension";
@@ -95,73 +96,86 @@ public class CharacterFragment extends CounterFragment {
 
         switch (tabMaterials.getSelectedTabPosition()) {
             case 2:
-                setIcons(requestUrl2);
+                updateCounterIconsTab2();
                 break;
             case 1:
-                setIcons(requestUrl1);
+                updateCounterIconsTab1();
                 break;
             default:
-                setIcons(requestUrl0);
+                updateCounterIconsTab0();
                 break;
         }
     }
 
-    @Override
-    public void updateCounterIconsTab2(JSONArray response) {
-//        super.updateCounterIconsTab2(response);
+    public void updateCounterIconsTab2() {
+
     }
 
-    @Override
-    public void updateCounterIconsTab1(JSONArray response) {
+    public void updateCounterIconsTab1() {
 //        super.updateCounterIconsTab0(response);
     }
 
-    @Override
-    public void updateCounterIconsTab0(JSONArray response) {
-//        super.updateCounterIconsTab2(response);
-//        txtStatic.setText(response.length() + "\n" + response.toString());
+    public void updateCounterIconsTab0() {
+        // Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
+        // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
 
-        String[] typeSortedArr = new String[response.length()];
-
-        // region Sorting typeSortedArr
-        // https://stackoverflow.com/questions/15871309/convert-jsonarray-to-string-array
-        for (int i = 0; i < typeSortedArr.length; i++) {
-            try {
-                typeSortedArr[i] = response.get(i).toString();
-            } catch (JSONException e) {
-                Log.i("API", e.toString());
-            }
-        }
-
-        // https://www.techiedelight.com/sort-array-of-strings-java/
-        Arrays.sort(typeSortedArr, new Comparator<String>() {
+        JsonArrayRequest mJsonRequest = new JsonArrayRequest(requestUrl0 + "/list", new Response.Listener<JSONArray>() {
             @Override
-            public int compare(String str1, String str2) {
-                String[] str2Arr = str2.split("-");
-                String[] str1Arr = str1.split("-");
-                return str1Arr[str1Arr.length - 1].compareTo(str2Arr[str2Arr.length - 1]);
+            public void onResponse(JSONArray response) {
+//                super.updateCounterIconsTab0(response);
+//                txtStatic.setText(response.length() + "\n" + response.toString());
+
+                String[] typeSortedArr = new String[response.length()];
+
+                // region Sorting typeSortedArr
+                // https://stackoverflow.com/questions/15871309/convert-jsonarray-to-string-array
+                for (int i = 0; i < typeSortedArr.length; i++) {
+                    try {
+                        typeSortedArr[i] = response.get(i).toString();
+                    } catch (JSONException e) {
+                        Log.i("API", e.toString());
+                    }
+                }
+
+                // https://www.techiedelight.com/sort-array-of-strings-java/
+                Arrays.sort(typeSortedArr, new Comparator<String>() {
+                    @Override
+                    public int compare(String str1, String str2) {
+                        String[] str2Arr = str2.split("-");
+                        String[] str1Arr = str1.split("-");
+                        return str1Arr[str1Arr.length - 1].compareTo(str2Arr[str2Arr.length - 1]);
+                    }
+                });
+                // endregion
+
+
+
+                // Was originally 4 when using response unsorted, but now is 8 due to there being 8 types of gems you can get in the game.
+                int separation = 8;
+
+                // Since typeSortedArr is still alphabetical, the sorted array looks like
+                // {*-chunk, *-fragment, *-gemstone, *-sliver}.
+                // The indexes below push the starting point in allImgViewIcons[] to their matching spot in typeSortedArr[].
+                int[] range = {separation * 2, 0, separation, separation * 3};
+
+//                txtStatic.setText(Arrays.toString(typeSortedArr));
+
+                for (int i = 0; i < 4; i++) {
+                    if (i < response.length()) {
+                        // uses superclass' method to display the gems. range[i] sets the correct starting point, and the random number does the rest.
+                        updateCounterIcon(allImgViewIcons[i], requestUrl0 + "/" + typeSortedArr[range[i] + ((int) (Math.random() * separation))]);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "API request for image failed.", Toast.LENGTH_SHORT).show();
+                Log.i("API", "Error :" + error.toString());
             }
         });
-        // endregion
 
-
-
-        // Was originally 4 when using response unsorted, but now is 8 due to there being 8 types of gems you can get in the game.
-        int separation = 8;
-
-        // Since typeSortedArr is still alphabetical, the sorted array looks like
-        // {*-chunk, *-fragment, *-gemstone, *-sliver}.
-        // The indexes below push the starting point in allImgViewIcons[] to their matching spot in typeSortedArr[].
-        int[] range = {separation * 2, 0, separation, separation * 3};
-
-//        txtStatic.setText(Arrays.toString(typeSortedArr));
-
-        for (int i = 0; i < 4; i++) {
-            if (i < response.length()) {
-                // uses superclass' method to display the gems. range[i] sets the correct starting point, and the random number does the rest.
-                updateCounterIcon(allImgViewIcons[i], requestUrl0 + "/" + typeSortedArr[range[i] + ((int) (Math.random() * separation))]);
-            }
-        }
-
+        mRequestQueue.add(mJsonRequest);
     }
 }
