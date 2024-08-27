@@ -89,6 +89,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Sets the initial fragment to WeaponFragment. Needs if statement for any runtime update such as rotating the screen, which destroys the activity (and this method is run again).
         if (savedInstanceState == null) {
+            // Checks if loadData() has no value for currentTabId.
+            if (currentTabId == -1) {
+                currentTabId = R.id.nav_weapon;
+            }
             navMainMenu.setCheckedItem(currentTabId);
             updateFragmentView();
         }
@@ -100,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //        Toast.makeText(this, "ItemSelected", Toast.LENGTH_SHORT).show();
         // Checks if loadData() has no value for currentTabId.
         if (currentTabId == -1) {
-            Toast.makeText(this, "currentTabId ==" + currentTabId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "currentTabId == " + currentTabId, Toast.LENGTH_SHORT).show();
             return false;
         }
         currentTabId = item.getItemId();
