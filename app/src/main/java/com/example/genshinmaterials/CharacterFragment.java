@@ -117,28 +117,37 @@ public class CharacterFragment extends CounterFragment {
         JsonObjectRequest mJsonRequest = new JsonObjectRequest(requestUrl1, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                // this list of ArrayLists will hold the 3 rarity types of enemy drops, blue, green, and grey.
                 ArrayList<String>[] possibleIcons = new ArrayList[3];
                 JSONArray categoriesArr;
 
+                // Initializes possibleIcons.
                 for (int k = 0; k < possibleIcons.length; k++) {
                     possibleIcons[k] = new ArrayList<String>();
                 }
 
 //                txtStatic.setText(response.names().toString());
+                // Turns the JSONObject response into a JSONArray called categoriesArr.
                 try {
                     categoriesArr = response.toJSONArray(response.names());
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
 
+                // Go through all the categories in response.
                 for (int i = 0; i < categoriesArr.length(); i++) {
                     try {
                         JSONObject curCategory = categoriesArr.getJSONObject(i);
 
+                        // First check if this material type is for upgrading characters (there were some weapon only materials when I looked through the response).
                         if (curCategory.getString("characters") != null) {
                             JSONArray itemArr = curCategory.getJSONArray("items");
+                            // Each item has an attribute called "rarity", and I use that to sort them into the correct ArrayList.
                             for (int j = 0; j < itemArr.length(); j++) {
                                 JSONObject curItem = itemArr.getJSONObject(j);
+                                // I reversed the order (rarity 3 = blue, but put into possibleIcons[0]) because
+                                // the for loop that puts the images into the ImageViews below,
+                                // starts with the highest rarity at the lowest index, mirroring allImgViewIcons[].
                                 switch (curItem.getInt("rarity")) {
                                     case 3:
                                         possibleIcons[0].add(curItem.getString("id"));
@@ -157,13 +166,12 @@ public class CharacterFragment extends CounterFragment {
                         Log.i("API", "categoriesArr loop failed: " + e.toString());
                     }
                 }
-
 //                txtStatic.setText(possibleIcons[0].toString() + "\n" + possibleIcons[1].toString() + "\n" + possibleIcons[2].toString());
 
-                // Skips imgViewYellow & Purple.
+                // Skips imgViewYellow & imgViewPurple.
                 for (int i = 0; (i + 2) < allImgViewIcons.length; i++) {
                     if ((i + 2) < allImgViewIcons.length) {
-                        // uses superclass' method to display the gems. range[i] sets the correct starting point, and the random number does the rest.
+                        // Uses superclass' method to display the images.
                         updateCounterIcon(allImgViewIcons[i + 2], requestUrl1 + "/" + possibleIcons[i].get((int) (Math.random() * possibleIcons[i].size())));
                     }
                 }
@@ -177,7 +185,6 @@ public class CharacterFragment extends CounterFragment {
         });
 
         mRequestQueue.add(mJsonRequest);
-        // endregion
     }
 
     public void updateCounterIconsTab0() {
