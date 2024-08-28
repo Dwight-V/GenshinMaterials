@@ -109,8 +109,8 @@ public class CounterFragment extends Fragment {
     private boolean edittextsAreReady = true;
 
     // Holds shallow copies (pointers) to their respective data types. Used in loops for easy indexing.
-    private EditText[] allEditTexts;
-    private ImageView[] allDrwChecks;
+    protected EditText[] allEditTexts;
+    protected ImageView[] allDrwChecks;
     private View[] allCounterObjs;
     protected ImageView[] allImgViewIcons;
 
@@ -715,6 +715,7 @@ public class CounterFragment extends Fragment {
                 // If not inside this if statement, extraMats can go negative.
                 extraMats = (netTotalMats[i] - reqAmount) / 3;
 //                allDrwChecks[i].setVisibility(View.VISIBLE);
+                // TODO: Make this a method that toggles between the two, or give it an argument for on/off.
                 // https://stackoverflow.com/a/20121975
                 allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_green));
             } else {

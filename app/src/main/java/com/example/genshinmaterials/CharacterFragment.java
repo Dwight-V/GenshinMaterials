@@ -59,20 +59,19 @@ public class CharacterFragment extends CounterFragment {
     public static String ITEM_RARITY = "rarity_weapon_char";
 
     // Programmatically replaces the names of the subtabs.
-    private static final String[] tabNamesArr = {"Gem", "Enemy", "Msc."};
+    private static final String[] tabNamesArr = {"Gem", "Enemy", "XP"};
 
     // The hardcoded amount of materials need to fully level up the weapon.
     // Each row is in descending rarity, mirroring allEditTexts.
     // Each column represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
     private static int[][] reqMats = {{6, 9, 9, 1, 0},
             {0, 0, 36, 30, 18},
-            {0, 46, 420000, 0, 168}};
+            {0, 419, 10000, 10000, 0}};
 
-    private String requestUrl2 = "https://genshin.jmp.blue/materials/character-ascension";
+    private String requestUrl2 = "https://genshin.jmp.blue/materials/character-experience";
 
     private String requestUrl1 = "https://genshin.jmp.blue/materials/common-ascension";
 
-    // Is all the character gem images
     private String requestUrl0 = "https://genshin.jmp.blue/materials/character-ascension";
 
 
@@ -88,8 +87,73 @@ public class CharacterFragment extends CounterFragment {
 //        View view = inflater.inflate(R.layout.fragment_counter, container, false);
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
+//        tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+//            @Override
+//            public void onTabSelected(TabLayout.Tab tab) {
+//                if (tabMaterials.getSelectedTabPosition() != 2) {
+        super.checkRequirements();
+//                    CharacterFragment.super.tabMaterials.selectTab(tab);
+//                } else {
+//                    updateEdittextVals();
+////                    checkRequirements();
+//                    disableLayouts();
+//                    updateCounterUi();
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onTabUnselected(TabLayout.Tab tab) {
+//
+//            }
+//
+//            @Override
+//            public void onTabReselected(TabLayout.Tab tab) {
+//
+//            }
+//        });
+
+
         return view;
     }
+
+    @Override
+    public void checkRequirements() {
+        if (tabMaterials.getSelectedTabPosition() != 2) {
+            super.checkRequirements();
+        } else {
+            // Need custom logic for the character XP.
+
+            // These are how much hero's wit, adventurer's experience, and wander's advice are worth respectively.
+            int purpleXp = 20000;
+            int blueXp = 5000;
+            int greenXp = 1000;
+
+            int[] xpArr = {0, purpleXp, blueXp, greenXp, 0};
+
+            // From the devs themselves, 419 hero's wit is needed to go from lvl 1 - lvl 90.
+            int totalReqXp = reqMats[2][1] * purpleXp;
+            int totalXp = 0;
+
+            for (int i = 0; i < allEditTexts.length; i++) {
+                totalXp += Integer.parseInt(allEditTexts[i].getText().toString()) * xpArr[i];
+            }
+
+            if (totalXp >= totalReqXp) {
+                // https://stackoverflow.com/a/20121975
+                for (int i = 0; i < allDrwChecks.length; i++) {
+//                allDrwChecks[i].setVisibility(View.VISIBLE);
+                    allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_green));
+                }
+            } else {
+                for (int i = 0; i < allDrwChecks.length; i++) {
+//                allDrwChecks[i].setVisibility(View.INVISIBLE);
+                    allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_grey));
+                }
+            }
+        }
+    }
+
 
     @Override
     public void updateCounterUi() {
@@ -108,8 +172,50 @@ public class CharacterFragment extends CounterFragment {
         }
     }
 
-    public void updateCounterIconsTab2() {
+    public void updateCounterIconsTab2() {// Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
+        // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.
+        RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
 
+        JsonArrayRequest mJsonRequest = new JsonArrayRequest(requestUrl2 + "/list", new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                String[] endUrl = new String[5];
+
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        String curResponseStr = response.getString(i);
+                        switch (curResponseStr.charAt(0)) {
+                            // Adventure's Experience, so blue.
+                            case 'a':
+                                endUrl[2] = curResponseStr;
+                                break;
+                            // Hero's wit, purple.
+                            case 'h':
+                                endUrl[1] = curResponseStr;
+                                break;
+                            default:
+                                endUrl[3] = curResponseStr;
+                                break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+                // By starting and ending an index earlier, we skip iconYellow and iconGrey.
+                for (int i = 1; i < allImgViewIcons.length - 1; i++) {
+                    updateCounterIcon(allImgViewIcons[i], requestUrl2 + "/" + endUrl[i]);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "API request for image failed.", Toast.LENGTH_SHORT).show();
+                Log.i("API", "Error :" + error.toString());
+            }
+        });
+
+        mRequestQueue.add(mJsonRequest);
     }
 
     public void updateCounterIconsTab1() {
