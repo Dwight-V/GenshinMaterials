@@ -74,6 +74,26 @@ public class CharacterFragment extends CounterFragment {
 
     private String requestUrl0 = "https://genshin.jmp.blue/materials/character-ascension";
 
+    /*
+    Note:
+    I created local arrays here, that did all the sorting for the API JSON Arrays once (overriding loadData()), then randomized which
+    endpoints (held in the local arrays) to load the images.
+
+    Basically, we call the API to get a list of all the possible images in loadData(), put these endpoints into local arrays, then on subtab switch
+    or Fragment creation, we randomly select the endpoint from the local array and set the ImageViews from there.
+
+    I follow this stackoverflow (https://stackoverflow.com/a/39587340), where I made these global local arrays final. Understand that the arrays in the current
+    updateCounterIconsTab*() are local to their respective methods, and can not be globalized due to API calls being asynchronous
+    (see https://stackoverflow.com/a/70178210). So making them final is the easiest way to pull them out of the Volley.onResponse() method.
+
+    This stops having to sort the image list each time we want to update the ImageViews, as we indeed sort the JSON response each time you switch subtabs
+    (or switch main tabs, etc, etc). I wanted the images to load instantly, but they don't. While the images load faster, comparing the times,
+    it's too insignificant for the amount of work involved (even though all the work is already done for this Fragment).
+
+    I would save my git stash to a new branch, but as I just said, it's not worth it. The default image (what displays until the API call is completed, and
+    which is the app icon as of this moment) still flashes for a split second even with the more efficient calls. But now images don't load for the
+    current subtab you're on (I think due to being a synchronous call now).
+    */
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
