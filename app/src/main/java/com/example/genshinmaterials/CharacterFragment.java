@@ -241,6 +241,12 @@ public class CharacterFragment extends CounterFragment {
                         // First check if this material type is for upgrading characters (there were some weapon only materials when I looked through the response).
                         if (curCategory.getString("characters") != null) {
                             JSONArray itemArr = curCategory.getJSONArray("items");
+
+                            // This means the item is a "miniboss" item, as it doesn't have a grey rarity version.
+                            if (itemArr.getJSONObject(0).getInt("rarity") != 1) {
+                                continue;
+                            }
+
                             // Each item has an attribute called "rarity", and I use that to sort them into the correct ArrayList.
                             for (int j = 0; j < itemArr.length(); j++) {
                                 JSONObject curItem = itemArr.getJSONObject(j);
