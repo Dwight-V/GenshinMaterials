@@ -500,26 +500,28 @@ public class CounterFragment extends Fragment {
         linLayStars.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (swtEditable.isChecked()) {
 //                Toast.makeText(getContext(), "Stars clicked!", Toast.LENGTH_SHORT).show();
-                // Cycles which rarity of weapon to calc for.
-                switch (itemRarity) {
-                    case 3:
+                    // Cycles which rarity of weapon to calc for.
+                    switch (itemRarity) {
+                        case 3:
 //                        txtTypeTitle.setText("4-Star Weapon");
-                        itemRarity = 4;
-                        break;
-                    case 4:
+                            itemRarity = 4;
+                            break;
+                        case 4:
 //                        txtTypeTitle.setText("5-Star Weapon");
-                        itemRarity = 5;
-                        break;
-                    default:
+                            itemRarity = 5;
+                            break;
+                        default:
 //                        txtTypeTitle.setText("3-Star Weapon");
-                        itemRarity = 3;
-                        break;
+                            itemRarity = 3;
+                            break;
+                    }
+                    saveData();
+                    updateEdittextVals();
+                    updateStarRarity();
+                    checkRequirements();
                 }
-                saveData();
-                updateEdittextVals();
-                updateStarRarity();
-                checkRequirements();
             }
         });
 
@@ -640,6 +642,8 @@ public class CounterFragment extends Fragment {
             for (int i = 0; i < allEditTexts.length; i++) {
                 allEditTexts[i].setInputType(InputType.TYPE_NULL);
             }
+
+
         }
     }
 
