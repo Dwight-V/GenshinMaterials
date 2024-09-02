@@ -58,6 +58,8 @@ public class CharacterFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_weapon_char";
 
+    private static final String TEXTSTATIC_TEXT = "Mora: x2,000,000\nLocal Specialty: x168\nBoss Drop: ×46\nHero's Wit: x419";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Gem", "Enemy", "XP"};
 
@@ -67,6 +69,7 @@ public class CharacterFragment extends CounterFragment {
     private static int[][] reqMats = {{6, 9, 9, 1, 0},
             {0, 0, 36, 30, 18},
             {0, 419, 10000, 10000, 0}};
+
 
     private String requestUrl2 = "https://genshin.jmp.blue/materials/character-experience";
 
@@ -97,7 +100,7 @@ public class CharacterFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT);
     }
     // endregion
 
@@ -165,7 +168,8 @@ public class CharacterFragment extends CounterFragment {
         }
     }
 
-    public void updateCounterIconsTab2() {// Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
+    public void updateCounterIconsTab2() {
+        // Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
         // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.
         RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
 

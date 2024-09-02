@@ -76,6 +76,8 @@ public class CounterFragment extends Fragment {
 
     public static String ITEM_RARITY;
 
+    private static String TEXTSTATIC_TEXT;
+
     // endregion
 
 
@@ -120,7 +122,7 @@ public class CounterFragment extends Fragment {
 
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
-                     int[][] req, String subtabPos, String itemRare) {
+                     int[][] req, String subtabPos, String itemRare, String txtStaticText) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
         EDITTEXT_VALUES_1 = edittextValuesArray1;
         EDITTEXT_VALUES_2 = edittextValuesArray2;
@@ -128,6 +130,7 @@ public class CounterFragment extends Fragment {
         reqMats = req;
         SUBTAB_POSITION = subtabPos;
         ITEM_RARITY = itemRare;
+        TEXTSTATIC_TEXT = txtStaticText;
     }
 
     @Nullable
@@ -591,6 +594,8 @@ public class CounterFragment extends Fragment {
         for (int i = 0; i < EDITTEXT_VALUES_0.length; i++) {
             tabValArray0[i] = sharedPreferences.getString(EDITTEXT_VALUES_0[i], "0");
         }
+
+        txtStatic.setText(TEXTSTATIC_TEXT);
     }
 
     // Changes the values of the EditTexts and Switch to saved values.

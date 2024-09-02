@@ -54,6 +54,8 @@ public class WeaponFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_weapon";
 
+    private static final String TEXTSTATIC_TEXT = "Mora: x1,100,000\nMystic Enhancement Ore: x907";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};
 
@@ -80,7 +82,7 @@ public class WeaponFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     WeaponFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star, SUBTAB_POSITION, ITEM_RARITY);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT);
     }
     // endregion
 

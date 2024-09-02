@@ -54,6 +54,8 @@ public class TalentFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_talent";
 
+    private static final String TEXTSTATIC_TEXT = "Mora: x1,652,500\nCrown of Insight: x1";
+
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Books", "Boss", "Enemy"};
 
@@ -65,6 +67,7 @@ public class TalentFragment extends CounterFragment {
             {0, 0, 31, 22, 6}};
 
 
+
 //    private String requestUrl2 = "https://genshin.jmp.blue/materials/common-ascension";
 
     private String requestUrl1 = "https://genshin.jmp.blue/materials/talent-boss";
@@ -74,7 +77,7 @@ public class TalentFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     TalentFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT);
     }
     // endregion
 
