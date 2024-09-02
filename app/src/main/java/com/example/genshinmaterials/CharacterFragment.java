@@ -107,33 +107,6 @@ public class CharacterFragment extends CounterFragment {
 //        View view = inflater.inflate(R.layout.fragment_counter, container, false);
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-//        tabMaterials.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                if (tabMaterials.getSelectedTabPosition() != 2) {
-        super.checkRequirements();
-//                    CharacterFragment.super.tabMaterials.selectTab(tab);
-//                } else {
-//                    updateEdittextVals();
-////                    checkRequirements();
-//                    disableLayouts();
-//                    updateCounterUi();
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
-
-
         return view;
     }
 
