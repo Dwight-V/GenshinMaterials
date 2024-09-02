@@ -219,6 +219,14 @@ public class CharacterFragment extends CounterFragment {
         updateEnemyCounterImgViews();
     }
 
+    @Override
+    public void updateStarRarity() {
+        if (itemRarity <= 4) {
+            itemRarity = 4;
+        }
+        super.updateStarRarity();
+    }
+
     public void updateCounterIconsTab0() {
         // Modified from https://www.geeksforgeeks.org/making-api-calls-using-volley-library-in-android/.
         // These variables are used to call a Genshin API. Source: https://github.com/genshindev/api.

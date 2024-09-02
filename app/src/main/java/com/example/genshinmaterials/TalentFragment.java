@@ -108,6 +108,13 @@ public class TalentFragment extends CounterFragment {
         }
     }
 
+    @Override
+    public void updateStarRarity() {
+        if (itemRarity != 5) {
+            itemRarity = 5;
+            super.updateStarRarity();
+        }
+    }
 
     public void updateCounterIconsTab2() {
         updateEnemyCounterImgViews();
