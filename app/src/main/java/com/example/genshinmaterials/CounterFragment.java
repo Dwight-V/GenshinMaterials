@@ -47,9 +47,9 @@ import java.util.Arrays;
 public class CounterFragment extends Fragment {
     // region Views
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    private TextView txtTemp;
-    private TextView txtTemp2;
-    protected TextView txtStatic, txtTitle;
+    protected TextView txtStatic;
+
+    protected EditText edtTitle;
     private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
@@ -79,6 +79,8 @@ public class CounterFragment extends Fragment {
     public static String ITEM_RARITY;
 
     private static String TEXTSTATIC_TEXT;
+
+    private static String EDITTEXT_TITLE;
 
     // endregion
 
@@ -124,7 +126,7 @@ public class CounterFragment extends Fragment {
 
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
-                     int[][] req, String subtabPos, String itemRare, String txtStaticText) {
+                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title) {
         EDITTEXT_VALUES_0 = edittextValuesArray0;
         EDITTEXT_VALUES_1 = edittextValuesArray1;
         EDITTEXT_VALUES_2 = edittextValuesArray2;
@@ -133,16 +135,15 @@ public class CounterFragment extends Fragment {
         SUBTAB_POSITION = subtabPos;
         ITEM_RARITY = itemRare;
         TEXTSTATIC_TEXT = txtStaticText;
+        EDITTEXT_TITLE = title;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
-        txtTemp = (TextView) view.findViewById(R.id.text_temp);
-        txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtStatic = (TextView) view.findViewById(R.id.text_static);
-        txtTitle = (TextView) view.findViewById(R.id.text_title);
+        edtTitle = (EditText) view.findViewById(R.id.edittext_title);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
 
@@ -529,8 +530,25 @@ public class CounterFragment extends Fragment {
             }
         });
 
-        // Loads data and displays saved data on app launch.
-        loadData();
+        edtTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                saveData();
+            }
+        });
+
+                // Loads data and displays saved data on app launch.
+                loadData();
         updateViews();
         updateStarRarity();
         checkRequirements();
@@ -575,6 +593,7 @@ public class CounterFragment extends Fragment {
 //        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(ITEM_RARITY, itemRarity);
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
+        editor.putString(EDITTEXT_TITLE, edtTitle.getText().toString());
 
         editor.apply();
 //        txtTemp.setText(sharedPreferences.getAll().toString());
@@ -602,6 +621,7 @@ public class CounterFragment extends Fragment {
         }
 
         txtStatic.setText(TEXTSTATIC_TEXT);
+        edtTitle.setText(sharedPreferences.getString(EDITTEXT_TITLE, ""));
     }
 
     // Changes the values of the EditTexts and Switch to saved values.
@@ -636,6 +656,8 @@ public class CounterFragment extends Fragment {
             for (int i = 0; i < allEditTexts.length; i++) {
                 allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             }
+
+            edtTitle.setInputType(InputType.TYPE_CLASS_TEXT);
         } else {
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
             if (requireActivity().getCurrentFocus() != null) {
@@ -647,7 +669,7 @@ public class CounterFragment extends Fragment {
                 allEditTexts[i].setInputType(InputType.TYPE_NULL);
             }
 
-
+            edtTitle.setInputType(InputType.TYPE_NULL);
         }
     }
 

@@ -72,6 +72,7 @@ public class WeaponFragment extends CounterFragment {
             {0, 18, 12, 10, 0},
             {0, 0, 12, 10, 6}};
 
+    private static String TITLE = "title_weapon";
 
 //    private String requestUrl2 = "https://genshin.jmp.blue/materials/common-ascension";
 
@@ -82,7 +83,7 @@ public class WeaponFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     WeaponFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats5Star, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE);
     }
     // endregion
 
