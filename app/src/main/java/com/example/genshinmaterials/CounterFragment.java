@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,14 +42,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CounterFragment extends Fragment {
     // region Views
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
     private TextView txtTemp;
     private TextView txtTemp2;
-    protected TextView txtStatic;
-    protected TextView txtTypeTitle;
+    protected TextView txtStatic, txtTitle;
     private ImageButton btnClear;
     private Button btnAddYellow, btnSubYellow, btnAddPurple, btnSubPurple, btnAddBlue, btnSubBlue, btnAddGreen, btnSubGreen, btnAddGrey, btnSubGrey;
 
@@ -61,6 +62,7 @@ public class CounterFragment extends Fragment {
     protected View counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey;
 
     protected ImageView imgViewIconYellow, imgViewIconPurple, imgViewIconBlue, imgViewIconGreen, imgViewIconGrey;
+    protected ProgressBar prgssbarMaterial;
     // endregion
 
 
@@ -140,7 +142,7 @@ public class CounterFragment extends Fragment {
         txtTemp = (TextView) view.findViewById(R.id.text_temp);
         txtTemp2 = (TextView) view.findViewById(R.id.text_temp2);
         txtStatic = (TextView) view.findViewById(R.id.text_static);
-        txtTypeTitle = (TextView) view.findViewById(R.id.text_type_title);
+        txtTitle = (TextView) view.findViewById(R.id.text_title);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
 
@@ -172,6 +174,8 @@ public class CounterFragment extends Fragment {
         imgViewIconBlue = counterObjBlue.findViewById(R.id.imageview_counter_icon);
         imgViewIconGreen = counterObjGreen.findViewById(R.id.imageview_counter_icon);
         imgViewIconGrey = counterObjGrey.findViewById(R.id.imageview_counter_icon);
+
+        prgssbarMaterial = (ProgressBar) view.findViewById(R.id.progressbar_materials);
 
         // https://stackoverflow.com/a/36139523
         swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
@@ -505,15 +509,15 @@ public class CounterFragment extends Fragment {
                     // Cycles which rarity of weapon to calc for.
                     switch (itemRarity) {
                         case 3:
-//                        txtTypeTitle.setText("4-Star Weapon");
+//                        txtTitle.setText("4-Star Weapon");
                             itemRarity = 4;
                             break;
                         case 4:
-//                        txtTypeTitle.setText("5-Star Weapon");
+//                        txtTitle.setText("5-Star Weapon");
                             itemRarity = 5;
                             break;
                         default:
-//                        txtTypeTitle.setText("3-Star Weapon");
+//                        txtTitle.setText("3-Star Weapon");
                             itemRarity = 3;
                             break;
                     }
@@ -725,6 +729,8 @@ public class CounterFragment extends Fragment {
                 // Integer division rounds down.
                 // If not inside this if statement, extraMats can go negative.
                 extraMats = (netTotalMats[i] - reqAmount) / 3;
+                // This prevents netTotalMats[i] from being >1, so the progressbar doesn't go over 100%.
+                netTotalMats[i] = reqAmount;
 //                allDrwChecks[i].setVisibility(View.VISIBLE);
                 // TODO: Make this a method that toggles between the two, or give it an argument for on/off.
                 // https://stackoverflow.com/a/20121975
@@ -735,6 +741,11 @@ public class CounterFragment extends Fragment {
                 extraMats = 0;
             }
         }
+
+        // Updates the progression bar
+        prgssbarMaterial.setMax(Arrays.stream(reqMats[subtabIndex]).sum());
+        prgssbarMaterial.setProgress(Arrays.stream(netTotalMats).sum(), true);
+//        txtStatic.setText(prgssbarMaterial.getProgress() + "/" + prgssbarMaterial.getMax());
     }
 
     public void disableLayouts() {

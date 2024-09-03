@@ -147,6 +147,9 @@ public class CharacterFragment extends CounterFragment {
                     allDrwChecks[i].setColorFilter(ContextCompat.getColor(getActivity(), R.color.check_grey));
                 }
             }
+
+            prgssbarMaterial.setMax(totalReqXp);
+            prgssbarMaterial.setProgress(totalXp, true);
         }
     }
 
