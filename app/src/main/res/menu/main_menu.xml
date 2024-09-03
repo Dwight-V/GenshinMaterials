@@ -4,6 +4,11 @@
     tools:showIn="navigation_view">
     <!--  From https://www.youtube.com/watch?v=fGcMLu1GJEc -->
     <!--  "checkableBehaveior... is to ensure only one can be checked at once.  -->
+
+    <item
+        android:title="@string/app_name"
+        android:enabled="false"/>
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_weapon"

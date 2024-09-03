@@ -7,4 +7,10 @@
     <color name="genshin_blue">#489bb0</color>
     <color name="genshin_green">#5c916d</color>
     <color name="genshin_grey">#828d99</color>
+
+    <color name="mid_grey">#B8B8B8</color>
+    <color name="my_dark_primary">#CCCCCC</color>
+
+    <color name="check_green">#0DE000</color>
+    <color name="check_grey">#B8B8B8</color>
 </resources>
