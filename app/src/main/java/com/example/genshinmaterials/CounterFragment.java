@@ -530,25 +530,25 @@ public class CounterFragment extends Fragment {
             }
         });
 
-        edtTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//        edtTitle.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                saveData();
+//            }
+//        });
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                saveData();
-            }
-        });
-
-                // Loads data and displays saved data on app launch.
-                loadData();
+        // Loads data and displays saved data on app launch.
+        loadData();
         updateViews();
         updateStarRarity();
         checkRequirements();
@@ -598,6 +598,8 @@ public class CounterFragment extends Fragment {
         editor.apply();
 //        txtTemp.setText(sharedPreferences.getAll().toString());
 //        txtTemp2.setText("0:" + Arrays.toString(tabValArray0) + "\n" + "1:" + Arrays.toString(tabValArray1) + "\n" + "2:" + Arrays.toString(tabValArray2));
+
+//        Log.i("MSG Save", sharedPreferences.getAll().toString());
     }
 
     public void loadData() {
@@ -622,6 +624,8 @@ public class CounterFragment extends Fragment {
 
         txtStatic.setText(TEXTSTATIC_TEXT);
         edtTitle.setText(sharedPreferences.getString(EDITTEXT_TITLE, ""));
+
+//        Log.i("MSG Load", sharedPreferences.getAll().toString());
     }
 
     // Changes the values of the EditTexts and Switch to saved values.
@@ -785,14 +789,14 @@ public class CounterFragment extends Fragment {
     public void add(EditText edtText) {
         if (edtText.getText() != null) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) + 1));
-            saveData();
+            // No need to call saveData(), currently the editText.onClickListeners already do it.
         }
     }
 
     public void sub(EditText edtText) {
         if (edtText != null && Integer.parseInt(edtText.getText().toString()) - 1 >= 0) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
-            saveData();
+            // No need to call saveData(), currently the editText.onClickListeners already do it.
         }
     }
 
