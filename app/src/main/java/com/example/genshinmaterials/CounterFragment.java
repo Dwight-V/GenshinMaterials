@@ -26,13 +26,10 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
@@ -69,9 +66,7 @@ public class CounterFragment extends Fragment {
     // region For saving the data on app close.
 
     // Holds each EditText value on app closure. Note that the strings initialized here are to show the order, and are not saved.
-    public static String[] EDITTEXT_VALUES_0;
-    public static String[] EDITTEXT_VALUES_1;
-    public static String[] EDITTEXT_VALUES_2;
+    public static String[][] EDITTEXT_VALUES = new String[3][];
 
     // When the user exits the fragment, saves which subtab was last selected.
     public static String SUBTAB_POSITION;
@@ -87,9 +82,7 @@ public class CounterFragment extends Fragment {
 
     // region Global variables that hold the above variable's saved data while the app is open.
 
-    public String[] tabValArray0;
-    public String[] tabValArray1;
-    public String[] tabValArray2;
+    public String[][] tabValArray = new String[3][];
 
     public int prevSubtabPos;
 
@@ -127,9 +120,9 @@ public class CounterFragment extends Fragment {
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
                      int[][] req, String subtabPos, String itemRare, String txtStaticText, String title) {
-        EDITTEXT_VALUES_0 = edittextValuesArray0;
-        EDITTEXT_VALUES_1 = edittextValuesArray1;
-        EDITTEXT_VALUES_2 = edittextValuesArray2;
+        EDITTEXT_VALUES[0] = edittextValuesArray0;
+        EDITTEXT_VALUES[1] = edittextValuesArray1;
+        EDITTEXT_VALUES[2] = edittextValuesArray2;
         tabNamesArr = tabsName;
         reqMats = req;
         SUBTAB_POSITION = subtabPos;
@@ -560,33 +553,13 @@ public class CounterFragment extends Fragment {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-//        Toast.makeText(getActivity(), "saveData() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
-        switch (tabMaterials.getSelectedTabPosition()) {
-            // Saves all editText UI inputs into their respective array
-            case 2:
-                for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
-                    // Saves the values for the long-term (on app restart)
-                    editor.putString(EDITTEXT_VALUES_2[i], allEditTexts[i].getText().toString());
-                    // Saves the values for the short-term (switching subtabs)
-                    tabValArray2[i] = allEditTexts[i].getText().toString();
-                }
-                break;
-            case 1:
-                for (int i = 0; i < EDITTEXT_VALUES_1.length; i++) {
-                    // Saves the values for the long-term (on app restart)
-                    editor.putString(EDITTEXT_VALUES_1[i], allEditTexts[i].getText().toString());
-                    // Saves the values for the short-term (switching subtabs)
-                    tabValArray1[i] = allEditTexts[i].getText().toString();
-                }
-                break;
-            default:
-                for (int i = 0; i < EDITTEXT_VALUES_0.length; i++) {
-                    // Saves the values for the long-term (on app restart)
-                    editor.putString(EDITTEXT_VALUES_0[i], allEditTexts[i].getText().toString());
-                    // Saves the values for the short-term (switching subtabs)
-                    tabValArray0[i] = allEditTexts[i].getText().toString();
-                }
-                break;
+        int indexTab = tabMaterials.getSelectedTabPosition();
+
+        for (int i = 0; i < EDITTEXT_VALUES[indexTab].length; i++) {
+            // Saves the values for the long-term (on app restart)
+            editor.putString(EDITTEXT_VALUES[indexTab][i], allEditTexts[i].getText().toString());
+            // Saves the values for the short-term (switching subtabs)
+            tabValArray[indexTab][i] = allEditTexts[i].getText().toString();
         }
 
 //        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
@@ -604,22 +577,18 @@ public class CounterFragment extends Fragment {
 
     public void loadData() {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        tabValArray0 = new String[5];
-        tabValArray1 = new String[5];
-        tabValArray2 = new String[5];
+        tabValArray[0] = new String[5];
+        tabValArray[1] = new String[5];
+        tabValArray[2] = new String[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
         itemRarity = sharedPreferences.getInt(ITEM_RARITY, 3);
 
         // Sets the new initialized local arrays to the saved instance of the arrays.
-        for (int i = 0; i < EDITTEXT_VALUES_2.length; i++) {
-            tabValArray2[i] = sharedPreferences.getString(EDITTEXT_VALUES_2[i], "0");
-        }
-        for (int i = 0; i < EDITTEXT_VALUES_1.length; i++) {
-            tabValArray1[i] = sharedPreferences.getString(EDITTEXT_VALUES_1[i], "0");
-        }
-        for (int i = 0; i < EDITTEXT_VALUES_0.length; i++) {
-            tabValArray0[i] = sharedPreferences.getString(EDITTEXT_VALUES_0[i], "0");
+        for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
+            for (int j = 0; j < EDITTEXT_VALUES[i].length; j++) {
+                tabValArray[i][j] = sharedPreferences.getString(EDITTEXT_VALUES[i][j], "0");
+            }
         }
 
         txtStatic.setText(TEXTSTATIC_TEXT);
@@ -683,26 +652,8 @@ public class CounterFragment extends Fragment {
         // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
         edittextsAreReady = false;
 
-//        Toast.makeText(getActivity(), "updateEdittextVals() " + tabMaterials.getSelectedTabPosition(), Toast.LENGTH_SHORT).show();
-        switch (tabPos) {
-            case 2:
-                for (int i = 0; i < allEditTexts.length; i++) {
-                    allEditTexts[i].setText(tabValArray2[i]);
-                }
-                break;
-            case 1:
-                for (int i = 0; i < allEditTexts.length; i++) {
-                    allEditTexts[i].setText(tabValArray1[i]);
-                }
-                break;
-            default:
-                for (int i = 0; i < allEditTexts.length; i++) {
-                    allEditTexts[i].setText(tabValArray0[i]);
-                }
-                break;
-        }
-
         for (int i = 0; i < allEditTexts.length; i++) {
+            allEditTexts[i].setText(tabValArray[tabPos][i]);
             TextView temp = allCounterObjs[i].findViewById(R.id.txtDenominator);
             temp.setText(String.valueOf(reqMats[tabPos][i]));
         }
