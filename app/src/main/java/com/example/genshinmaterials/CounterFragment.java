@@ -87,6 +87,9 @@ public class CounterFragment extends Fragment {
     public int prevSubtabPos;
 
     protected int itemRarity = 3;
+
+    // Used because I can't figure out how to only trigger edtTitle's onChangeListener after instantiating.
+    private boolean afterOnCreate = false;
     // endregion
 
 
@@ -523,22 +526,25 @@ public class CounterFragment extends Fragment {
             }
         });
 
-//        edtTitle.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                saveData();
-//            }
-//        });
+        edtTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (afterOnCreate) {
+                    saveData();
+//                    Toast.makeText(CounterFragment.this.getContext(), TEXTSTATIC_TEXT, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         // Loads data and displays saved data on app launch.
         loadData();
@@ -546,6 +552,7 @@ public class CounterFragment extends Fragment {
         updateStarRarity();
         checkRequirements();
         disableLayouts();
+        afterOnCreate = true;
         return view;
     }
 
