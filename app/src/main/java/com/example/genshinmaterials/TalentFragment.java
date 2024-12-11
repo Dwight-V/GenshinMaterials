@@ -72,6 +72,8 @@ public class TalentFragment extends CounterFragment {
     private static int LEVEL_MAX = 10;
     private static int LEVEL_STEP = 1;
 
+    private static String LEVEL_START = "level_start_talent";
+    private static String LEVEL_END = "level_end_talent";
 
 //    private String requestUrl2 = "https://genshin.jmp.blue/materials/common-ascension";
 
@@ -82,7 +84,9 @@ public class TalentFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     TalentFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE, LEVEL_MIN, LEVEL_MAX, LEVEL_STEP);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr,
+                reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
+                LEVEL_MIN, LEVEL_MAX, LEVEL_STEP, LEVEL_START, LEVEL_END);
     }
     // endregion
 

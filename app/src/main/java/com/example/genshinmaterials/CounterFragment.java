@@ -83,8 +83,9 @@ public class CounterFragment extends Fragment {
 
     private static String EDITTEXT_TITLE;
 
-    private static String CURRENT_START_LEVEL;
-    private static String CURRENT_END_LEVEL;
+    // Represents the saved values of spnStartLvl and spnEndLvl respectively.
+    private static String START_LEVEL_INDEX;
+    private static String END_LEVEL_INDEX;
     // endregion
 
 
@@ -99,6 +100,9 @@ public class CounterFragment extends Fragment {
     // Used because I can't figure out how to only trigger edtTitle's onChangeListener after instantiating.
     private boolean afterOnCreate = false;
 
+    private String titleText;
+    private String staticText;
+
     // Assigned from the constructor:
     // Defines the min amount the spinner can show
     private static int INT_LEVEL_MIN;
@@ -106,6 +110,9 @@ public class CounterFragment extends Fragment {
     private static int INT_LEVEL_MAX;
     // Defines how createLevelSpinnerAdapter() steps for each item in the spinner.
     private static int INT_LEVEL_STEP;
+
+    private int levelStartIndex;
+    private int levelEndIndex;
     // endregion
 
 
@@ -138,7 +145,7 @@ public class CounterFragment extends Fragment {
 
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
-                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title, int levelMin, int levelMax, int levelStep) {
+                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title, int levelMin, int levelMax, int levelStep, String startLevel, String endLevel) {
         EDITTEXT_VALUES[0] = edittextValuesArray0;
         EDITTEXT_VALUES[1] = edittextValuesArray1;
         EDITTEXT_VALUES[2] = edittextValuesArray2;
@@ -151,6 +158,8 @@ public class CounterFragment extends Fragment {
         INT_LEVEL_MIN = levelMin;
         INT_LEVEL_MAX = levelMax;
         INT_LEVEL_STEP = levelStep;
+        START_LEVEL_INDEX = startLevel;
+        END_LEVEL_INDEX = endLevel;
     }
 
     @Nullable
@@ -578,6 +587,7 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)) >= Integer.parseInt((String) spnEndLvl.getSelectedItem())) {
                     spnEndLvl.setSelection(spnStartLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
+                saveData();
             }
 
             @Override
@@ -593,6 +603,7 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getSelectedItem()) >= Integer.parseInt((String) spnEndLvl.getAdapter().getItem(position))) {
                     spnStartLvl.setSelection(spnEndLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
+                saveData();
             }
 
             @Override
@@ -605,15 +616,14 @@ public class CounterFragment extends Fragment {
 
 
         // main
+        spnStartLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN, INT_LEVEL_MAX - INT_LEVEL_STEP));
+        spnEndLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN + INT_LEVEL_STEP, INT_LEVEL_MAX));
+
         loadData(); // Loads data and displays saved data on app launch.
         updateViews();
         updateStarRarity();
         checkRequirements();
         disableLayouts();
-        spnStartLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN, INT_LEVEL_MAX - INT_LEVEL_STEP));
-        spnEndLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN + INT_LEVEL_STEP, INT_LEVEL_MAX));
-        spnStartLvl.setSelection(0);
-        spnEndLvl.setSelection(spnEndLvl.getCount() - 1);
 
         afterOnCreate = true;
         return view;
@@ -637,11 +647,11 @@ public class CounterFragment extends Fragment {
         editor.putInt(ITEM_RARITY, itemRarity);
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
         editor.putString(EDITTEXT_TITLE, edtTitle.getText().toString());
+        editor.putInt(START_LEVEL_INDEX, spnStartLvl.getSelectedItemPosition());
+        editor.putInt(END_LEVEL_INDEX, spnEndLvl.getSelectedItemPosition());
+
 
         editor.apply();
-//        txtTemp.setText(sharedPreferences.getAll().toString());
-//        txtTemp2.setText("0:" + Arrays.toString(tabValArray0) + "\n" + "1:" + Arrays.toString(tabValArray1) + "\n" + "2:" + Arrays.toString(tabValArray2));
-
 //        Log.i("MSG Save", sharedPreferences.getAll().toString());
     }
 
@@ -661,8 +671,10 @@ public class CounterFragment extends Fragment {
             }
         }
 
-        txtStatic.setText(TEXTVIEW_STATIC);
-        edtTitle.setText(sharedPreferences.getString(EDITTEXT_TITLE, ""));
+        staticText = TEXTVIEW_STATIC;
+        titleText = sharedPreferences.getString(EDITTEXT_TITLE, "");
+        levelStartIndex = sharedPreferences.getInt(START_LEVEL_INDEX, 0);
+        levelEndIndex = sharedPreferences.getInt(END_LEVEL_INDEX, spnEndLvl.getCount() - 1);
 
 //        Log.i("MSG Load", sharedPreferences.getAll().toString());
     }
@@ -679,6 +691,11 @@ public class CounterFragment extends Fragment {
         }
 
         updateCounterUi();
+        edtTitle.setText(titleText);
+        txtStatic.setText(staticText);
+
+        spnStartLvl.setSelection(levelStartIndex);
+        spnEndLvl.setSelection(levelEndIndex);
     }
 
     // Sets the color of each counter.
