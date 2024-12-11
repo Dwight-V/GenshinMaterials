@@ -568,17 +568,35 @@ public class CounterFragment extends Fragment {
             }
         });
 
-//        spnStartLvl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                spnEndLvl.setAdapter(createLevelSpinnerAdapter(Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)), levelMax));
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        spnStartLvl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Compares the would-be selected value of spnStartLvl with the selected level of spnEndLvl. If spnEndLvl is lower, change the spnEndLvl value to one higher than spnEndLvl.
+                if (Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)) >= Integer.parseInt((String) spnEndLvl.getSelectedItem())) {
+                    spnEndLvl.setSelection(spnStartLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spnEndLvl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Compares the would-be selected value of spnEndLvl with the selected level of spnStartLvl. If spnEndLvl is lower, change the spnStartLvl value to one lower than spnEndLvl.
+                if (Integer.parseInt((String) spnStartLvl.getSelectedItem()) >= Integer.parseInt((String) spnEndLvl.getAdapter().getItem(position))) {
+                    spnStartLvl.setSelection(spnEndLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         // endregion
 
 
@@ -592,7 +610,7 @@ public class CounterFragment extends Fragment {
         spnStartLvl.setAdapter(createLevelSpinnerAdapter(levelMin, levelMax - levelStep));
         spnEndLvl.setAdapter(createLevelSpinnerAdapter(levelMin + levelStep, levelMax));
         spnStartLvl.setSelection(0);
-        spnEndLvl.setSelection(spnEndLvl.getAdapter().getCount() - 1);
+        spnEndLvl.setSelection(spnEndLvl.getCount() - 1);
         Toast.makeText(getActivity(), spnEndLvl.getAdapter().getCount() + "", Toast.LENGTH_SHORT).show();
 
         afterOnCreate = true;
