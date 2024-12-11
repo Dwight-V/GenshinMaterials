@@ -101,11 +101,11 @@ public class CounterFragment extends Fragment {
 
     // Assigned from the constructor:
     // Defines the min amount the spinner can show
-    private int levelMin = 0;
+    private static int INT_LEVEL_MIN;
     // Defines the max amount the spinner can show
-    private int levelMax = 90;
+    private static int INT_LEVEL_MAX;
     // Defines how createLevelSpinnerAdapter() steps for each item in the spinner.
-    private int levelStep = 10;
+    private static int INT_LEVEL_STEP;
     // endregion
 
 
@@ -138,7 +138,7 @@ public class CounterFragment extends Fragment {
 
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
-                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title) {
+                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title, int levelMin, int levelMax, int levelStep) {
         EDITTEXT_VALUES[0] = edittextValuesArray0;
         EDITTEXT_VALUES[1] = edittextValuesArray1;
         EDITTEXT_VALUES[2] = edittextValuesArray2;
@@ -148,6 +148,9 @@ public class CounterFragment extends Fragment {
         ITEM_RARITY = itemRare;
         TEXTSTATIC_TEXT = txtStaticText;
         EDITTEXT_TITLE = title;
+        INT_LEVEL_MIN = levelMin;
+        INT_LEVEL_MAX = levelMax;
+        INT_LEVEL_STEP = levelStep;
     }
 
     @Nullable
@@ -607,11 +610,10 @@ public class CounterFragment extends Fragment {
         updateStarRarity();
         checkRequirements();
         disableLayouts();
-        spnStartLvl.setAdapter(createLevelSpinnerAdapter(levelMin, levelMax - levelStep));
-        spnEndLvl.setAdapter(createLevelSpinnerAdapter(levelMin + levelStep, levelMax));
+        spnStartLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN, INT_LEVEL_MAX - INT_LEVEL_STEP));
+        spnEndLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN + INT_LEVEL_STEP, INT_LEVEL_MAX));
         spnStartLvl.setSelection(0);
         spnEndLvl.setSelection(spnEndLvl.getCount() - 1);
-        Toast.makeText(getActivity(), spnEndLvl.getAdapter().getCount() + "", Toast.LENGTH_SHORT).show();
 
         afterOnCreate = true;
         return view;
@@ -805,15 +807,15 @@ public class CounterFragment extends Fragment {
         }
     }
 
-    // Creates an ArrayAdapter with String values of [levelStart, 90] with a step of 10.
+    // Creates an ArrayAdapter with String values of [levelStart, levelEnd] with a step of INT_LEVEL_STEP.
     public ArrayAdapter createLevelSpinnerAdapter(int levelStart, int levelEnd) {
         levelStart = Math.max(levelStart, 0); // ensures >= 0.
 
-        String[] levels = new String[((levelEnd - levelStart) / levelStep) + 1];
+        String[] levels = new String[((levelEnd - levelStart) / INT_LEVEL_STEP) + 1];
 
         for (int i = 0; i < levels.length; i++) {
             levels[i] = String.valueOf(levelStart);
-            levelStart += levelStep;
+            levelStart += INT_LEVEL_STEP;
         }
 
         // from: https://stackoverflow.com/a/28848747

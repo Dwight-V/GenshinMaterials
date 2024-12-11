@@ -72,6 +72,9 @@ public class CharacterFragment extends CounterFragment {
 
     private static String TITLE = "title_char";
 
+    private static int LEVEL_MIN = 0;
+    private static int LEVEL_MAX = 90;
+    private static int LEVEL_STEP = 10;
 
     private String requestUrl2 = "https://genshin.jmp.blue/materials/character-experience";
 
@@ -102,7 +105,7 @@ public class CharacterFragment extends CounterFragment {
 
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
-        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE);
+        super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr, reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE, LEVEL_MIN, LEVEL_MAX, LEVEL_STEP);
     }
     // endregion
 
