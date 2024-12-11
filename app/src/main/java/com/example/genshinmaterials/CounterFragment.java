@@ -79,7 +79,7 @@ public class CounterFragment extends Fragment {
 
     public static String ITEM_RARITY;
 
-    private static String TEXTSTATIC_TEXT;
+    private static String TEXTVIEW_STATIC;
 
     private static String EDITTEXT_TITLE;
 
@@ -146,7 +146,7 @@ public class CounterFragment extends Fragment {
         reqMats = req;
         SUBTAB_POSITION = subtabPos;
         ITEM_RARITY = itemRare;
-        TEXTSTATIC_TEXT = txtStaticText;
+        TEXTVIEW_STATIC = txtStaticText;
         EDITTEXT_TITLE = title;
         INT_LEVEL_MIN = levelMin;
         INT_LEVEL_MAX = levelMax;
@@ -566,7 +566,7 @@ public class CounterFragment extends Fragment {
             public void afterTextChanged(Editable s) {
                 if (afterOnCreate) {
                     saveData();
-//                    Toast.makeText(CounterFragment.this.getContext(), TEXTSTATIC_TEXT, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(CounterFragment.this.getContext(), TEXTVIEW_STATIC, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -604,8 +604,8 @@ public class CounterFragment extends Fragment {
 
 
 
-        // Loads data and displays saved data on app launch.
-        loadData();
+        // main
+        loadData(); // Loads data and displays saved data on app launch.
         updateViews();
         updateStarRarity();
         checkRequirements();
@@ -661,7 +661,7 @@ public class CounterFragment extends Fragment {
             }
         }
 
-        txtStatic.setText(TEXTSTATIC_TEXT);
+        txtStatic.setText(TEXTVIEW_STATIC);
         edtTitle.setText(sharedPreferences.getString(EDITTEXT_TITLE, ""));
 
 //        Log.i("MSG Load", sharedPreferences.getAll().toString());
@@ -669,14 +669,11 @@ public class CounterFragment extends Fragment {
 
     // Changes the values of the EditTexts and Switch to saved values.
     public void updateViews() {
-        // Sets the last used subtab.
-        tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos));
-        // Sets the editable switch to last used position.
-//        swtEditable.setChecked(editableIsChecked);
-        changeEditable();
-        // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
-        updateEdittextVals();
-      
+        tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos)); // Sets the last used subtab.
+        changeEditable(); // Sets the editable switch to last used position.
+        updateEdittextVals(); // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
+
+        // Sets the display for the tab names at the bottom.
         for (int i = 0; i < tabMaterials.getTabCount(); i++) {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
@@ -684,6 +681,7 @@ public class CounterFragment extends Fragment {
         updateCounterUi();
     }
 
+    // Sets the color of each counter.
     public void updateCounterUi() {
         int[] colors = {R.color.genshin_yellow, R.color.genshin_purple,  R.color.genshin_blue, R.color.genshin_green, R.color.genshin_grey};
 
