@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +59,9 @@ public class CounterFragment extends Fragment {
 
     private LinearLayout linLayStars;
 
+    private Spinner spnStartLvl, spnEndLvl;
+
+
     protected View counterObjYellow, counterObjPurple, counterObjBlue, counterObjGreen, counterObjGrey;
 
     protected ImageView imgViewIconYellow, imgViewIconPurple, imgViewIconBlue, imgViewIconGreen, imgViewIconGrey;
@@ -77,6 +83,8 @@ public class CounterFragment extends Fragment {
 
     private static String EDITTEXT_TITLE;
 
+    private static String CURRENT_START_LEVEL;
+    private static String CURRENT_END_LEVEL;
     // endregion
 
 
@@ -90,6 +98,14 @@ public class CounterFragment extends Fragment {
 
     // Used because I can't figure out how to only trigger edtTitle's onChangeListener after instantiating.
     private boolean afterOnCreate = false;
+
+    // Assigned from the constructor:
+    // Defines the min amount the spinner can show
+    private int levelMin = 0;
+    // Defines the max amount the spinner can show
+    private int levelMax = 90;
+    // Defines how createLevelSpinnerAdapter() steps for each item in the spinner.
+    private int levelStep = 10;
     // endregion
 
 
@@ -176,6 +192,9 @@ public class CounterFragment extends Fragment {
 
         // https://stackoverflow.com/a/36139523
         swtEditable = (Switch) getActivity().findViewById(R.id.switch_editable_full);
+
+        spnStartLvl = (Spinner) view.findViewById(R.id.spinner_start_level);
+        spnEndLvl = (Spinner) view.findViewById(R.id.spinner_end_level);
 
         tabMaterials = (TabLayout) view.findViewById(R.id.tab_layout_materials);
 
@@ -466,6 +485,9 @@ public class CounterFragment extends Fragment {
 
         // endregion
 
+
+        // region Miscellaneous Listeners
+
         // TODO: If swtEditable is checked, app exit, app exit, swtEditable will no longer be checked.
         swtEditable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -546,12 +568,33 @@ public class CounterFragment extends Fragment {
             }
         });
 
+//        spnStartLvl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                spnEndLvl.setAdapter(createLevelSpinnerAdapter(Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)), levelMax));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+        // endregion
+
+
+
         // Loads data and displays saved data on app launch.
         loadData();
         updateViews();
         updateStarRarity();
         checkRequirements();
         disableLayouts();
+        spnStartLvl.setAdapter(createLevelSpinnerAdapter(levelMin, levelMax - levelStep));
+        spnEndLvl.setAdapter(createLevelSpinnerAdapter(levelMin + levelStep, levelMax));
+        spnStartLvl.setSelection(0);
+        spnEndLvl.setSelection(spnEndLvl.getAdapter().getCount() - 1);
+        Toast.makeText(getActivity(), spnEndLvl.getAdapter().getCount() + "", Toast.LENGTH_SHORT).show();
+
         afterOnCreate = true;
         return view;
     }
@@ -742,6 +785,23 @@ public class CounterFragment extends Fragment {
                 allCounterObjs[i].setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    // Creates an ArrayAdapter with String values of [levelStart, 90] with a step of 10.
+    public ArrayAdapter createLevelSpinnerAdapter(int levelStart, int levelEnd) {
+        levelStart = Math.max(levelStart, 0); // ensures >= 0.
+
+        String[] levels = new String[((levelEnd - levelStart) / levelStep) + 1];
+
+        for (int i = 0; i < levels.length; i++) {
+            levels[i] = String.valueOf(levelStart);
+            levelStart += levelStep;
+        }
+
+        // from: https://stackoverflow.com/a/28848747
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, levels);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
     }
 
     public void add(EditText edtText) {
