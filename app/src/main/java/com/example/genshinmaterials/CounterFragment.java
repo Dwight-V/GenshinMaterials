@@ -255,6 +255,10 @@ public class CounterFragment extends Fragment {
                 edtGrey.setText("0");
                 edtPurple.setText("0");
                 edtYellow.setText("0");
+
+                edtTitle.setText("");
+                spnStartLvl.setSelection(0);
+                spnEndLvl.setSelection(spnEndLvl.getCount() - 1);
                 saveData();
                 return false;
             }
@@ -715,7 +719,10 @@ public class CounterFragment extends Fragment {
                 allEditTexts[i].setInputType(InputType.TYPE_CLASS_NUMBER);
             }
 
-            edtTitle.setInputType(InputType.TYPE_CLASS_TEXT);
+//            edtTitle.setInputType(InputType.TYPE_CLASS_TEXT);
+            edtTitle.setEnabled(true);
+            spnStartLvl.setEnabled(true);
+            spnEndLvl.setEnabled(true);
         } else {
             // From: https://stackoverflow.com/questions/1109022/how-can-i-close-hide-the-android-soft-keyboard-programmatically
             if (requireActivity().getCurrentFocus() != null) {
@@ -728,6 +735,9 @@ public class CounterFragment extends Fragment {
             }
 
             edtTitle.setInputType(InputType.TYPE_NULL);
+            spnStartLvl.setEnabled(false);
+            spnEndLvl.setEnabled(false);
+            edtTitle.setEnabled(false);
         }
     }
 
