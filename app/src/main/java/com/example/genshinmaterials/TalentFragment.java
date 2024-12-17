@@ -66,6 +66,74 @@ public class TalentFragment extends CounterFragment {
             {6, 0, 0, 0, 0},
             {0, 0, 31, 22, 6}};
 
+    // region matsTo*
+    private static int[][][] matsToLevel = {
+            { // matsTo2
+                    {0, 0, 0, 3, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 0, 0, 6}, // Enemy: x, x, Blue, Green, Gray
+                    {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {12500}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo3
+                    {0, 0, 2, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 3, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {17500}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo4
+                    {0, 0, 4, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 0, 4, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {25000}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo5
+                    {0, 0, 6, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 0, 6, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {30000}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo6
+                    {0, 0, 9, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 0, 9, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {37500}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo7
+                    {0, 4, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 4, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {1, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {120000}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo8
+                    {0, 6, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 6, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {1, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {260000}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo9
+                    {0, 12, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 9, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {2, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {450000}, // Mora
+                    {0} // Crown
+            },
+            { // matsTo10
+                    {0, 16, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
+                    {0, 0, 12, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {2, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
+                    {12500}, // Mora
+                    {1} // Crown
+            }
+    };
+    // endregion
+
     private static String TITLE = "title_talent";
 
     private static int LEVEL_MIN = 1;

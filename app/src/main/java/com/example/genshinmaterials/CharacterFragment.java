@@ -64,11 +64,94 @@ public class CharacterFragment extends CounterFragment {
     private static final String[] tabNamesArr = {"Gem", "Enemy", "XP"};
 
     // The hardcoded amount of materials need to fully level up the weapon.
-    // Each row is in descending rarity, mirroring allEditTexts.
-    // Each column represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
-    private static int[][] reqMats = {{6, 9, 9, 1, 0},
-            {0, 0, 36, 30, 18},
-            {0, 419, 10000, 10000, 0}};
+    // Each column represents rarity (descending), mirroring allEditTexts.
+    // Each row represents the corresponding indexed subtab. Ex: reqMats*Star[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
+    // reqMats[0:2][i], (0 <= i <= 5) must have a value. If a i = 0, it isn't displayed.
+    private static int[][] reqMats = {
+            {6, 9, 9, 1, 0}, // Tab 1: Gemstone, Chunk, Fragment, Sliver
+            {0, 0, 36, 30, 18}, // Tab 2: Enemy Drop
+            {0, 419, 10000, 10000, 0}, // Tab 3: Hero's Wit
+            {2092530}, // Mora
+            {168}, // Local Specialty
+            {46}, // Boss Drop
+    };
+
+    // region matsTo*
+    private static int[][][] matsToLevel = {
+            { // matsTo10
+                    {0, 0, 0, 0, 0}, // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 0}, // Enemy Drop: Blue, Green, Gray
+                    {0, 3, 10000, 10000, 0}, // Hero's Wit
+                    {5005}, // Mora
+                    {0}, // Local Specialty
+                    {0}, // Boss Drop
+            },
+            { // matsTo20
+                    {0, 0, 0, 0, 0}, // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 0}, // Enemy Drop: Blue, Green, Gray
+                    {0, 5, 10000, 10000, 0}, // Hero's Wit
+                    {19030},           // Mora
+                    {0},               // Local Specialty
+                    {0},               // Boss Drop
+            },
+            { // matsTo30
+                    {0, 0, 0, 1, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 3},         // Enemy Drop: Blue, Green, Gray
+                    {0, 11, 10000, 10000, 0},              // Hero's Wit
+                    {62585},           // Mora
+                    {3},               // Local Specialty
+                    {0},               // Boss Drop
+            },
+            { // matsTo40
+                    {0, 0, 0, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 0, 0},         // Enemy Drop: Blue, Green, Gray
+                    {0, 19, 10000, 10000, 0},              // Hero's Wit
+                    {73080},           // Mora
+                    {0},               // Local Specialty
+                    {0},               // Boss Drop
+            },
+            { // matsTo50
+                    {0, 0, 0, 3, 0}, // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 15}, // Enemy Drop: Blue, Green, Gray
+                    {0, 29, 10000, 10000, 0}, // Hero's Wit
+                    {155820}, // Mora
+                    {10}, // Local Specialty
+                    {2}, // Boss Drop
+            },
+            { // matsTo60
+                    {0, 0, 6, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 12, 0},        // Enemy Drop: Blue, Green, Gray
+                    {0, 43, 10000, 10000, 0},              // Hero's Wit
+                    {230825},          // Mora
+                    {20},              // Local Specialty
+                    {4},               // Boss Drop
+            },
+            { // matsTo70
+                    {0, 3, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 18, 0},        // Enemy Drop: Blue, Green, Gray
+                    {0, 60, 10000, 10000, 0},              // Hero's Wit
+                    {319185},          // Mora
+                    {30},              // Local Specialty
+                    {8},               // Boss Drop
+            },
+            { // matsTo80
+                    {0, 6, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 12, 0, 0},        // Enemy Drop: Blue, Green, Gray
+                    {0, 81, 10000, 10000, 0},              // Hero's Wit
+                    {422375},          // Mora
+                    {45},              // Local Specialty
+                    {12},              // Boss Drop
+            },
+            { // matsTo90
+                    {6, 0, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 24, 0, 0},        // Enemy Drop: Blue, Green, Gray
+                    {0, 172, 10000, 10000, 0},             // Hero's Wit
+                    {804625},          // Mora
+                    {60},              // Local Specialty
+                    {20},              // Boss Drop
+            }
+    };
+    // endregion
 
     private static String TITLE = "title_char";
 
