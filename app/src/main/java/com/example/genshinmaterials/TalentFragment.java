@@ -70,66 +70,57 @@ public class TalentFragment extends CounterFragment {
     private static int[][][] matsToLevel = {
             { // matsTo2
                     {0, 0, 0, 3, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 0, 0, 6}, // Enemy: x, x, Blue, Green, Gray
                     {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {12500}, // Mora
-                    {0} // Crown
+                    {0, 0, 0, 0, 6}, // Enemy: x, x, Blue, Green, Gray
+                    {12500, 0} // Static: Mora, Crown
             },
             { // matsTo3
                     {0, 0, 2, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 3, 0, 0}, // Enemy: x, x, Blue, Green, Gray
                     {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {17500}, // Mora
-                    {0} // Crown
+                    {0, 0, 3, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {17500, 0} // Static: Mora, Crown
             },
             { // matsTo4
                     {0, 0, 4, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 0, 4, 0}, // Enemy: x, x, Blue, Green, Gray
                     {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {25000}, // Mora
-                    {0} // Crown
+                    {0, 0, 0, 4, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {25000, 0} // Static: Mora, Crown
             },
             { // matsTo5
                     {0, 0, 6, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 0, 6, 0}, // Enemy: x, x, Blue, Green, Gray
                     {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {30000}, // Mora
-                    {0} // Crown
+                    {0, 0, 0, 6, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {30000, 0} // Static: Mora, Crown
             },
             { // matsTo6
                     {0, 0, 9, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 0, 9, 0}, // Enemy: x, x, Blue, Green, Gray
                     {0, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {37500}, // Mora
-                    {0} // Crown
+                    {0, 0, 0, 9, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {37500, 0} // Static: Mora, Crown
             },
             { // matsTo7
                     {0, 4, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 4, 0, 0}, // Enemy: x, x, Blue, Green, Gray
                     {1, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {120000}, // Mora
-                    {0} // Crown
+                    {0, 0, 4, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {120000, 0} // Static: Mora, Crown
             },
             { // matsTo8
                     {0, 6, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 6, 0, 0}, // Enemy: x, x, Blue, Green, Gray
                     {1, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {260000}, // Mora
-                    {0} // Crown
+                    {0, 0, 6, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {260000, 0} // Static: Mora, Crown
             },
             { // matsTo9
                     {0, 12, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 9, 0, 0}, // Enemy: x, x, Blue, Green, Gray
                     {2, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {450000}, // Mora
-                    {0} // Crown
+                    {0, 0, 9, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {450000, 0} // Static: Mora, Crown
             },
             { // matsTo10
                     {0, 16, 0, 0, 0}, // Book: x, Purple, Blue, Green, x
-                    {0, 0, 12, 0, 0}, // Enemy: x, x, Blue, Green, Gray
                     {2, 0, 0, 0, 0}, // Boss: Boss, x, x, x, x
-                    {12500}, // Mora
-                    {1} // Crown
+                    {0, 0, 12, 0, 0}, // Enemy: x, x, Blue, Green, Gray
+                    {12500, 1} // Static: Mora, Crown
             }
     };
     // endregion
@@ -153,7 +144,7 @@ public class TalentFragment extends CounterFragment {
     // Passes the final String array which names all EditTexts save data.
     TalentFragment() {
         super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr,
-                reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
+                matsToLevel, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
                 LEVEL_MIN, LEVEL_MAX, LEVEL_STEP, LEVEL_START, LEVEL_END);
     }
     // endregion

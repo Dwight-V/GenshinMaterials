@@ -125,6 +125,7 @@ public class CounterFragment extends Fragment {
     // Each row is in descending rarity, mirroring allEditTexts.
     // Each column represents the corresponding indexed subtab. Ex: reqMats[0] = "Domain", ...[1] = "Miniboss", ...[2] = "Enemy".
     protected int[][] reqMats;
+    protected int[][][] allMats;
     // endregion
 
     // Represents whether or not the EditTexts can be edited by the user.
@@ -145,12 +146,12 @@ public class CounterFragment extends Fragment {
 
 
     CounterFragment (String[] edittextValuesArray0, String[] edittextValuesArray1, String[] edittextValuesArray2, String[] tabsName,
-                     int[][] req, String subtabPos, String itemRare, String txtStaticText, String title, int levelMin, int levelMax, int levelStep, String startLevel, String endLevel) {
+                     int[][][] mats, String subtabPos, String itemRare, String txtStaticText, String title, int levelMin, int levelMax, int levelStep, String startLevel, String endLevel) {
         EDITTEXT_VALUES[0] = edittextValuesArray0;
         EDITTEXT_VALUES[1] = edittextValuesArray1;
         EDITTEXT_VALUES[2] = edittextValuesArray2;
         tabNamesArr = tabsName;
-        reqMats = req;
+        allMats = mats;
         SUBTAB_POSITION = subtabPos;
         ITEM_RARITY = itemRare;
         TEXTVIEW_STATIC = txtStaticText;
@@ -591,6 +592,7 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)) >= Integer.parseInt((String) spnEndLvl.getSelectedItem())) {
                     spnEndLvl.setSelection(spnStartLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
+                updateEdittextVals();
                 saveData();
             }
 
@@ -607,6 +609,7 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getSelectedItem()) >= Integer.parseInt((String) spnEndLvl.getAdapter().getItem(position))) {
                     spnStartLvl.setSelection(spnEndLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
+                updateEdittextVals();
                 saveData();
             }
 
@@ -741,11 +744,45 @@ public class CounterFragment extends Fragment {
         }
     }
 
+    // Runs when spnStart/EndLvL changes. Updates reqMats to match the levels.
+    private void updateReqMatsToLevel() {
+        int j = spnStartLvl.getSelectedItemPosition();
+
+        reqMats = new int[allMats[j].length][];
+
+        // Re-initializes reqMats to the first level selected
+//        reqMats = allMats[j]; Can't do this, as it's a shallow copy.
+        for (int k = 0; k < allMats[j].length; k++) {
+            reqMats[k] = new int[allMats[j][k].length];
+            Log.i("updateReqMats instance", "Row " + k);
+            for (int l = 0; l < allMats[j][k].length; l++) {
+                Log.i("updateReqMats instance", String.format("reqMats[%2$d][%3$d]: %4$d allMats[%1$d][%2$d][%3$d]: %5$d", j, k, l, reqMats[k][l], allMats[j][k][l]));
+                reqMats[k][l] = allMats[j][k][l];
+            }
+        }
+
+        // Note: getSelectedItemPos < spnEndLvl.getCount()
+        // This loop will iterate through the first level of allMats, i.e. which levels are being added.
+        for (int i = j; i < spnEndLvl.getSelectedItemPosition(); i++) {
+            // This loop will iterate through the second level, i.e. which materials.
+            for (int k = 0; k < allMats[i + 1].length; k++) {
+                // This loop will iterate through the last level, i.e. the individual values.
+                for (int l = 0; l < allMats[i + 1][k].length; l++) {
+                    Log.i("updateReqMats add", String.format("reqMats[%2$d][%3$d]: %4$d allMats[%1$d][%2$d][%3$d]: %5$d", i + 1, k, l, reqMats[k][l], allMats[i][k][l]));
+                    reqMats[k][l] += allMats[i + 1][k][l];
+                }
+            }
+        }
+        Log.i("updateReqMatsToLevel", Arrays.toString(reqMats[0]));
+//        Toast.makeText(getContext(), String.format("spnStart: %d spnEnd: %d", spnStartLvl.getSelectedItemPosition(), spnEndLvl.getSelectedItemPosition()), Toast.LENGTH_SHORT).show();
+    }
+
     // Sets the correct values of the EditTexts (based on current subtab position).
     public void updateEdittextVals() {
         int tabPos = tabMaterials.getSelectedTabPosition();
         // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
         edittextsAreReady = false;
+        updateReqMatsToLevel();
 
         for (int i = 0; i < allEditTexts.length; i++) {
             allEditTexts[i].setText(tabValArray[tabPos][i]);

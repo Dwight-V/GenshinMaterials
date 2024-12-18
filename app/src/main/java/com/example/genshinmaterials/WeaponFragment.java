@@ -79,64 +79,55 @@ public class WeaponFragment extends CounterFragment {
                     {0, 0, 0, 0, 0}, // Domain: Yellow, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Elite: x, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Enemy: x, x, Blue, Green, Gray
-                    {2268}, // Mora
-                    {0},    // Ore
+                    {2268, 0}, // Static: Mora, Ore
             },
             { // matsTo20
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {9892},
-                    {10},
+                    {9892, 10},
             },
             { // matsTo30
                     {0, 0, 0, 5, 0},
                     {0, 0, 0, 5, 0},
                     {0, 0, 0, 0, 3},
-                    {32790},
-                    {23},
+                    {32790, 23},
             },
             { // matsTo40
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {39490},
-                    {40},
+                    {39490, 40},
             },
             { // matsTo50
                     {0, 0, 5, 0, 0},
                     {0, 0, 0, 18, 0},
                     {0, 0, 0, 0, 12},
-                    {82815},
-                    {63},
+                    {82815, 63},
             },
             { // matsTo60
                     {0, 0, 9, 0, 0},
                     {0, 0, 9, 0, 0},
                     {0, 0, 0, 9, 0},
-                    {122767},
-                    {93},
+                    {122767, 93},
             },
             { // matsTo70
                     {0, 5, 0, 0, 0},
                     {0, 0, 18, 0, 0},
                     {0, 0, 0, 14, 0},
-                    {174912},
-                    {130},
+                    {174912, 130},
             },
             { // matsTo80
                     {0, 9, 0, 0, 0},
                     {0, 14, 0, 0, 0},
                     {0, 0, 9, 0, 0},
-                    {230037},
-                    {176},
+                    {230037, 176},
             },
             { // matsTo90
                     {6, 0, 0, 0, 0},
                     {0, 27, 0, 0, 0},
                     {0, 0, 18, 0, 0},
-                    {436477},
-                    {372},
+                    {436477, 372},
             }
     };
     // endregion
@@ -147,64 +138,55 @@ public class WeaponFragment extends CounterFragment {
                     {0, 0, 0, 0, 0}, // Domain: Yellow, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Elite: x, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Enemy: x, x, Blue, Green, Gray
-                    {1507}, // Mora
-                    {0},    // Ore
+                    {1507, 0}, // Static: Mora, Ore
             },
             { // matsTo20
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {6592},
-                    {7},
+                    {6592, 7},
             },
             { // matsTo30
                     {0, 0, 0, 3, 0},
                     {0, 0, 0, 3, 0},
                     {0, 0, 0, 0, 2},
-                    {20190},
-                    {16},
+                    {20190, 16},
             },
             { // matsTo40
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {26322},
-                    {27},
+                    {26322, 27},
             },
             { // matsTo50
                     {0, 0, 3, 0, 0},
                     {0, 0, 0, 12, 0},
                     {0, 0, 0, 0, 8},
-                    {56872},
-                    {42},
+                    {56872, 42},
             },
             { // matsTo60
                     {0, 0, 6, 0, 0},
                     {0, 0, 6, 0, 0},
                     {0, 0, 0, 6, 0},
-                    {81840},
-                    {62},
+                    {81840, 62},
             },
             { // matsTo70
                     {0, 3, 0, 0, 0},
                     {0, 0, 12, 0, 0},
                     {0, 0, 0, 9, 0},
-                    {116605},
-                    {87},
+                    {116605, 87},
             },
             { // matsTo80
                     {0, 6, 0, 0, 0},
                     {0, 9, 0, 0, 0},
                     {0, 0, 6, 0, 0},
-                    {151687},
-                    {117},
+                    {151687, 117},
             },
             { // matsTo90
                     {4, 0, 0, 0, 0},
                     {0, 18, 0, 0, 0},
                     {0, 0, 12, 0, 0},
-                    {292647},
-                    {248},
+                    {292647, 248},
             }
     };
     // endregion
@@ -215,64 +197,55 @@ public class WeaponFragment extends CounterFragment {
                     {0, 0, 0, 0, 0}, // Domain: Yellow, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Elite: x, Purple, Blue, Green, x
                     {0, 0, 0, 0, 0}, // Enemy: x, x, Blue, Green, Gray
-                    {997}, // Mora
-                    {0},    // Ore
+                    {997, 0}, // Static: Mora, Ore
             },
             { // matsTo20
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {4350},
-                    {1},
+                    {4350, 1},
             },
             { // matsTo30
                     {0, 0, 0, 2, 0},
                     {0, 0, 0, 2, 0},
                     {0, 0, 0, 0, 1},
-                    {15027},
-                    {11},
+                    {15027, 11},
             },
             { // matsTo40
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
                     {0, 0, 0, 0, 0},
-                    {17372},
-                    {18},
+                    {17372, 18},
             },
             { // matsTo50
                     {0, 0, 2, 0, 0},
                     {0, 0, 0, 8, 0},
                     {0, 0, 0, 0, 5},
-                    {37635},
-                    {28},
+                    {37635, 28},
             },
             { // matsTo60
                     {0, 0, 4, 0, 0},
                     {0, 0, 4, 0, 0},
                     {0, 0, 0, 4, 0},
-                    {55815},
-                    {41},
+                    {55815, 41},
             },
             { // matsTo70
                     {0, 2, 0, 0, 0},
                     {0, 0, 8, 0, 0},
                     {0, 0, 0, 6, 0},
-                    {77162},
-                    {58},
+                    {77162, 58},
             },
             { // matsTo80
                     {0, 4, 0, 0, 0},
                     {0, 6, 0, 0, 0},
                     {0, 0, 4, 0, 0},
-                    {102012},
-                    {78},
+                    {102012, 78},
             },
             { // matsTo90
                     {3, 0, 0, 0, 0},
                     {0, 12, 0, 0, 0},
                     {0, 0, 8, 0, 0},
-                    {193447},
-                    {164},
+                    {193447, 164},
             }
     };
     // endregion
@@ -297,7 +270,7 @@ public class WeaponFragment extends CounterFragment {
     // Passes the final String array which names all EditTexts save data.
     WeaponFragment() {
         super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr,
-                reqMats5Star, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
+                matsToLevel5Star, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
                 LEVEL_MIN, LEVEL_MAX, LEVEL_STEP, LEVEL_START, LEVEL_END);
     }
     // endregion
@@ -315,11 +288,14 @@ public class WeaponFragment extends CounterFragment {
     public void updateEdittextVals() {
         // Ensures the correct weapon rarity is being calculated.
         if (itemRarity == 5) {
-            reqMats = reqMats5Star;
+//            reqMats = reqMats5Star;
+            allMats = matsToLevel5Star;
         } else if (itemRarity == 4) {
-            reqMats = reqMats4Star;
+//            reqMats = reqMats4Star;
+            allMats = matsToLevel4Star;
         } else {
-            reqMats = reqMats3Star;
+//            reqMats = reqMats3Star;
+            allMats = matsToLevel3Star;
         }
 
         super.updateEdittextVals();

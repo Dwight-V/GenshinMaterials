@@ -82,73 +82,55 @@ public class CharacterFragment extends CounterFragment {
                     {0, 0, 0, 0, 0}, // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 0, 0}, // Enemy Drop: Blue, Green, Gray
                     {0, 3, 10000, 10000, 0}, // Hero's Wit
-                    {5005}, // Mora
-                    {0}, // Local Specialty
-                    {0}, // Boss Drop
+                    {5005, 0, 0}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo20
                     {0, 0, 0, 0, 0}, // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 0, 0}, // Enemy Drop: Blue, Green, Gray
                     {0, 5, 10000, 10000, 0}, // Hero's Wit
-                    {19030},           // Mora
-                    {0},               // Local Specialty
-                    {0},               // Boss Drop
+                    {19030, 0, 0}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo30
                     {0, 0, 0, 1, 0},      // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 0, 3},         // Enemy Drop: Blue, Green, Gray
                     {0, 11, 10000, 10000, 0},              // Hero's Wit
-                    {62585},           // Mora
-                    {3},               // Local Specialty
-                    {0},               // Boss Drop
+                    {62585, 3, 0}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo40
-                    {0, 0, 0, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
-                    {0, 0, 0, 0, 0, 0},         // Enemy Drop: Blue, Green, Gray
+                    {0, 0, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 0, 0, 0},         // Enemy Drop: Blue, Green, Gray
                     {0, 19, 10000, 10000, 0},              // Hero's Wit
-                    {73080},           // Mora
-                    {0},               // Local Specialty
-                    {0},               // Boss Drop
+                    {73080, 0, 0}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo50
-                    {0, 0, 0, 3, 0}, // Gemstone, Chunk, Fragment, Sliver
+                    {0, 0, 3, 0, 0}, // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 0, 15}, // Enemy Drop: Blue, Green, Gray
                     {0, 29, 10000, 10000, 0}, // Hero's Wit
-                    {155820}, // Mora
-                    {10}, // Local Specialty
-                    {2}, // Boss Drop
+                    {155820, 10, 2}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo60
                     {0, 0, 6, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 12, 0},        // Enemy Drop: Blue, Green, Gray
                     {0, 43, 10000, 10000, 0},              // Hero's Wit
-                    {230825},          // Mora
-                    {20},              // Local Specialty
-                    {4},               // Boss Drop
+                    {230825, 20, 4}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo70
                     {0, 3, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 0, 18, 0},        // Enemy Drop: Blue, Green, Gray
                     {0, 60, 10000, 10000, 0},              // Hero's Wit
-                    {319185},          // Mora
-                    {30},              // Local Specialty
-                    {8},               // Boss Drop
+                    {319185, 30, 8}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo80
                     {0, 6, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 12, 0, 0},        // Enemy Drop: Blue, Green, Gray
                     {0, 81, 10000, 10000, 0},              // Hero's Wit
-                    {422375},          // Mora
-                    {45},              // Local Specialty
-                    {12},              // Boss Drop
+                    {422375, 45, 12}, // Static: Mora, Local speciality, Boss drop
             },
             { // matsTo90
                     {6, 0, 0, 0, 0},      // Gemstone, Chunk, Fragment, Sliver
                     {0, 0, 24, 0, 0},        // Enemy Drop: Blue, Green, Gray
                     {0, 172, 10000, 10000, 0},             // Hero's Wit
-                    {804625},          // Mora
-                    {60},              // Local Specialty
-                    {20},              // Boss Drop
+                    {804625, 60, 20}, // Static: Mora, Local speciality, Boss drop
             }
     };
     // endregion
@@ -192,7 +174,7 @@ public class CharacterFragment extends CounterFragment {
     // Passes the final String array which names all EditTexts save data.
     CharacterFragment() {
         super(EDITTEXT_VALUES_0, EDITTEXT_VALUES_1, EDITTEXT_VALUES_2, tabNamesArr,
-                reqMats, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
+                matsToLevel, SUBTAB_POSITION, ITEM_RARITY, TEXTSTATIC_TEXT, TITLE,
                 LEVEL_MIN, LEVEL_MAX, LEVEL_STEP, LEVEL_START, LEVEL_END);
     }
     // endregion
