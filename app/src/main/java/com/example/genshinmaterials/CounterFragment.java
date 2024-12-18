@@ -512,7 +512,7 @@ public class CounterFragment extends Fragment {
             public void onClick(View v) {
 //                disableEditText(edtYellow);
 //                Toast.makeText(MainActivity.this, "changed!", Toast.LENGTH_SHORT).show();
-                changeEditable();
+                updateEditability();
                 saveData();
             }
         });
@@ -521,10 +521,9 @@ public class CounterFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 //                int position = tab.getPosition();
-                updateEdittextVals();
-                checkRequirements();
-                disableLayouts();
+                updateCounters();
                 updateCounterUi();
+                checkRequirements();
             }
 
             @Override
@@ -559,7 +558,7 @@ public class CounterFragment extends Fragment {
                             break;
                     }
                     saveData();
-                    updateEdittextVals();
+                    updateCounters();
                     updateStarRarity();
                     checkRequirements();
                 }
@@ -593,7 +592,8 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getAdapter().getItem(position)) >= Integer.parseInt((String) spnEndLvl.getSelectedItem())) {
                     spnEndLvl.setSelection(spnStartLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
-                updateEdittextVals();
+                updateCounters();
+                checkRequirements();
                 saveData();
             }
 
@@ -610,7 +610,8 @@ public class CounterFragment extends Fragment {
                 if (Integer.parseInt((String) spnStartLvl.getSelectedItem()) >= Integer.parseInt((String) spnEndLvl.getAdapter().getItem(position))) {
                     spnStartLvl.setSelection(spnEndLvl.getSelectedItemPosition()); // Doesn't need (getSelectedItemPosition - 1) since spnStartLvl is offset by 1 leveStep.
                 }
-                updateEdittextVals();
+                updateCounters();
+                checkRequirements();
                 saveData();
             }
 
@@ -627,11 +628,9 @@ public class CounterFragment extends Fragment {
         spnStartLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN, INT_LEVEL_MAX - INT_LEVEL_STEP));
         spnEndLvl.setAdapter(createLevelSpinnerAdapter(INT_LEVEL_MIN + INT_LEVEL_STEP, INT_LEVEL_MAX));
 
-        loadData(); // Loads data and displays saved data on app launch.
-        updateViews();
-        updateStarRarity();
-        checkRequirements();
-        disableLayouts();
+        loadData(); // Loads data on app launch.
+        updateMainTabScreen(); // Sets up the screen with the loaded data.
+        checkRequirements(); // Runs the check to see if there's enough materials.
 
         afterOnCreate = true;
         return view;
@@ -663,7 +662,7 @@ public class CounterFragment extends Fragment {
 //        Log.i("MSG Save", sharedPreferences.getAll().toString());
     }
 
-    public void loadData() {
+    private void loadData() {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
         tabValArray[0] = new String[5];
         tabValArray[1] = new String[5];
@@ -688,35 +687,27 @@ public class CounterFragment extends Fragment {
     }
 
     // Changes the values of the EditTexts and Switch to saved values.
-    public void updateViews() {
+    private void updateMainTabScreen() {
         tabMaterials.selectTab(tabMaterials.getTabAt(prevSubtabPos)); // Sets the last used subtab.
-        changeEditable(); // Sets the editable switch to last used position.
-        updateEdittextVals(); // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
+        updateEditability(); // Sets the editable switch to last used position.
+        updateCounters(); // Updates the EditTexts (Yellow - Grey) to display the last used tab data before shutdown.
 
         // Sets the display for the tab names at the bottom.
         for (int i = 0; i < tabMaterials.getTabCount(); i++) {
             tabMaterials.getTabAt(i).setText(tabNamesArr[i]);
         }
 
-        updateCounterUi();
         edtTitle.setText(titleText);
         txtStatic.setText(staticText);
-
         spnStartLvl.setSelection(levelStartIndex);
         spnEndLvl.setSelection(levelEndIndex);
-    }
-
-    // Sets the color of each counter.
-    public void updateCounterUi() {
-        int[] colors = {R.color.genshin_yellow, R.color.genshin_purple,  R.color.genshin_blue, R.color.genshin_green, R.color.genshin_grey};
-
-        for (int i = 0; i < allCounterObjs.length; i++) {
-            allCounterObjs[i].findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), colors[i]));
-        }
+        
+        updateCounterUi();
+        updateStarRarity();
     }
 
     // Reads swtEditable's state, and locks or unlocks editablitiy on all EditTexts depending on the state.
-    public void changeEditable() {
+    private void updateEditability() {
 //        Toast.makeText(getContext(), swtEditable.isChecked() + "", Toast.LENGTH_SHORT).show();
         if (swtEditable.isChecked()) {
             for (int i = 0; i < allEditTexts.length; i++) {
@@ -745,7 +736,28 @@ public class CounterFragment extends Fragment {
         }
     }
 
-    // Runs when spnStart/EndLvL changes. Updates reqMats to match the levels.
+    // Sets the correct values of the counters (based on current subtab position).
+    protected void updateCounters() {
+        int tabPos = tabMaterials.getSelectedTabPosition();
+        // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
+        edittextsAreReady = false;
+        
+        updateReqMatsToLevel(); // updates reqMats to the desired start -> end level.
+
+        for (int i = 0; i < allEditTexts.length; i++) {
+            allEditTexts[i].setText(tabValArray[tabPos][i]); // Sets the numerator of the counter.
+            TextView temp = allCounterObjs[i].findViewById(R.id.txtDenominator);
+            temp.setText(String.valueOf(reqMats[tabPos][i])); // Sets the denominator of the counter.
+        }
+
+        updateStaticMaterials(); // Changes the description below the counters to match the start -> end level amounts.
+        updateCounterVisibility();
+
+        edittextsAreReady = true;
+        saveData();
+    }
+
+    // Only used in updateCounters(). Updates reqMats to match the levels.
     private void updateReqMatsToLevel() {
         int j = spnStartLvl.getSelectedItemPosition();
 
@@ -778,25 +790,7 @@ public class CounterFragment extends Fragment {
 //        Toast.makeText(getContext(), String.format("spnStart: %d spnEnd: %d", spnStartLvl.getSelectedItemPosition(), spnEndLvl.getSelectedItemPosition()), Toast.LENGTH_SHORT).show();
     }
 
-    // Sets the correct values of the EditTexts (based on current subtab position).
-    public void updateEdittextVals() {
-        int tabPos = tabMaterials.getSelectedTabPosition();
-        // Even though afterTextChanged() is called, this flag ensures that no saveData() call is made before all the EditTexts are changed programmatically here.
-        edittextsAreReady = false;
-        updateReqMatsToLevel();
-
-        for (int i = 0; i < allEditTexts.length; i++) {
-            allEditTexts[i].setText(tabValArray[tabPos][i]);
-            TextView temp = allCounterObjs[i].findViewById(R.id.txtDenominator);
-            temp.setText(String.valueOf(reqMats[tabPos][i]));
-        }
-
-        updateStaticMaterials();
-
-        edittextsAreReady = true;
-        saveData();
-    }
-
+    // Only used in updateCounters(). Updates the static text on the screen.
     private void updateStaticMaterials() {
         String ret = "";
 
@@ -807,31 +801,32 @@ public class CounterFragment extends Fragment {
         txtDynamic.setText(ret);
     }
 
-    public void updateStarRarity() {
-        // Resets the number of stars initially
-        for (int i = 0; i < allStars.length; i++) {
-            allStars[i].setImageResource(R.drawable.round_star_border_24);
-        }
+    // Only used in updateCounters(). If any counter on screen has 0 as a denominator, remove it from view.
+    private void updateCounterVisibility() {
+        int subtabIndex = tabMaterials.getSelectedTabPosition();
 
-        // Then adds the correct number back.
-        for (int i = 0; i < itemRarity; i++) {
-            // Just in case itemRarity is out of bounds.
-            if (i < allStars.length) {
-                allStars[i].setImageResource(R.drawable.round_star_24);
+        for (int i = 0; i < allEditTexts.length; i++) {
+            if (reqMats[subtabIndex][i] <= 0) {
+                allCounterObjs[i].setVisibility(View.GONE);
+            } else {
+                allCounterObjs[i].setVisibility(View.VISIBLE);
             }
         }
-    }
 
-    // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
-    public void checkOverflow(EditText editText) {
-        if (Integer.parseInt(editText.getText().toString()) > 10000) {
-            editText.setText("10000");
+    }
+    
+    // Sets the color of each counter. Is overridden to update the icon as well.
+    protected void updateCounterUi() {
+        int[] colors = {R.color.genshin_yellow, R.color.genshin_purple,  R.color.genshin_blue, R.color.genshin_green, R.color.genshin_grey};
+
+        for (int i = 0; i < allCounterObjs.length; i++) {
+            allCounterObjs[i].findViewById(R.id.linearlayout_icons).setBackgroundColor(ContextCompat.getColor(getActivity(), colors[i]));
         }
     }
 
     // Houses the 'brain' of the code. Compares the current amounts to the pre-set amount, and displays a checkmark of met/exceeds.
     // TODO: Maybe make it modular? As in, take an argument (the EditText which it's called from) and check if it's value meets the requirements.
-    public void checkRequirements() {
+    protected void checkRequirements() {
         // Holds the total amount of mats the user input. If there are excess materials in a lower-rarity, will convert them to the next rarity higher.
         // Is essentially a deep-copy of allEditTexts[].
         int[] netTotalMats = new int[5];
@@ -869,21 +864,25 @@ public class CounterFragment extends Fragment {
         prgssbarMaterial.setProgress(Arrays.stream(netTotalMats).sum(), true);
 //        txtStatic.setText(prgssbarMaterial.getProgress() + "/" + prgssbarMaterial.getMax());
     }
+    
+    // region *** Miscellaneous functions
+    protected void updateStarRarity() {
+        // Resets the number of stars initially
+        for (int i = 0; i < allStars.length; i++) {
+            allStars[i].setImageResource(R.drawable.round_star_border_24);
+        }
 
-    public void disableLayouts() {
-        int subtabIndex = tabMaterials.getSelectedTabPosition();
-
-        for (int i = 0; i < allEditTexts.length; i++) {
-            if (reqMats[subtabIndex][i] <= 0) {
-                allCounterObjs[i].setVisibility(View.GONE);
-            } else {
-                allCounterObjs[i].setVisibility(View.VISIBLE);
+        // Then adds the correct number back.
+        for (int i = 0; i < itemRarity; i++) {
+            // Just in case itemRarity is out of bounds.
+            if (i < allStars.length) {
+                allStars[i].setImageResource(R.drawable.round_star_24);
             }
         }
     }
 
     // Creates an ArrayAdapter with String values of [levelStart, levelEnd] with a step of INT_LEVEL_STEP.
-    public ArrayAdapter createLevelSpinnerAdapter(int levelStart, int levelEnd) {
+    private ArrayAdapter createLevelSpinnerAdapter(int levelStart, int levelEnd) {
         levelStart = Math.max(levelStart, 0); // ensures >= 0.
 
         String[] levels = new String[((levelEnd - levelStart) / INT_LEVEL_STEP) + 1];
@@ -898,22 +897,33 @@ public class CounterFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
     }
-
-    public void add(EditText edtText) {
+    // endregion Miscellaneous
+    
+    // region *** Logical operators
+    private void add(EditText edtText) {
         if (edtText.getText() != null) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) + 1));
             // No need to call saveData(), currently the editText.onClickListeners already do it.
         }
     }
 
-    public void sub(EditText edtText) {
+    private void sub(EditText edtText) {
         if (edtText != null && Integer.parseInt(edtText.getText().toString()) - 1 >= 0) {
             edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
             // No need to call saveData(), currently the editText.onClickListeners already do it.
         }
     }
 
-    public void updateCounterIcon(ImageView imgView, String imageUrl) {
+    // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
+    private void checkOverflow(EditText editText) {
+        if (Integer.parseInt(editText.getText().toString()) > 10000) {
+            editText.setText("10000");
+        }
+    }
+    // endregion Logical operators
+
+    // region *** API calling for images
+    protected void updateCounterIcon(ImageView imgView, String imageUrl) {
 //            txtStatic.setText(imageUrl);
 
         // Use Glide to replace image (https://github.com/bumptech/glide?tab=readme-ov-file#how-do-i-use-glide)
@@ -926,7 +936,7 @@ public class CounterFragment extends Fragment {
                 .into(imgView);
     }
 
-    public void updateEnemyCounterImgViews() {
+    protected void updateEnemyCounterImgViews() {
         String requestUrl = "https://genshin.jmp.blue/materials/common-ascension";
 
         RequestQueue mRequestQueue = Volley.newRequestQueue(getContext());
@@ -1007,4 +1017,5 @@ public class CounterFragment extends Fragment {
 
         mRequestQueue.add(mJsonRequest);
     }
+    // endregion
 }

@@ -285,7 +285,7 @@ public class WeaponFragment extends CounterFragment {
     }
 
     @Override
-    public void updateEdittextVals() {
+    public void updateCounters() {
         // Ensures the correct weapon rarity is being calculated.
         if (itemRarity == 5) {
 //            reqMats = reqMats5Star;
@@ -298,7 +298,7 @@ public class WeaponFragment extends CounterFragment {
             allMats = matsToLevel3Star;
         }
 
-        super.updateEdittextVals();
+        super.updateCounters();
     }
 
     @Override
