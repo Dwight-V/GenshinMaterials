@@ -58,7 +58,7 @@ public class CharacterFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_weapon_char";
 
-    private static final String TEXTSTATIC_TEXT = "Mora: x2,000,000\nLocal Specialty: x168\nBoss Drop: ×46";
+    private static final String TEXTSTATIC_TEXT = "Mora:\nLocal Specialty:\nBoss Drop:";
 
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Gem", "Enemy", "XP"};

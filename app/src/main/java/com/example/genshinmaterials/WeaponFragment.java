@@ -54,7 +54,7 @@ public class WeaponFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_weapon";
 
-    private static final String TEXTSTATIC_TEXT = "Mora: x1,100,000\nMystic Enhancement Ore: x907";
+    private static final String TEXTSTATIC_TEXT = "Mora:\nMystic Enhancement Ore:";
 
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Domain", "Miniboss", "Enemy"};

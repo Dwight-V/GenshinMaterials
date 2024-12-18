@@ -47,7 +47,7 @@ import java.util.Arrays;
 public class CounterFragment extends Fragment {
     // region Views
     private EditText edtYellow, edtPurple, edtBlue, edtGreen, edtGrey;
-    protected TextView txtStatic;
+    protected TextView txtStatic, txtDynamic;
 
     protected EditText edtTitle;
     private ImageButton btnClear;
@@ -167,7 +167,8 @@ public class CounterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_counter, container, false);
-        txtStatic = (TextView) view.findViewById(R.id.text_static);
+        txtDynamic = (TextView) view.findViewById(R.id.textview_dynamic_text);
+        txtStatic = (TextView) view.findViewById(R.id.textview_static_text);
         edtTitle = (EditText) view.findViewById(R.id.edittext_title);
 
         btnClear = (ImageButton) view.findViewById(R.id.button_clear);
@@ -790,8 +791,20 @@ public class CounterFragment extends Fragment {
             temp.setText(String.valueOf(reqMats[tabPos][i]));
         }
 
+        updateStaticMaterials();
+
         edittextsAreReady = true;
         saveData();
+    }
+
+    private void updateStaticMaterials() {
+        String ret = "";
+
+        for (int val : reqMats[reqMats.length - 1]) {
+            ret += String.format("x%,d \n", val);
+        }
+
+        txtDynamic.setText(ret);
     }
 
     public void updateStarRarity() {

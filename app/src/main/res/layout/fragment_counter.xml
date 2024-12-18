@@ -176,10 +176,23 @@
                 android:paddingBottom="5dp"
                 android:text="Static materials:"/>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/text_static"/>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/textview_static_text"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/textview_dynamic_text"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

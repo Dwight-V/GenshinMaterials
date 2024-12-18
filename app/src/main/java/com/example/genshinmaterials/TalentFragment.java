@@ -54,7 +54,7 @@ public class TalentFragment extends CounterFragment {
 
     public static String ITEM_RARITY = "rarity_talent";
 
-    private static final String TEXTSTATIC_TEXT = "Mora: x1,652,500\nCrown of Insight: x1";
+    private static final String TEXTSTATIC_TEXT = "Mora:\nCrown of Insight:";
 
     // Programmatically replaces the names of the subtabs.
     private static final String[] tabNamesArr = {"Books", "Boss", "Enemy"};
