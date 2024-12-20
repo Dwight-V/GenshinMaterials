@@ -375,131 +375,15 @@ public class CounterFragment extends Fragment {
         // TODO: Get rid of leading zero when typing.
         // region edittextTextChangeListeners
 
-        edtYellow.addTextChangedListener(new TextWatcher() {
-            EditText thisEditText = edtYellow;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        edtYellow.addTextChangedListener(new TextWatcherWithEditText(edtYellow));
 
-            }
+        edtPurple.addTextChangedListener(new TextWatcherWithEditText(edtPurple));
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                saveData();
-            }
+        edtBlue.addTextChangedListener(new TextWatcherWithEditText(edtBlue));
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (edittextsAreReady) {
-                    if (thisEditText.getText().toString().equals("")) {
-                        thisEditText.setText("0");
-                    }
-                    checkOverflow(thisEditText);
-                    saveData();
-                    checkRequirements();
-                }
-            }
-        });
+        edtGreen.addTextChangedListener(new TextWatcherWithEditText(edtGreen));
 
-        edtPurple.addTextChangedListener(new TextWatcher() {
-            EditText thisEditText = edtPurple;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                edtPurple.setText(" ");
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                saveData();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (edittextsAreReady) {
-                    if (thisEditText.getText().toString().equals("")) {
-                        thisEditText.setText("0");
-                    }
-                    checkOverflow(thisEditText);
-                    saveData();
-                    checkRequirements();
-                }
-            }
-        });
-
-        edtBlue.addTextChangedListener(new TextWatcher() {
-            EditText thisEditText = edtBlue;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                saveData();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (edittextsAreReady) {
-                    if (thisEditText.getText().toString().equals("")) {
-                        thisEditText.setText("0");
-                    }
-                    checkOverflow(thisEditText);
-                    saveData();
-                    checkRequirements();
-                }
-            }
-        });
-
-
-        edtGreen.addTextChangedListener(new TextWatcher() {
-            EditText thisEditText = edtGreen;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                saveData();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (edittextsAreReady) {
-                    if (thisEditText.getText().toString().equals("")) {
-                        thisEditText.setText("0");
-                    }
-                    checkOverflow(thisEditText);
-                    saveData();
-                    checkRequirements();
-                }
-            }
-        });
-
-        edtGrey.addTextChangedListener(new TextWatcher() {
-            EditText thisEditText = edtGrey;
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                saveData();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (edittextsAreReady) {
-                    if (thisEditText.getText().toString().equals("")) {
-                        thisEditText.setText("0");
-                    }
-                    checkOverflow(thisEditText);
-                    saveData();
-                    checkRequirements();
-                }
-            }
-        });
+        edtGrey.addTextChangedListener(new TextWatcherWithEditText(edtGrey));
 
         // endregion
 
@@ -1018,4 +902,35 @@ public class CounterFragment extends Fragment {
         mRequestQueue.add(mJsonRequest);
     }
     // endregion
+
+
+    private class TextWatcherWithEditText implements TextWatcher {
+        private EditText thisEditText;
+
+        public TextWatcherWithEditText(EditText editText) {
+            thisEditText = editText;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (edittextsAreReady) {
+                if (thisEditText.getText().toString().equals("")) {
+                    thisEditText.setText("0");
+                }
+                checkOverflow(thisEditText);
+                saveData();
+                checkRequirements();
+            }
+        }
+    }
 }
