@@ -91,7 +91,7 @@ public class CounterFragment extends Fragment {
 
     // region Global variables that hold the above variable's saved data while the app is open.
 
-    public String[][] tabValArray = new String[3][];
+    public int[][] tabValArray = new int[3][];
 
     public int prevSubtabPos;
 
@@ -238,14 +238,14 @@ public class CounterFragment extends Fragment {
         btnAddYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add(edtYellow);
+                add(0);
             }
         });
 
         btnSubYellow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sub(edtYellow);
+                sub(0);
             }
         });
 
@@ -280,14 +280,14 @@ public class CounterFragment extends Fragment {
         btnAddPurple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add(edtPurple);
+                add(1);
             }
         });
 
         btnSubPurple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sub(edtPurple);
+                sub(1);
             }
         });
 
@@ -303,14 +303,14 @@ public class CounterFragment extends Fragment {
         btnAddBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add(edtBlue);
+                add(2);
             }
         });
 
         btnSubBlue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sub(edtBlue);
+                sub(2);
             }
         });
 
@@ -326,14 +326,14 @@ public class CounterFragment extends Fragment {
         btnAddGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add(edtGreen);
+                add(3);
             }
         });
 
         btnSubGreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sub(edtGreen);
+                sub(3);
             }
         });
 
@@ -349,14 +349,14 @@ public class CounterFragment extends Fragment {
         btnAddGrey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                add(edtGrey);
+                add(4);
             }
         });
 
         btnSubGrey.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sub(edtGrey);
+                sub(4);
             }
         });
 
@@ -375,15 +375,15 @@ public class CounterFragment extends Fragment {
         // TODO: Get rid of leading zero when typing.
         // region edittextTextChangeListeners
 
-        edtYellow.addTextChangedListener(new TextWatcherWithEditText(edtYellow));
+        edtYellow.addTextChangedListener(new TextWatcherWithEditText(0));
 
-        edtPurple.addTextChangedListener(new TextWatcherWithEditText(edtPurple));
+        edtPurple.addTextChangedListener(new TextWatcherWithEditText(1));
 
-        edtBlue.addTextChangedListener(new TextWatcherWithEditText(edtBlue));
+        edtBlue.addTextChangedListener(new TextWatcherWithEditText(2));
 
-        edtGreen.addTextChangedListener(new TextWatcherWithEditText(edtGreen));
+        edtGreen.addTextChangedListener(new TextWatcherWithEditText(3));
 
-        edtGrey.addTextChangedListener(new TextWatcherWithEditText(edtGrey));
+        edtGrey.addTextChangedListener(new TextWatcherWithEditText(4));
 
         // endregion
 
@@ -528,13 +528,9 @@ public class CounterFragment extends Fragment {
 
         for (int i = 0; i < EDITTEXT_VALUES[indexTab].length; i++) {
             // Saves the values for the long-term (on app restart)
-            editor.putString(EDITTEXT_VALUES[indexTab][i], allEditTexts[i].getText().toString());
-            // Saves the values for the short-term (switching subtabs)
-            tabValArray[indexTab][i] = allEditTexts[i].getText().toString();
+            editor.putInt(EDITTEXT_VALUES[indexTab][i], tabValArray[indexTab][i]);
         }
 
-//        editor.putBoolean(SWITCH_EDITABLE_IS_CHECKED, swtEditable.isChecked());
-//        Toast.makeText(this, VALUE_BLUE + " " + edtBlue.getText().toString(), Toast.LENGTH_SHORT).show();
         editor.putInt(ITEM_RARITY, itemRarity);
         editor.putInt(SUBTAB_POSITION, tabMaterials.getSelectedTabPosition());
         editor.putString(EDITTEXT_TITLE, edtTitle.getText().toString());
@@ -548,9 +544,9 @@ public class CounterFragment extends Fragment {
 
     private void loadData() {
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPreferences", Context.MODE_PRIVATE);
-        tabValArray[0] = new String[5];
-        tabValArray[1] = new String[5];
-        tabValArray[2] = new String[5];
+        tabValArray[0] = new int[5];
+        tabValArray[1] = new int[5];
+        tabValArray[2] = new int[5];
 
         prevSubtabPos = sharedPreferences.getInt(SUBTAB_POSITION, 0);
         itemRarity = sharedPreferences.getInt(ITEM_RARITY, 3);
@@ -558,7 +554,7 @@ public class CounterFragment extends Fragment {
         // Sets the new initialized local arrays to the saved instance of the arrays.
         for (int i = 0; i < EDITTEXT_VALUES.length; i++) {
             for (int j = 0; j < EDITTEXT_VALUES[i].length; j++) {
-                tabValArray[i][j] = sharedPreferences.getString(EDITTEXT_VALUES[i][j], "0");
+                tabValArray[i][j] = sharedPreferences.getInt(EDITTEXT_VALUES[i][j], 0);
             }
         }
 
@@ -629,7 +625,7 @@ public class CounterFragment extends Fragment {
         updateReqMatsToLevel(); // updates reqMats to the desired start -> end level.
 
         for (int i = 0; i < allEditTexts.length; i++) {
-            allEditTexts[i].setText(tabValArray[tabPos][i]); // Sets the numerator of the counter.
+            allEditTexts[i].setText(String.valueOf(tabValArray[tabPos][i])); // Sets the numerator of the counter.
             TextView temp = allCounterObjs[i].findViewById(R.id.txtDenominator);
             temp.setText(String.valueOf(reqMats[tabPos][i])); // Sets the denominator of the counter.
         }
@@ -724,7 +720,7 @@ public class CounterFragment extends Fragment {
         for (int i = allEditTexts.length - 1; i >= 0; i--) {
             int reqAmount = reqMats[subtabIndex][i];
 
-            netTotalMats[i] = Integer.parseInt(allEditTexts[i].getText().toString()) + extraMats;
+            netTotalMats[i] = tabValArray[subtabIndex][i] + extraMats;
 
             if (netTotalMats[i] >= reqAmount) {
                 // Integer division rounds down.
@@ -784,23 +780,37 @@ public class CounterFragment extends Fragment {
     // endregion Miscellaneous
     
     // region *** Logical operators
-    private void add(EditText edtText) {
-        if (edtText.getText() != null) {
-            edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) + 1));
-            // No need to call saveData(), currently the editText.onClickListeners already do it.
+    private void add(int editTextIndex) {
+        if (editTextIndex >= allEditTexts.length || editTextIndex < 0) {
+            Toast.makeText(getContext(), "editTextIndex out of bounds!",  Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        EditText edtCur = allEditTexts[editTextIndex];
+        int tabIndex = tabMaterials.getSelectedTabPosition();
+
+        edtCur.setText(String.valueOf(++tabValArray[tabIndex][editTextIndex]));
+        // Don't need to call saveData() as changing the EditText's text does already
     }
 
-    private void sub(EditText edtText) {
-        if (edtText != null && Integer.parseInt(edtText.getText().toString()) - 1 >= 0) {
-            edtText.setText(String.valueOf(Integer.parseInt(edtText.getText().toString()) - 1));
-            // No need to call saveData(), currently the editText.onClickListeners already do it.
+    private void sub(int editTextIndex) {
+        if (editTextIndex >= allEditTexts.length || editTextIndex < 0) {
+            Toast.makeText(getContext(), "editTextIndex out of bounds!",  Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        EditText edtCur = allEditTexts[editTextIndex];
+        int tabIndex = tabMaterials.getSelectedTabPosition();
+
+        if (tabValArray[tabIndex][editTextIndex] - 1 >= 0) {
+            edtCur.setText(String.valueOf(--tabValArray[tabIndex][editTextIndex]));
+        }
+        // Don't need to call saveData() as changing the EditText's text does already
     }
 
     // App crashes when numbers are absurdly large. IMO 10000 of one resource is a plenty high ceiling.
     private void checkOverflow(EditText editText) {
-        if (Integer.parseInt(editText.getText().toString()) > 10000) {
+        if (!editText.getText().toString().isEmpty() && Integer.parseInt(editText.getText().toString()) > 10000) {
             editText.setText("10000");
         }
     }
@@ -905,10 +915,10 @@ public class CounterFragment extends Fragment {
 
 
     private class TextWatcherWithEditText implements TextWatcher {
-        private EditText thisEditText;
+        private int edtIndex;
 
-        public TextWatcherWithEditText(EditText editText) {
-            thisEditText = editText;
+        public TextWatcherWithEditText(int i) {
+            edtIndex = i;
         }
 
         @Override
@@ -924,10 +934,15 @@ public class CounterFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             if (edittextsAreReady) {
-                if (thisEditText.getText().toString().equals("")) {
-                    thisEditText.setText("0");
+                int tabIndex = tabMaterials.getSelectedTabPosition();
+
+                if (allEditTexts[edtIndex].getText().toString().isEmpty()) {
+                    tabValArray[tabIndex][edtIndex] = 0;
+                } else {
+                    tabValArray[tabIndex][edtIndex] = Integer.parseInt(allEditTexts[edtIndex].getText().toString());
                 }
-                checkOverflow(thisEditText);
+
+                checkOverflow(allEditTexts[edtIndex]);
                 saveData();
                 checkRequirements();
             }
